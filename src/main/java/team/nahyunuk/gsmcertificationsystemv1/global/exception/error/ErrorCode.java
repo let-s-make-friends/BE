@@ -2,7 +2,6 @@ package team.nahyunuk.gsmcertificationsystemv1.global.exception.error;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.springframework.http.HttpStatus;
 
 @Getter
 @AllArgsConstructor
@@ -14,7 +13,10 @@ public enum ErrorCode {
     EXPIRED_REFRESH_TOKEN(401, "만료된 리프레쉬 토큰입니다."),
 
     // member
-    NOT_FOUND_MEMBER(404, "등록된 회원을 찾을 수 없습니다");
+    NOT_FOUND_MEMBER(404, "등록된 회원을 찾을 수 없습니다"),
+
+    // server
+    INTERNAL_SERVER_ERROR(500, "서버 오류");
 
     private final int status;
     private final String message;
