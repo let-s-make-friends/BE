@@ -1,5 +1,6 @@
 package team.nahyunuk.gsmcertificationsystemv1.global.security.jwt;
 
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -13,6 +14,7 @@ import io.jsonwebtoken.io.Decoders;
 import team.nahyunuk.gsmcertificationsystemv1.domain.user.type.Authority;
 import team.nahyunuk.gsmcertificationsystemv1.global.security.jwt.dto.TokenDto;
 
+import java.rmi.server.ExportException;
 import java.security.Key;
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -66,5 +68,16 @@ public class JwtProvider {
                 .setExpiration(refreshTokenExp)
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
+    }
+
+    public boolean validateToken(String token) {
+        try {
+            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
+            return !redisUtil.hasKeyBlackList(token);
+        } catch (ExpiredJwtException e) {
+            throw new RuntimeException(e);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }
