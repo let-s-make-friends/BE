@@ -1,5 +1,3 @@
-package team.nahyunuk.gsmcertificationsystem.v1.global.security.handler;
-
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;

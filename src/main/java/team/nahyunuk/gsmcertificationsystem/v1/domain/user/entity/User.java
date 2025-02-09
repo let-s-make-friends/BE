@@ -1,11 +1,8 @@
-package team.nahyunuk.gsmcertificationsystem.domain.user.entity;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.*;
-import team.nahyunuk.gsmcertificationsystem.domain.user.type.Authority;
 
 import java.util.UUID;
 

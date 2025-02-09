@@ -1,5 +1,3 @@
-package team.nahyunuk.gsmcertificationsystem.domain.auth.entity;
-
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

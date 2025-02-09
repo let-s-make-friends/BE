@@ -5,5 +5,4 @@ spring:
       port: ${REDIS_PORT}
 
 jwt:
-
   secret: ${SECRET_KEY}

@@ -1,5 +1,3 @@
-package team.nahyunuk.gsmcertificationsystem.v1.global.security.jwt.dto;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

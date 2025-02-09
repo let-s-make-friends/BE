@@ -1,5 +1,3 @@
-package team.nahyunuk.gsmcertificationsystem.v1.global.common.response;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
