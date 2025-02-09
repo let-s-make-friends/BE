@@ -1,3 +1,5 @@
+package team.nahyunuk.gsmcertificationsystem.v1.global.redis.util;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;

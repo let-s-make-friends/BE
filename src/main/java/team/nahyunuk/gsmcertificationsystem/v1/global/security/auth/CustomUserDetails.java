@@ -1,7 +1,10 @@
+package team.nahyunuk.gsmcertificationsystem.v1.global.security.auth;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import team.nahyunuk.gsmcertificationsystem.v1.domain.user.entity.User;
 
 import java.util.ArrayList;
 import java.util.Collection;

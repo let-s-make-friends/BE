@@ -1,3 +1,5 @@
+package team.nahyunuk.gsmcertificationsystem.v1.global.exception.error;
+
 import lombok.Builder;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;

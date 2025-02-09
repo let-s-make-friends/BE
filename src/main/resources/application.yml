@@ -6,3 +6,6 @@ spring:
 
 jwt:
   secret: ${SECRET_KEY}
+
+cors:
+  allowedOrigin: ${CORS_ALLOWED_ORIGIN}
