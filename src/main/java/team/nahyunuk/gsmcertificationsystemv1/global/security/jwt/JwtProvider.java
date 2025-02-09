@@ -81,6 +81,4 @@ public class JwtProvider {
             throw new CustomException(ErrorCode.INVALID_TOKEN);
         }
     }
-
-
 }
