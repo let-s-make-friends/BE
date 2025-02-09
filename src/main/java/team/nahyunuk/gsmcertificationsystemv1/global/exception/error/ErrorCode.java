@@ -16,6 +16,6 @@ public enum ErrorCode {
     // member
     NOT_FOUND_MEMBER(404, "등록된 회원을 찾을 수 없습니다");
 
-    private final HttpStatus httpStatus;
+    private final int status;
     private final String message;
 }
