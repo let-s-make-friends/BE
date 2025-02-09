@@ -99,4 +99,12 @@ public class JwtProvider {
         UserDetails principal = customUserDetailsService.loadUserByUsername(claims.getSubject());
         return new UsernamePasswordAuthenticationToken(principal, "", principal.getAuthorities());
     }
+
+    private Claims parseClaims(String accessToken) {
+        try {
+            return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(accessToken).getBody();
+        } catch (ExpiredJwtException e) {
+            return e.getClaims();
+        }
+    }
 }
