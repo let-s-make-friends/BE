@@ -118,4 +118,12 @@ public class JwtProvider {
         }
         return null;
     }
+
+    public String parseRefreshToken(String refreshToken) {
+        if (refreshToken.startsWith(BEARER_TYPE)) {
+            return refreshToken.replace(BEARER_TYPE, "");
+        } else {
+            return null;
+        }
+    }
 }
