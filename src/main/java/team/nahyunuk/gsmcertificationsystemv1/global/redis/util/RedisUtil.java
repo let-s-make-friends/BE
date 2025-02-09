@@ -1,9 +1,7 @@
 package team.nahyunuk.gsmcertificationsystemv1.global.redis.util;
 
 import lombok.RequiredArgsConstructor;
-import lombok.Value;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.stereotype.Component;
 

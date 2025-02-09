@@ -7,12 +7,14 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 import team.nahyunuk.gsmcertificationsystemv1.domain.user.type.Authority;
 import team.nahyunuk.gsmcertificationsystemv1.global.exception.CustomException;
 import team.nahyunuk.gsmcertificationsystemv1.global.exception.error.ErrorCode;
@@ -25,6 +27,9 @@ import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.UUID;
 
+import static team.nahyunuk.gsmcertificationsystemv1.global.security.filter.JwtFilter.AUTHORIZATION_HEADER;
+import static team.nahyunuk.gsmcertificationsystemv1.global.security.filter.JwtFilter.BEARER_PREFIX;
+
 @Component
 @RequiredArgsConstructor
 public class JwtProvider {
@@ -32,11 +37,9 @@ public class JwtProvider {
     private static final String BEARER_TYPE = "Bearer ";
     private static final long ACCESS_TOKEN_TIME = 60L * 30 * 4;
     private static final long REFRESH_TOKEN_TIME = 60L * 60 * 24 * 7;
-    private final RedisUtil redisUtil;
 
     @Value("${jwt.secret}")
     private String secretKey;
-
     private static Key key;
     private final CustomUserDetailsService customUserDetailsService;
     private final RedisUtil redisUtil;
@@ -106,5 +109,13 @@ public class JwtProvider {
         } catch (ExpiredJwtException e) {
             return e.getClaims();
         }
+    }
+
+    public String resolveToken(HttpServletRequest request) {
+        String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
+        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER_PREFIX)) {
+            return bearerToken.substring(7);
+        }
+        return null;
     }
 }
