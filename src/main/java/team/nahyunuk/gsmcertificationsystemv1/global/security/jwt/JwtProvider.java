@@ -40,20 +40,30 @@ public class JwtProvider {
     public TokenDto generateTokenDto(UUID userId, Authority authority) {
         return TokenDto.builder()
                 .accessToken(generateAccessToken(userId, authority))
-                .refreshToken(generateRefreshToken(userId, authority))
+                .refreshToken(generateRefreshToken(userId))
                 .accessTokenExp(LocalDateTime.now().plusSeconds(ACCESS_TOKEN_TIME))
                 .refreshTokenExp(LocalDateTime.now().plusSeconds(REFRESH_TOKEN_TIME))
                 .build();
     }
 
     private String generateAccessToken(UUID userId, Authority authority) {
-        Date expiration = new Date(System.currentTimeMillis() + ACCESS_TOKEN_TIME * 1000);
+        Date accessTokenExp = new Date(System.currentTimeMillis() + ACCESS_TOKEN_TIME * 1000);
 
         return Jwts.builder()
                 .setSubject(userId.toString())
                 .claim(AUTHORITIES_KEY, authority)
                 .setIssuedAt(new Date())
-                .setExpiration(expiration)
+                .setExpiration(accessTokenExp)
+                .signWith(key, SignatureAlgorithm.HS256)
+                .compact();
+    }
+
+    private String generateRefreshToken(UUID userId) {
+        Date refreshTokenExp = new Date(System.currentTimeMillis() + REFRESH_TOKEN_TIME * 1000);
+
+        return Jwts.builder()
+                .setSubject(userId.toString())
+                .setExpiration(refreshTokenExp)
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
     }
