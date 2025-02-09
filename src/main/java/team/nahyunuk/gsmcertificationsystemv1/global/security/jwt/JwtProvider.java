@@ -1,5 +1,6 @@
 package team.nahyunuk.gsmcertificationsystemv1.global.security.jwt;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -8,11 +9,15 @@ import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import team.nahyunuk.gsmcertificationsystemv1.domain.user.type.Authority;
 import team.nahyunuk.gsmcertificationsystemv1.global.exception.CustomException;
 import team.nahyunuk.gsmcertificationsystemv1.global.exception.error.ErrorCode;
 import team.nahyunuk.gsmcertificationsystemv1.global.redis.util.RedisUtil;
+import team.nahyunuk.gsmcertificationsystemv1.global.security.auth.CustomUserDetailsService;
 import team.nahyunuk.gsmcertificationsystemv1.global.security.jwt.dto.TokenDto;
 
 import java.security.Key;
@@ -33,6 +38,8 @@ public class JwtProvider {
     private String secretKey;
 
     private static Key key;
+    private final CustomUserDetailsService customUserDetailsService;
+    private final RedisUtil redisUtil;
 
     @PostConstruct
     public void init() {
@@ -80,5 +87,16 @@ public class JwtProvider {
         } catch (Exception e) {
             throw new CustomException(ErrorCode.INVALID_TOKEN);
         }
+    }
+
+    public Authentication getAuthentication(String accessToken) {
+        Claims claims = parseClaims(accessToken);
+
+        if (claims.get(AUTHORITIES_KEY) == null) {
+            throw new CustomException(ErrorCode.INVALID_TOKEN);
+        }
+
+        UserDetails principal = customUserDetailsService.loadUserByUsername(claims.getSubject());
+        return new UsernamePasswordAuthenticationToken(principal, "", principal.getAuthorities());
     }
 }
