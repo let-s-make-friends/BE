@@ -6,8 +6,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.beans.factory.annotation.Value;
 import io.jsonwebtoken.io.Decoders;
+import team.nahyunuk.gsmcertificationsystemv1.domain.user.type.Authority;
+import team.nahyunuk.gsmcertificationsystemv1.global.security.jwt.dto.TokenDto;
 
 import java.security.Key;
+import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
@@ -26,5 +30,14 @@ public class JwtProvider {
     public void init() {
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         key = Keys.hmacShaKeyFor(keyBytes);
+    }
+
+    public TokenDto generateTokenDto(UUID userId, Authority authority) {
+        return TokenDto.builder()
+                .accessToken(generateAccessToken(userId, authority))
+                .refreshToken(generateRefreshToken(userId, authority))
+                .accessTokenExp(LocalDateTime.now().plusSeconds(ACCESS_TOKEN_TIME))
+                .refreshTokenExp(LocalDateTime.now().plusSeconds(REFRESH_TOKEN_TIME))
+                .build();
     }
 }

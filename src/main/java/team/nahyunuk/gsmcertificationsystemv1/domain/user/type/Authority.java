@@ -1,4 +1,5 @@
 package team.nahyunuk.gsmcertificationsystemv1.domain.user.type;
 
-public class Authority {
+public enum Authority {
+    STUDENT, ADMIN, TEACHER
 }
