@@ -1,4 +1,4 @@
-package team.nahyunuk.gsmcertificationsystemv1;
+package team.nahyunuk.gsmcertificationsystem;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
