@@ -6,6 +6,6 @@ import team.nahyunuk.gsmcertificationsystemv1.global.exception.error.ErrorCode;
 
 @Getter
 @AllArgsConstructor
-public class CustomException {
+public class CustomException extends RuntimeException {
     private final ErrorCode errorCode;
 }
