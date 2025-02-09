@@ -123,4 +123,7 @@ public class JwtProvider {
         if (refreshToken.startsWith(BEARER_TYPE)) {
             return refreshToken.replace(BEARER_TYPE, "");
         } else {
-            return n
+            return null;
+        }
+    }
+}

@@ -47,3 +47,4 @@ public class RedisUtil {
         return redisBlackListTemplate.hasKey(key);
     }
 
+}

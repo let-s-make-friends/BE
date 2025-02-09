@@ -18,3 +18,4 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
         log.info("====== AUTHENTICATION DENIED ======");
         response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
     }
+}

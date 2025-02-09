@@ -1,4 +1,4 @@
-package team.nahyunuk.gsmcertificationsystem.global.exception.error;
+package team.nahyunuk.gsmcertificationsystem.v1.global.exception.error;
 
 import lombok.Builder;
 import lombok.Getter;

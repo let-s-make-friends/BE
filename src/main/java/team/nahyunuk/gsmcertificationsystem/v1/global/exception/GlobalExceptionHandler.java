@@ -15,4 +15,5 @@ public class GlobalExceptionHandler {
         log.warn("ExpectedException : {} ", e.getMessage());
         log.trace("ExpectedException Details : ", e);
         return ErrorResponse.toResponseEntity(e.getErrorCode());
-    
+    }
+}
