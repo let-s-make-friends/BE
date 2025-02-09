@@ -51,7 +51,7 @@ public class JwtProvider {
         key = Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public TokenDto generateTokenDto(UUID userId, Authority authority) {
+    public TokenDto generateTokenDto(Long userId, Authority authority) {
         return TokenDto.builder()
                 .accessToken(generateAccessToken(userId, authority))
                 .refreshToken(generateRefreshToken(userId))
@@ -60,7 +60,7 @@ public class JwtProvider {
                 .build();
     }
 
-    private String generateAccessToken(UUID userId, Authority authority) {
+    private String generateAccessToken(Long userId, Authority authority) {
         Date accessTokenExp = new Date(System.currentTimeMillis() + ACCESS_TOKEN_TIME * 1000);
 
         return Jwts.builder()
@@ -72,7 +72,7 @@ public class JwtProvider {
                 .compact();
     }
 
-    private String generateRefreshToken(UUID userId) {
+    private String generateRefreshToken(Long userId) {
         Date refreshTokenExp = new Date(System.currentTimeMillis() + REFRESH_TOKEN_TIME * 1000);
 
         return Jwts.builder()

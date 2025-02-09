@@ -1,9 +1,6 @@
 package team.nahyunuk.gsmcertificationsystem.v1.domain.user.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -21,15 +18,27 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private UUID userId;
+    @Column(name = "user_id", nullable = false, updatable = false)
+    private Long userId;
 
+    @Column(name = "email", nullable = false, unique = true)
     private String email;
+
+    @Column(name = "username", nullable = false)
     private String username;
+
+    @Column(name = "password", nullable = false)
     private String password;
 
+    @Column(name = "grade", nullable = false)
     private int grade;
+
+    @Column(name = "class_number", nullable = false)
     private int classNumber;
+
+    @Column(name = "student_number", nullable = false)
     private int studentNumber;
 
+    @Column(name = "authority", nullable = false)
     private Authority authority;
 }
