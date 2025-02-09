@@ -3,18 +3,18 @@ package team.nahyunuk.gsmcertificationsystemv1.global.security.jwt;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.exception.DataException;
-import org.springframework.stereotype.Component;
 import org.springframework.beans.factory.annotation.Value;
-import io.jsonwebtoken.io.Decoders;
+import org.springframework.stereotype.Component;
 import team.nahyunuk.gsmcertificationsystemv1.domain.user.type.Authority;
+import team.nahyunuk.gsmcertificationsystemv1.global.exception.CustomException;
+import team.nahyunuk.gsmcertificationsystemv1.global.exception.error.ErrorCode;
+import team.nahyunuk.gsmcertificationsystemv1.global.redis.util.RedisUtil;
 import team.nahyunuk.gsmcertificationsystemv1.global.security.jwt.dto.TokenDto;
 
-import java.rmi.server.ExportException;
 import java.security.Key;
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -27,6 +27,7 @@ public class JwtProvider {
     private static final String BEARER_TYPE = "Bearer ";
     private static final long ACCESS_TOKEN_TIME = 60L * 30 * 4;
     private static final long REFRESH_TOKEN_TIME = 60L * 60 * 24 * 7;
+    private final RedisUtil redisUtil;
 
     @Value("${jwt.secret}")
     private String secretKey;
@@ -73,11 +74,13 @@ public class JwtProvider {
     public boolean validateToken(String token) {
         try {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
-            return !redisUtil.hasKeyBlackList(token);
+            return !redisUtil.hasKayBlackList(token);
         } catch (ExpiredJwtException e) {
-            throw new RuntimeException(e);
+            throw new CustomException(ErrorCode.EXPIRED_TOKEN);
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new CustomException(ErrorCode.INVALID_TOKEN);
         }
     }
+
+
 }
