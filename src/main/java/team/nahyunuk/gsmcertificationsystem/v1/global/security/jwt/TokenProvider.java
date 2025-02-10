@@ -25,7 +25,6 @@ import team.nahyunuk.gsmcertificationsystem.v1.global.security.jwt.dto.TokenDto;
 import java.security.Key;
 import java.time.LocalDateTime;
 import java.util.Date;
-import java.util.UUID;
 
 import static team.nahyunuk.gsmcertificationsystem.v1.global.security.filter.JwtFilter.AUTHORIZATION_HEADER;
 import static team.nahyunuk.gsmcertificationsystem.v1.global.security.filter.JwtFilter.BEARER_PREFIX;
@@ -33,7 +32,7 @@ import static team.nahyunuk.gsmcertificationsystem.v1.global.security.filter.Jwt
 
 @Component
 @RequiredArgsConstructor
-public class JwtProvider {
+public class TokenProvider {
     private static final String AUTHORITIES_KEY = "auth";
     private static final String BEARER_TYPE = "Bearer ";
     private static final long ACCESS_TOKEN_TIME = 60L * 30 * 4;
@@ -51,20 +50,20 @@ public class JwtProvider {
         key = Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public TokenDto generateTokenDto(Long userId, Authority authority) {
+    public TokenDto generateTokenDto(String username, Authority authority) {
         return TokenDto.builder()
-                .accessToken(generateAccessToken(userId, authority))
-                .refreshToken(generateRefreshToken(userId))
+                .accessToken(generateAccessToken(username, authority))
+                .refreshToken(generateRefreshToken(username))
                 .accessTokenExp(LocalDateTime.now().plusSeconds(ACCESS_TOKEN_TIME))
                 .refreshTokenExp(LocalDateTime.now().plusSeconds(REFRESH_TOKEN_TIME))
                 .build();
     }
 
-    private String generateAccessToken(Long userId, Authority authority) {
+    private String generateAccessToken(String username, Authority authority) {
         Date accessTokenExp = new Date(System.currentTimeMillis() + ACCESS_TOKEN_TIME * 1000);
 
         return Jwts.builder()
-                .setSubject(userId.toString())
+                .setSubject(username)
                 .claim(AUTHORITIES_KEY, authority)
                 .setIssuedAt(new Date())
                 .setExpiration(accessTokenExp)
@@ -72,11 +71,11 @@ public class JwtProvider {
                 .compact();
     }
 
-    private String generateRefreshToken(Long userId) {
+    private String generateRefreshToken(String username) {
         Date refreshTokenExp = new Date(System.currentTimeMillis() + REFRESH_TOKEN_TIME * 1000);
 
         return Jwts.builder()
-                .setSubject(userId.toString())
+                .setSubject(username)
                 .setExpiration(refreshTokenExp)
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
