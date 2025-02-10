@@ -50,20 +50,20 @@ public class TokenProvider {
         key = Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public TokenDto generateTokenDto(String username, Authority authority) {
+    public TokenDto generateTokenDto(String userId, Authority authority) {
         return TokenDto.builder()
-                .accessToken(generateAccessToken(username, authority))
-                .refreshToken(generateRefreshToken(username))
+                .accessToken(generateAccessToken(userId, authority))
+                .refreshToken(generateRefreshToken(userId))
                 .accessTokenExp(LocalDateTime.now().plusSeconds(ACCESS_TOKEN_TIME))
                 .refreshTokenExp(LocalDateTime.now().plusSeconds(REFRESH_TOKEN_TIME))
                 .build();
     }
 
-    private String generateAccessToken(String username, Authority authority) {
+    private String generateAccessToken(String userId, Authority authority) {
         Date accessTokenExp = new Date(System.currentTimeMillis() + ACCESS_TOKEN_TIME * 1000);
 
         return Jwts.builder()
-                .setSubject(username)
+                .setSubject(userId)
                 .claim(AUTHORITIES_KEY, authority)
                 .setIssuedAt(new Date())
                 .setExpiration(accessTokenExp)
@@ -71,11 +71,11 @@ public class TokenProvider {
                 .compact();
     }
 
-    private String generateRefreshToken(String username) {
+    private String generateRefreshToken(String userId) {
         Date refreshTokenExp = new Date(System.currentTimeMillis() + REFRESH_TOKEN_TIME * 1000);
 
         return Jwts.builder()
-                .setSubject(username)
+                .setSubject(userId)
                 .setExpiration(refreshTokenExp)
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
@@ -121,9 +121,26 @@ public class TokenProvider {
 
     public String parseRefreshToken(String refreshToken) {
         if (refreshToken.startsWith(BEARER_TYPE)) {
-            return refreshToken.replace(BEARER_TYPE, "");
-        } else {
-            return null;
+            return refreshToken.substring(BEARER_TYPE.length());
+        }
+        return null;
+    }
+
+    public String getIdFromRefreshToken(String refreshToken) {
+        String pureToken = parseRefreshToken(refreshToken);
+        try {
+            return Jwts.parserBuilder()
+                    .setSigningKey(key)
+                    .build()
+                    .parseClaimsJws(refreshToken)
+                    .getBody()
+                    .getSubject();
+        } catch (ExpiredJwtException e) {
+            throw new CustomException(ErrorCode.EXPIRED_TOKEN);
+        } catch (Exception e) {
+            throw new CustomException(ErrorCode.INVALID_TOKEN);
         }
     }
+
+
 }
