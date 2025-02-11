@@ -31,8 +31,8 @@ public class SignUpServiceImpl implements SignUpService {
     }
 
     private void checkEmailVerified(SignUpRequest request) {
-        String emailVerified = redisUtil.get("verified").toString();
-        if (request.getEmail().equals(emailVerified)) {
+        String emailVerified = redisUtil.get("verified:" + request.getEmail());
+        if (!"true".equals(emailVerified)) {
             throw new CustomException(ErrorCode.EMAIL_NOT_VERIFIED);
         }
     }

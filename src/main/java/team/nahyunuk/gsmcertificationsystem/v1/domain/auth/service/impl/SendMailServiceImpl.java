@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
+import team.nahyunuk.gsmcertificationsystem.v1.domain.auth.dto.request.SendMailRequest;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.auth.service.SendMailService;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.user.repository.UserRepository;
 import team.nahyunuk.gsmcertificationsystem.v1.global.common.response.CommonApiResponse;
@@ -23,15 +24,14 @@ public class SendMailServiceImpl implements SendMailService {
     private final JavaMailSender mailSender;
     private final RedisUtil redisUtil;
 
-    @Value("${EMAIL_ADDRESS}")
-    private String senderMail;
+    private final static String senderMail = "projectgsm0101@gmail.com";
 
     @Override
-    public CommonApiResponse execute(String email) {
+    public CommonApiResponse execute(SendMailRequest request) {
         int verificationCode = getVerificationCode();
-        checkSignUpEmail(email);
-        redisUtil.set(email, String.valueOf(verificationCode), 3);
-        sendVerificationEmail(email, verificationCode);
+        checkSignUpEmail(request.getEmail());
+        redisUtil.set(request.getEmail(), String.valueOf(verificationCode), 3);
+        sendVerificationEmail(request.getEmail(), verificationCode);
         return CommonApiResponse.success("인증 번호가 발송되었습니다.");
     }
 

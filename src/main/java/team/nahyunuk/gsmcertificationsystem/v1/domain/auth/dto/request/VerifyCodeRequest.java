@@ -10,9 +10,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class VerifyCodeRequest {
 
-    @NotNull
+    @NotNull(message = "이메일은 필수 입력값입니다.")
     private String email;
 
-    @NotNull
+    @NotNull(message = "인증 번호는 필수 입력값입니다.")
     private String code;
 }

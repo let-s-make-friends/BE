@@ -12,6 +12,7 @@ import java.util.UUID;
 @Entity
 @Getter
 @Builder
+@Table(name = "user")
 @AllArgsConstructor
 @NoArgsConstructor
 public class User {
@@ -24,10 +25,10 @@ public class User {
     @Column(name = "email", nullable = false, unique = true)
     private String email;
 
-
     @Column(name = "password", nullable = false)
     private String password;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "authority", nullable = false)
     private Authority authority;
 }

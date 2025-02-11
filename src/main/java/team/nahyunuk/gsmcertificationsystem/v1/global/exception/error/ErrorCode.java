@@ -12,6 +12,10 @@ public enum ErrorCode {
     INVALID_TOKEN(401, "유효하지 않은 토큰입니다."),
     EXPIRED_REFRESH_TOKEN(401, "만료된 리프레쉬 토큰입니다."),
     NOT_FOUND_REFRESH_TOKEN(404, "존재하지 않는 리프레시 토큰입니다."),
+    UNAUTHORIZED(401, "인증되지 않은 사용자입니다."),
+    TOKEN_MALFORMED(400, "형식이 잘못된 토큰입니다."),
+    MISSING_TOKEN(400, "토큰이 누락되었습니다."),
+    FAILED_JWT_AUTH(401, "jwt 인증에 실패했습니다"),
 
     // user
     USER_NOT_FOUND(404, "등록된 회원을 찾을 수 없습니다."),
