@@ -1,4 +1,7 @@
 package team.nahyunuk.gsmcertificationsystem.v1.domain.auth.service;
 
-public class SendMailService {
+import team.nahyunuk.gsmcertificationsystem.v1.global.common.response.CommonApiResponse;
+
+public interface SendMailService {
+    CommonApiResponse execute(String email);
 }

@@ -14,4 +14,17 @@ public class CommonApiResponse<T> {
     private String message;
     private T data;
 
+    public static CommonApiResponse<?> success(String message) {
+        return new CommonApiResponse<>(HttpStatus.OK, HttpStatus.OK.value(), message, null);
+    }
+
+    public static CommonApiResponse<?> created(String message) {
+        return new CommonApiResponse<>(HttpStatus.CREATED, HttpStatus.CREATED.value(), message, null);
+    }
+
+    public static CommonApiResponse<?> error(String message, HttpStatus status) {
+        return new CommonApiResponse<>(status, status.value(), message, null);
+    }
+
+
 }
