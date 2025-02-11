@@ -24,20 +24,9 @@ public class User {
     @Column(name = "email", nullable = false, unique = true)
     private String email;
 
-    @Column(name = "username", nullable = false)
-    private String username;
 
     @Column(name = "password", nullable = false)
     private String password;
-
-    @Column(name = "grade", nullable = false)
-    private int grade;
-
-    @Column(name = "class_number", nullable = false)
-    private int classNumber;
-
-    @Column(name = "student_number", nullable = false)
-    private int studentNumber;
 
     @Column(name = "authority", nullable = false)
     private Authority authority;

@@ -16,6 +16,9 @@ public enum ErrorCode {
     // user
     USER_NOT_FOUND(404, "등록된 회원을 찾을 수 없습니다."),
     USER_ALREADY_EXISTS(409, "이미 가입된 회원입니다."),
+    EXPIRED_OR_INVALID_CODE(400, "만료되었거나 유효하지 않은 인증 코드입니다."),
+    INVALID_CODE(400, "잘못된 인증 코드입니다."),
+    EMAIL_NOT_VERIFIED(401, "이메일 인증이 완료되지 않았습니다."),
 
     // server
     INTERNAL_SERVER_ERROR(500, "서버 오류");
