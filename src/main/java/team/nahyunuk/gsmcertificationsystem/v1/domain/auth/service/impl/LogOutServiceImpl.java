@@ -33,6 +33,7 @@ public class LogOutServiceImpl implements LogOutService {
         refreshTokenRepository.delete(refreshToken);
         redisUtil.setBlackList(token, "access_token", tokenProvider.getExpiration(token));
 
+        return CommonApiResponse.success("로그아웃 되었습니다");
     }
 
 }
