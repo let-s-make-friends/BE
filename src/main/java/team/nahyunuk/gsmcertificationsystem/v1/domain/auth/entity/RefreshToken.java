@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @Getter
 @Builder
 @AllArgsConstructor
-@RedisHash(value = "refreshToken", timeToLive = 60)
+@RedisHash(value = "refreshToken", timeToLive = 60 * 60 * 24 * 7)
 public class RefreshToken {
 
     @Id

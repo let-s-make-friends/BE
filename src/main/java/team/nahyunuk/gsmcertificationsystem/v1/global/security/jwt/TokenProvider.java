@@ -60,6 +60,10 @@ public class TokenProvider {
         return getRefreshTokenSubject(token);
     }
 
+    public String getUserIdFromAccessToken(String token) {
+        return getAccessTokenSubject(token);
+    }
+
     public UsernamePasswordAuthenticationToken getAuthentication(String accessToken) {
         UserDetails userDetails = customUserDetailsService.loadUserByUsername(getAccessTokenSubject(accessToken));
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
@@ -103,5 +107,9 @@ public class TokenProvider {
                 .compact();
     }
 
+    public Long getExpiration(String accessToken) {
+        Claims claims = getTokenBody(accessToken, key);
+        return claims.getExpiration().getTime();
+    }
 
 }
