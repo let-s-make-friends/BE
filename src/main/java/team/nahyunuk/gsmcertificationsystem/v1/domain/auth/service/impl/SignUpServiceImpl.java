@@ -4,6 +4,8 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.auth.dto.request.SignUpRequest;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.auth.service.SignUpService;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.user.entity.User;
@@ -23,11 +25,19 @@ public class SignUpServiceImpl implements SignUpService {
     private final UserRepository userRepository;
 
     @Override
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public CommonApiResponse execute(@Valid SignUpRequest request) {
+        existsByEmail(request.getEmail());
         checkEmailVerified(request);
         User newUser = createUser(request);
         userRepository.save(newUser);
         return CommonApiResponse.success("회원가입이 완료되었습니다");
+    }
+
+    private void existsByEmail(String email) {
+        if (userRepository.existsByEmail(email)) {
+            throw new CustomException(ErrorCode.USER_ALREADY_EXISTS);
+        }
     }
 
     private void checkEmailVerified(SignUpRequest request) {
@@ -44,6 +54,5 @@ public class SignUpServiceImpl implements SignUpService {
                 .email(request.getEmail())
                 .password(encodedPassword)
                 .build();
-
     }
 }

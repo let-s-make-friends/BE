@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.http.HttpStatus;
+import team.nahyunuk.gsmcertificationsystem.v1.global.security.jwt.dto.TokenDto;
 
 @Getter
 @AllArgsConstructor
@@ -24,6 +25,10 @@ public class CommonApiResponse<T> {
 
     public static CommonApiResponse<?> error(String message, HttpStatus status) {
         return new CommonApiResponse<>(status, status.value(), message, null);
+    }
+
+    public static <T> CommonApiResponse<T> successWithData(String message, T data) {
+        return new CommonApiResponse<>(HttpStatus.OK, HttpStatus.OK.value(), message, data);
     }
 
 

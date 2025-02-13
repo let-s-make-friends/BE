@@ -43,7 +43,7 @@ public class RedisUtil {
         return redisBlackListTemplate.delete(key);
     }
 
-    public boolean hasKayBlackList(String key) {
+    public boolean hasKeyBlackList(String key) {
         return redisBlackListTemplate.hasKey(key);
     }
 

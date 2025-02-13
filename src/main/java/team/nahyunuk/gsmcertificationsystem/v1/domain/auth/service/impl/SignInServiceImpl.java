@@ -19,7 +19,7 @@ import team.nahyunuk.gsmcertificationsystem.v1.global.security.jwt.dto.TokenDto;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class SignInServiceImplV2 implements SignInService {
+public class SignInServiceImpl implements SignInService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
@@ -31,7 +31,7 @@ public class SignInServiceImplV2 implements SignInService {
         String email = request.getEmail();
         User user = getUserByEmail(request.getEmail());
         checkPassword(request.getPassword(), user);
-        TokenDto tokenDto = tokenProvider.generateToken(request.getEmail());
+        TokenDto tokenDto = tokenProvider.generateToken(user.getUserId());
         saveRefreshToken(user.getUserId(), tokenDto);
         return CommonApiResponse.successWithData("로그인 성공", tokenDto);
     }

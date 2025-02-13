@@ -4,13 +4,10 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.auth.dto.request.SendMailRequest;
+import team.nahyunuk.gsmcertificationsystem.v1.domain.auth.dto.request.SignInRequest;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.auth.dto.request.SignUpRequest;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.auth.dto.request.VerifyCodeRequest;
-import team.nahyunuk.gsmcertificationsystem.v1.domain.auth.service.ReissueTokenService;
-import team.nahyunuk.gsmcertificationsystem.v1.domain.auth.service.impl.ReissueTokenServiceImpl;
-import team.nahyunuk.gsmcertificationsystem.v1.domain.auth.service.impl.SendMailServiceImpl;
-import team.nahyunuk.gsmcertificationsystem.v1.domain.auth.service.impl.SignUpServiceImpl;
-import team.nahyunuk.gsmcertificationsystem.v1.domain.auth.service.impl.VerifyCodeServiceImpl;
+import team.nahyunuk.gsmcertificationsystem.v1.domain.auth.service.impl.*;
 import team.nahyunuk.gsmcertificationsystem.v1.global.common.response.CommonApiResponse;
 import team.nahyunuk.gsmcertificationsystem.v1.global.security.jwt.dto.TokenDto;
 
@@ -23,9 +20,10 @@ public class AuthController {
     private final SendMailServiceImpl sendMailService;
     private final SignUpServiceImpl signUpService;
     private final VerifyCodeServiceImpl verifyCodeService;
+    private final SignInServiceImpl signInService;
 
-    @PostMapping("/reissue-token")
-    public TokenDto reissueToken(@RequestHeader("Authorization") String token) {
+    @PatchMapping("/reissue-token")
+    public CommonApiResponse<TokenDto> reissueToken(@RequestHeader("Authorization") String token) {
         return reissueTokenService.execute(token);
     }
 
@@ -42,5 +40,10 @@ public class AuthController {
     @PostMapping("/sign-up")
     public CommonApiResponse signUp(@Valid @RequestBody SignUpRequest request) {
         return signUpService.execute(request);
+    }
+
+    @PostMapping("/sign-in")
+    public CommonApiResponse signIn(@Valid @RequestBody SignInRequest request) {
+        return signInService.execute(request);
     }
 }

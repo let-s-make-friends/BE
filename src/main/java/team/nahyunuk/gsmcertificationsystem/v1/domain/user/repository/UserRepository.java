@@ -7,6 +7,8 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface UserRepository extends CrudRepository<User, Long> {
-    User findAuthorityByUserId(Long userId);
     Optional<User> findByEmail(String email);
+    boolean existsByEmail(String email);
+    boolean existsByUserId(Long userId);
 }
+
