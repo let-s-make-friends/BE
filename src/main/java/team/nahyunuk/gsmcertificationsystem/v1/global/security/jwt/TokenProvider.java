@@ -39,7 +39,6 @@ public class TokenProvider {
     private String secretKey;
     private static Key key;
     private final CustomUserDetailsService customUserDetailsService;
-    private final RedisUtil redisUtil;
 
     @PostConstruct
     public void init() {
@@ -70,11 +69,11 @@ public class TokenProvider {
     }
 
     private String getAccessTokenSubject(String accessToken) {
-        return getTokenBody(accessToken, key).getSubject();
+        return getTokenBody(removePrefix(accessToken), key).getSubject();
     }
 
     private String getRefreshTokenSubject(String refreshToken) {
-        return getTokenBody(refreshToken, key).getSubject();
+        return getTokenBody(removePrefix(refreshToken), key).getSubject();
     }
 
     public static Claims getTokenBody(String token, Key secret) {
@@ -110,6 +109,10 @@ public class TokenProvider {
     public Long getExpiration(String accessToken) {
         Claims claims = getTokenBody(accessToken, key);
         return claims.getExpiration().getTime();
+    }
+
+    public String removePrefix(String token) {
+        return token.replace(BEARER_PREFIX, "");
     }
 
 }

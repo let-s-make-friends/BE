@@ -28,7 +28,7 @@ public class ReissueTokenServiceImpl implements ReissueTokenService {
     public CommonApiResponse<TokenDto> execute(String token) {
         isNotNullRefreshToken(token);
 
-        String removePrefixToken = token.replaceFirst(BEARER_PREFIX, "").trim();
+        String removePrefixToken = tokenProvider.removePrefix(token);
         RefreshToken refreshToken = refreshTokenRepository.findByToken(removePrefixToken)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_REFRESH_TOKEN));
 

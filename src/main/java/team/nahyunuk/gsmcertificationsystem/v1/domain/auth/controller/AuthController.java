@@ -21,6 +21,7 @@ public class AuthController {
     private final SignUpServiceImpl signUpService;
     private final VerifyCodeServiceImpl verifyCodeService;
     private final SignInServiceImpl signInService;
+    private final LogOutServiceImpl logOutService;
 
     @PatchMapping("/reissue-token")
     public CommonApiResponse<TokenDto> reissueToken(@RequestHeader("Authorization") String token) {
@@ -45,5 +46,10 @@ public class AuthController {
     @PostMapping("/sign-in")
     public CommonApiResponse signIn(@Valid @RequestBody SignInRequest request) {
         return signInService.execute(request);
+    }
+
+    @DeleteMapping("/logout")
+    public CommonApiResponse logout(@RequestHeader("Authorization") String token) {
+        return logOutService.execute(token);
     }
 }
