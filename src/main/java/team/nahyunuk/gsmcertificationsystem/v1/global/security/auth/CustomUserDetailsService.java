@@ -10,8 +10,6 @@ import team.nahyunuk.gsmcertificationsystem.v1.domain.user.repository.UserReposi
 import team.nahyunuk.gsmcertificationsystem.v1.global.exception.CustomException;
 import team.nahyunuk.gsmcertificationsystem.v1.global.exception.error.ErrorCode;
 
-import java.util.UUID;
-
 @Service
 @RequiredArgsConstructor
 @Slf4j

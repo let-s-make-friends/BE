@@ -14,8 +14,6 @@ import team.nahyunuk.gsmcertificationsystem.v1.global.security.jwt.dto.TokenDto;
 
 import java.time.LocalDateTime;
 
-import static team.nahyunuk.gsmcertificationsystem.v1.global.security.filter.JwtFilter.BEARER_PREFIX;
-
 @Service
 @RequiredArgsConstructor
 public class ReissueTokenServiceImpl implements ReissueTokenService {
