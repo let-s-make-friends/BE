@@ -3,6 +3,7 @@ package team.nahyunuk.gsmcertificationsystem.v1.domain.auth.service.impl;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
+import org.springframework.mail.MailSendException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.auth.dto.request.SendMailRequest;
@@ -45,7 +46,11 @@ public class SendMailServiceImpl implements SendMailService {
     }
 
     private void sendVerificationEmail(String email, int verificationCode) {
-        mailSender.send(createMail(email, verificationCode));
+        try {
+            mailSender.send(createMail(email, verificationCode));
+        } catch (MailSendException e) {
+            throw new CustomException(ErrorCode.EMAIL_SEND_FAILID);
+        }
     }
 
 
@@ -58,7 +63,7 @@ public class SendMailServiceImpl implements SendMailService {
             message.setSubject("이메일 인증");
             message.setText(buildEmailContent(verificationCode), "UTF-8", "html");
         } catch (MessagingException e) {
-          e.printStackTrace();
+          throw new CustomException(ErrorCode.EMAIL_SEND_FAILID);
         }
 
         return message;

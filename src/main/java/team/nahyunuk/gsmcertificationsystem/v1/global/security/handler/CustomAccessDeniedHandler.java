@@ -10,10 +10,8 @@ import org.springframework.http.MediaType;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.stereotype.Component;
-import team.nahyunuk.gsmcertificationsystem.v1.global.common.response.CommonApiResponse;
 import team.nahyunuk.gsmcertificationsystem.v1.global.exception.CustomException;
 import team.nahyunuk.gsmcertificationsystem.v1.global.exception.error.ErrorCode;
-import team.nahyunuk.gsmcertificationsystem.v1.global.exception.error.ErrorResponse;
 
 import java.io.IOException;
 

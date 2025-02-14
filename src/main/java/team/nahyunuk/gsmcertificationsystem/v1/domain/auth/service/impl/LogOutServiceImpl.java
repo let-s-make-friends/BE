@@ -13,8 +13,6 @@ import team.nahyunuk.gsmcertificationsystem.v1.global.exception.error.ErrorCode;
 import team.nahyunuk.gsmcertificationsystem.v1.global.redis.util.RedisUtil;
 import team.nahyunuk.gsmcertificationsystem.v1.global.security.jwt.TokenProvider;
 
-import static team.nahyunuk.gsmcertificationsystem.v1.global.security.filter.JwtFilter.BEARER_PREFIX;
-
 @Slf4j
 @Service
 @RequiredArgsConstructor

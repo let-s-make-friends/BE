@@ -1,7 +1,6 @@
 package team.nahyunuk.gsmcertificationsystem.v1.global.security.jwt;
 
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
@@ -11,12 +10,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
-import team.nahyunuk.gsmcertificationsystem.v1.global.exception.CustomException;
-import team.nahyunuk.gsmcertificationsystem.v1.global.exception.error.ErrorCode;
-import team.nahyunuk.gsmcertificationsystem.v1.global.redis.util.RedisUtil;
 import team.nahyunuk.gsmcertificationsystem.v1.global.security.auth.CustomUserDetailsService;
 import team.nahyunuk.gsmcertificationsystem.v1.global.security.jwt.dto.TokenDto;
 

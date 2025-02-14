@@ -17,6 +17,7 @@ public class VerifyCodeServiceImpl implements VerifyCodeService {
 
     @Override
     public CommonApiResponse execute(VerifyCodeRequest request){
+        checkEmailInRedis(request.getEmail());
         String storedCode = redisUtil.get(request.getEmail());
         checkVerifyCode(storedCode, request.getCode());
         redisUtil.set("verified:" + request.getEmail(), "true", 60);
@@ -27,6 +28,12 @@ public class VerifyCodeServiceImpl implements VerifyCodeService {
     private void checkVerifyCode(String storedCode, String code){
         if(!storedCode.equals(code)){
             throw new CustomException(ErrorCode.INVALID_CODE);
+        }
+    }
+
+    private void checkEmailInRedis(String email){
+        if(!redisUtil.hasKey(email)){
+            throw new CustomException(ErrorCode.EMAIL_NOT_PENDING);
         }
     }
 }
