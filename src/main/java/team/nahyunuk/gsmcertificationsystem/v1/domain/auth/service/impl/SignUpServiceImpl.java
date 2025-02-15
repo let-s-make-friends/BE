@@ -55,7 +55,6 @@ public class SignUpServiceImpl implements SignUpService {
         String encodedPassword = passwordEncoder.encode(request.getPassword());
         Student student = studentRepository.findByEmail(request.getEmail());
         return User.builder()
-                .userId(student.getUserId())
                 .authority(Authority.STUDENT)
                 .email(request.getEmail())
                 .password(encodedPassword)
