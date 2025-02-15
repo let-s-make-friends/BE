@@ -8,6 +8,8 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.auth.dto.request.SignUpRequest;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.auth.service.SignUpService;
+import team.nahyunuk.gsmcertificationsystem.v1.domain.student.entity.Student;
+import team.nahyunuk.gsmcertificationsystem.v1.domain.student.repository.StudentRepository;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.user.entity.User;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.user.repository.UserRepository;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.user.type.Authority;
@@ -23,6 +25,7 @@ public class SignUpServiceImpl implements SignUpService {
     private final RedisUtil redisUtil;
     private final BCryptPasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
+    private final StudentRepository studentRepository;
 
     @Override
     @Transactional(isolation = Isolation.READ_COMMITTED)
@@ -50,10 +53,13 @@ public class SignUpServiceImpl implements SignUpService {
 
     private User createUser(SignUpRequest request) {
         String encodedPassword = passwordEncoder.encode(request.getPassword());
+        Student student = studentRepository.findByEmail(request.getEmail());
         return User.builder()
+                .userId(student.getUserId())
                 .authority(Authority.STUDENT)
                 .email(request.getEmail())
                 .password(encodedPassword)
+                .student(student)
                 .build();
     }
 }

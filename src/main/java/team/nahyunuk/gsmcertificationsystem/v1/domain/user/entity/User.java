@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import team.nahyunuk.gsmcertificationsystem.v1.domain.student.entity.Student;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.user.type.Authority;
 
 @Entity
@@ -16,7 +17,6 @@ import team.nahyunuk.gsmcertificationsystem.v1.domain.user.type.Authority;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id", nullable = false, updatable = false)
     private Long userId;
 
@@ -30,4 +30,7 @@ public class User {
     @Enumerated(EnumType.STRING)
     @Column(name = "authority", nullable = false)
     private Authority authority;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    private Student student;
 }
