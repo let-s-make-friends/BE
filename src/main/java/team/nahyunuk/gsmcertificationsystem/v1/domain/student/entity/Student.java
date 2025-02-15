@@ -19,17 +19,17 @@ public class Student {
     @Column(name = "user_id", nullable = false, updatable = false)
     private Long userId;
 
-    @Column(unique = true, nullable = false, updatable = false)
+    @Column(name = "email", unique = true, nullable = false, updatable = false)
     private String email;
 
-    @Column(nullable = false)
+    @Column(name = "student_name", nullable = false)
     private String studentName;
 
-    @Column(nullable = false)
+    @Column(name = "grade", nullable = false)
     private int grade;
-    @Column(nullable = false)
+    @Column(name = "class_number", nullable = false)
     private int classNumber;
-    @Column(nullable = false)
+    @Column(name = "student_number", nullable = false)
     private int studentNumber;
 
 
