@@ -33,5 +33,6 @@ public class User {
     private Authority authority;
 
     @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "student_id", nullable = false, unique = true)
     private Student student;
 }
