@@ -1,4 +1,5 @@
 package team.nahyunuk.gsmcertificationsystem.v1.domain.activity.type;
 
-public class AgreementStatus {
+public enum AgreementStatus {
+    AGREE, DISAGREE
 }
