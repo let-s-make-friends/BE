@@ -28,12 +28,13 @@ public enum ErrorCode {
     EMAIL_NOT_PENDING(400, "이메일 인증 대기 상태가 아닙니다."),
     INVALID_EMAIL_FORMAT(400, "잘못된 이메일 형식입니다."),
 
-    // server,
-    INTERNAL_SERVER_ERROR(500, "서버 오류"),
-    EMAIL_SEND_FAILID(500, "이메일 발송에 실패했습니다."),
+    // image
+    FILE_EXTENSION_INVALID(400, "파일 확장자가 유효하지 않습니다."),
 
-    // Optimistic Locking
-    OPTIMISTIC_LOCK_FAILURE(409, "낙관적 잠금 예외가 발생했습니다. 다시 시도해주세요.");
+    // server
+    EMAIL_SEND_FAILID(500, "이메일 발송에 실패했습니다."),
+    INTERNAL_SERVER_ERROR(500, "서버 오류");
+
 
     private final int status;
     private final String message;
