@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import team.nahyunuk.gsmcertificationsystem.v1.domain.activity.type.ActivityCategory;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.activity.type.StudyCategory;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.student.entity.Student;
 
@@ -25,6 +26,8 @@ public class Activity {
     @Column(name = "study_category", nullable = false)
     private StudyCategory studyCategory;
 
+    @Column(name = "activity_category", nullable = false)
+    private ActivityCategory activityCategory;
 
     @Column(name = "body")
     private String body;
