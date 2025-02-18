@@ -25,9 +25,11 @@ public class Activity {
     private Long id;
 
     @Column(name = "study_category", nullable = false)
+    @Enumerated(EnumType.STRING)
     private StudyCategory studyCategory;
 
     @Column(name = "activity_category", nullable = false)
+    @Enumerated(EnumType.STRING)
     private ActivityCategory activityCategory;
 
     @Column(name = "body")
@@ -40,9 +42,10 @@ public class Activity {
     private int textLength;
 
     @Column(name = "agreement", nullable = false)
-    private boolean agreement = false;
+    private boolean agreement;
 
     @Column(name = "post_status", nullable = false)
+    @Enumerated(EnumType.STRING)
     private PostStatus postStatus;
 
     @ManyToOne(fetch = FetchType.LAZY)

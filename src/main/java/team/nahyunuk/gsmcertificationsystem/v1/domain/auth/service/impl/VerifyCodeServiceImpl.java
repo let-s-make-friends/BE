@@ -22,7 +22,7 @@ public class VerifyCodeServiceImpl implements VerifyCodeService {
         checkVerifyCode(storedCode, request.getCode());
         redisUtil.set("verified:" + request.getEmail(), "true", 60);
         redisUtil.delete(request.getEmail());
-        return CommonApiResponse.success("인증되었습니다");
+        return CommonApiResponse.success("인증되었습니다.");
     }
 
     private void checkVerifyCode(String storedCode, String code){

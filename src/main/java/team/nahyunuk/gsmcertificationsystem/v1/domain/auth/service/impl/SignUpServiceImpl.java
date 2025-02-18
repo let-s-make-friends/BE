@@ -34,7 +34,7 @@ public class SignUpServiceImpl implements SignUpService {
         checkEmailVerified(request);
         User newUser = createUser(request);
         userRepository.save(newUser);
-        return CommonApiResponse.success("회원가입이 완료되었습니다");
+        return CommonApiResponse.success("회원가입이 완료되었습니다.");
     }
 
     private void existsByEmail(String email) {
