@@ -1,7 +1,9 @@
 package team.nahyunuk.gsmcertificationsystem.v1.domain.activity.type;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
+import lombok.RequiredArgsConstructor;
 
+@RequiredArgsConstructor
 public enum ActivityCategory {
     SCHOOL_AWARD("교내 수상"),
     OUTSIDE_AWARD("교외 수상"),
@@ -13,10 +15,6 @@ public enum ActivityCategory {
     HUMANITIES_ACTIVITY("인문 활동");
 
     private final String description;
-
-    ActivityCategory(String description) {
-        this.description = description;
-    }
 
     @JsonValue
     public String getDescription() {

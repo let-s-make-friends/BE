@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.activity.type.ActivityCategory;
+import team.nahyunuk.gsmcertificationsystem.v1.domain.activity.type.PostStatus;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.activity.type.StudyCategory;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.student.entity.Student;
 
@@ -43,6 +44,9 @@ public class Activity {
 
     @Column(name = "agreement", nullable = false)
     private boolean agreement;
+
+    @Column(name = "post_status", nullable = false)
+    private PostStatus postStatus;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "student_id", referencedColumnName = "id")
