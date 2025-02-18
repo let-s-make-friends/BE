@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.stereotype.Component;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.activity.type.ActivityCategory;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.activity.type.PostStatus;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.activity.type.StudyCategory;
@@ -49,6 +50,9 @@ public class Activity {
     @Column(name = "post_status", nullable = false)
     @Enumerated(EnumType.STRING)
     private PostStatus postStatus;
+
+    @Column(name = "image_url")
+    private String imageUrl;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "student_id", referencedColumnName = "id")
