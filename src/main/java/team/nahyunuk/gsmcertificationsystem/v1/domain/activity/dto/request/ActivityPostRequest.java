@@ -5,12 +5,14 @@ import team.nahyunuk.gsmcertificationsystem.v1.domain.activity.type.ActivityCate
 import team.nahyunuk.gsmcertificationsystem.v1.domain.activity.type.PostStatus;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.activity.type.StudyCategory;
 
+import java.time.LocalDate;
+
 public record ActivityPostRequest(
 
         @NotNull StudyCategory studyCategory,
         @NotNull ActivityCategory activityCategory,
         String body,
-        int semester,
+        LocalDate activityDate,
         int textLength,
         @NotNull PostStatus postStatus
         ) {

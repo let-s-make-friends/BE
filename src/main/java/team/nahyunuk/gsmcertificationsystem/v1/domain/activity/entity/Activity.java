@@ -10,6 +10,8 @@ import team.nahyunuk.gsmcertificationsystem.v1.domain.activity.type.PostStatus;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.activity.type.StudyCategory;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.student.entity.Student;
 
+import java.time.LocalDate;
+
 
 @Entity
 @Getter
@@ -35,8 +37,8 @@ public class Activity {
     @Column(name = "body")
     private String body;
 
-    @Column(name = "semester")
-    private int semester;
+    @Column(name = "activity_data")
+    private LocalDate activityData;
 
     @Column(name = "text_length")
     private int textLength;
