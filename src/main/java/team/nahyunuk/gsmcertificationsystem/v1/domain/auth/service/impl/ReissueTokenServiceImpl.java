@@ -6,7 +6,7 @@ import team.nahyunuk.gsmcertificationsystem.v1.domain.auth.entity.RefreshToken;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.auth.repository.RefreshTokenRepository;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.auth.service.ReissueTokenService;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.user.repository.UserRepository;
-import team.nahyunuk.gsmcertificationsystem.v1.global.common.response.CommonApiResponse;
+import team.nahyunuk.gsmcertificationsystem.v1.global.response.CommonApiResponse;
 import team.nahyunuk.gsmcertificationsystem.v1.global.exception.CustomException;
 import team.nahyunuk.gsmcertificationsystem.v1.global.exception.error.ErrorCode;
 import team.nahyunuk.gsmcertificationsystem.v1.global.security.jwt.TokenProvider;

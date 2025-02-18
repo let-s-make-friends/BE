@@ -1,4 +1,7 @@
 package team.nahyunuk.gsmcertificationsystem.v1.domain.activity.repository;
 
-public interface ActivityRepository {
+import org.springframework.data.repository.CrudRepository;
+import team.nahyunuk.gsmcertificationsystem.v1.domain.activity.entity.Activity;
+
+public interface ActivityRepository extends CrudRepository<Activity, Long> {
 }
