@@ -39,11 +39,8 @@ public class Activity {
     @Column(name = "text_length")
     private int textLength;
 
-    @Column(name = "access", nullable = false)
-    private boolean access;
-
     @Column(name = "agreement", nullable = false)
-    private boolean agreement;
+    private boolean agreement = false;
 
     @Column(name = "post_status", nullable = false)
     private PostStatus postStatus;
