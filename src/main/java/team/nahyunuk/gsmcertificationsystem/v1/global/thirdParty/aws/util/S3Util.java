@@ -34,7 +34,7 @@ public class S3Util {
 
             String extension = split[1].toLowerCase();
 
-            if (!list.stream().noneMatch(it -> it.equals(extension))) {
+            if (list.stream().noneMatch(it -> it.equals(extension))) {
                 throw new CustomException(ErrorCode.FILE_EXTENSION_INVALID);
             }
 

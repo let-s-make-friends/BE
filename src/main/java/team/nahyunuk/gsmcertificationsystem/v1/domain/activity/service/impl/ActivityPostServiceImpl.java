@@ -47,6 +47,7 @@ public class ActivityPostServiceImpl implements ActivityPostService {
                 .activityData(request.activityDate())
                 .textLength(request.textLength())
                 .studyCategory(request.studyCategory())
+                .imageUrl(request.imageUrl())
                 .student(student)
                 .agreement(false)
                 .build();
