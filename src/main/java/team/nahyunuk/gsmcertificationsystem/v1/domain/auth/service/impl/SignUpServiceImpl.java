@@ -34,8 +34,8 @@ public class SignUpServiceImpl implements SignUpService {
     @Override
     @Transactional(isolation = Isolation.READ_COMMITTED)
     public CommonApiResponse execute(@Valid SignUpRequest request) {
-        existsByEmail(request.getEmail());
-        //checkEmailVerified(request);
+        existsByEmail(request.email());
+        checkEmailVerified(request);
         User newUser = createUser(request);
         userRepository.save(newUser);
         return CommonApiResponse.success("회원가입이 완료되었습니다.");
@@ -48,22 +48,22 @@ public class SignUpServiceImpl implements SignUpService {
     }
 
     private void checkEmailVerified(SignUpRequest request) {
-        String emailVerified = redisUtil.get("verified:" + request.getEmail());
+        String emailVerified = redisUtil.get("verified:" + request.email());
         if (!"true".equals(emailVerified)) {
             throw new CustomException(ErrorCode.EMAIL_NOT_VERIFIED);
         }
-        redisUtil.delete("verified:" + request.getEmail());
+        redisUtil.delete("verified:" + request.email());
     }
 
     private User createUser(SignUpRequest request) {
-        String encodedPassword = passwordEncoder.encode(request.getPassword());
+        String encodedPassword = passwordEncoder.encode(request.password());
 
-        Long userId = extractUserIdFromEmail(request.getEmail());
+        Long userId = extractUserIdFromEmail(request.email());
 
         return User.builder()
                 .userId(userId)
                 .authority(Authority.STUDENT)
-                .email(request.getEmail())
+                .email(request.email())
                 .password(encodedPassword)
                 .build();
     }

@@ -17,11 +17,11 @@ public class VerifyCodeServiceImpl implements VerifyCodeService {
 
     @Override
     public CommonApiResponse execute(VerifyCodeRequest request){
-        checkEmailInRedis(request.getEmail());
-        String storedCode = redisUtil.get(request.getEmail());
-        checkVerifyCode(storedCode, request.getCode());
-        redisUtil.set("verified:" + request.getEmail(), "true", 60);
-        redisUtil.delete(request.getEmail());
+        checkEmailInRedis(request.email());
+        String storedCode = redisUtil.get(request.email());
+        checkVerifyCode(storedCode, request.code());
+        redisUtil.set("verified:" + request.email(), "true", 60);
+        redisUtil.delete(request.email());
         return CommonApiResponse.success("인증되었습니다.");
     }
 

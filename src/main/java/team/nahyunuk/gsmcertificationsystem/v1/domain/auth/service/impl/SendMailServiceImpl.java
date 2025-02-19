@@ -29,9 +29,9 @@ public class SendMailServiceImpl implements SendMailService {
     @Override
     public CommonApiResponse execute(SendMailRequest request) {
         int verificationCode = getVerificationCode();
-        checkSignUpEmail(request.getEmail());
-        redisUtil.set(request.getEmail(), String.valueOf(verificationCode), 3);
-        sendVerificationEmail(request.getEmail(), verificationCode);
+        checkSignUpEmail(request.email());
+        redisUtil.set(request.email(), String.valueOf(verificationCode), 3);
+        sendVerificationEmail(request.email(), verificationCode);
         return CommonApiResponse.success("인증 번호가 발송되었습니다.");
     }
 

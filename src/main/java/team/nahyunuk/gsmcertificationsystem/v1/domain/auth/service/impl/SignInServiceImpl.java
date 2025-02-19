@@ -28,9 +28,8 @@ public class SignInServiceImpl implements SignInService {
 
     @Override
     public CommonApiResponse<TokenDto> execute(SignInRequest request) {
-        String email = request.getEmail();
-        User user = getUserByEmail(request.getEmail());
-        checkPassword(request.getPassword(), user);
+        User user = getUserByEmail(request.email());
+        checkPassword(request.password(), user);
         TokenDto tokenDto = tokenProvider.generateToken(user.getUserId());
         saveRefreshToken(user.getUserId(), tokenDto);
         return CommonApiResponse.successWithData("로그인 성공", tokenDto);
