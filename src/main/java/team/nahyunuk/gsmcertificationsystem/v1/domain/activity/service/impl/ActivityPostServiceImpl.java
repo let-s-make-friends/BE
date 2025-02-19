@@ -2,10 +2,13 @@ package team.nahyunuk.gsmcertificationsystem.v1.domain.activity.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.activity.dto.request.ActivityPostRequest;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.activity.entity.Activity;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.activity.repository.ActivityRepository;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.activity.service.ActivityPostService;
+import team.nahyunuk.gsmcertificationsystem.v1.domain.student.entity.Student;
+import team.nahyunuk.gsmcertificationsystem.v1.domain.student.repository.StudentRepository;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.user.entity.User;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.user.repository.UserRepository;
 import team.nahyunuk.gsmcertificationsystem.v1.global.response.CommonApiResponse;
@@ -18,8 +21,10 @@ public class ActivityPostServiceImpl implements ActivityPostService {
     private final TokenProvider tokenProvider;
     private final UserRepository userRepository;
     private final ActivityRepository activityRepository;
+    private final StudentRepository studentRepository;
 
     @Override
+    @Transactional
     public CommonApiResponse execute(ActivityPostRequest request, String token) {
         User user = findUserById(token);
         Activity activity = createActivity(request, user);
@@ -34,6 +39,7 @@ public class ActivityPostServiceImpl implements ActivityPostService {
     }
 
     private Activity createActivity(ActivityPostRequest request, User user) {
+        Student student = studentRepository.findByEmail(user.getEmail());
         return Activity.builder()
                 .activityCategory(request.activityCategory())
                 .body(request.body())
@@ -41,7 +47,7 @@ public class ActivityPostServiceImpl implements ActivityPostService {
                 .activityData(request.activityDate())
                 .textLength(request.textLength())
                 .studyCategory(request.studyCategory())
-                .student(user.getStudent())
+                .student(student)
                 .agreement(false)
                 .build();
     }
