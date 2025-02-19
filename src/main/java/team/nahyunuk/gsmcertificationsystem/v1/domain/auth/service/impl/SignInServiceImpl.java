@@ -5,9 +5,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.auth.dto.request.SignInRequest;
+import team.nahyunuk.gsmcertificationsystem.v1.domain.auth.dto.response.SignInResponse;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.auth.entity.RefreshToken;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.auth.repository.RefreshTokenRepository;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.auth.service.SignInService;
+import team.nahyunuk.gsmcertificationsystem.v1.domain.student.entity.Student;
+import team.nahyunuk.gsmcertificationsystem.v1.domain.student.repository.StudentRepository;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.user.entity.User;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.user.repository.UserRepository;
 import team.nahyunuk.gsmcertificationsystem.v1.global.response.CommonApiResponse;
@@ -25,14 +28,16 @@ public class SignInServiceImpl implements SignInService {
     private final PasswordEncoder passwordEncoder;
     private final TokenProvider tokenProvider;
     private final RefreshTokenRepository refreshTokenRepository;
+    private final StudentRepository studentRepository;
 
     @Override
-    public CommonApiResponse<TokenDto> execute(SignInRequest request) {
+    public CommonApiResponse<SignInResponse> execute(SignInRequest request) {
         User user = getUserByEmail(request.email());
         checkPassword(request.password(), user);
         TokenDto tokenDto = tokenProvider.generateToken(user.getUserId());
         saveRefreshToken(user.getUserId(), tokenDto);
-        return CommonApiResponse.successWithData("로그인 성공", tokenDto);
+        Student student = studentRepository.findByEmail(request.email());
+        return CommonApiResponse.successWithData("로그인 성공", new SignInResponse(student.getStudentName(), tokenDto));
     }
 
     private User getUserByEmail(String email) {
