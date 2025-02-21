@@ -11,6 +11,7 @@ public record ActivityPostRequest(
 
         @NotNull StudyCategory studyCategory,
         @NotNull ActivityCategory activityCategory,
+        String subject,
         String body,
         LocalDate activityDate,
         int textLength,

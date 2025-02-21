@@ -42,6 +42,7 @@ public class ActivityPostServiceImpl implements ActivityPostService {
         Student student = studentRepository.findByEmail(user.getEmail());
         return Activity.builder()
                 .activityCategory(request.activityCategory())
+                .subject(request.subject())
                 .body(request.body())
                 .postStatus(request.postStatus())
                 .activityData(request.activityDate())

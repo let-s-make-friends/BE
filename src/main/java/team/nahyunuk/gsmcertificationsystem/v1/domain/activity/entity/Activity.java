@@ -35,6 +35,9 @@ public class Activity {
     @Enumerated(EnumType.STRING)
     private ActivityCategory activityCategory;
 
+    @Column(name = "subject")
+    private String subject;
+
     @Column(name = "body")
     private String body;
 
