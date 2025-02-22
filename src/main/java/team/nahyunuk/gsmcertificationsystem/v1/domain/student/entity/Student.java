@@ -27,8 +27,10 @@ public class Student {
 
     @Column(name = "grade", nullable = false)
     private int grade;
+
     @Column(name = "class_number", nullable = false)
     private int classNumber;
+
     @Column(name = "student_number", nullable = false)
     private int studentNumber;
 

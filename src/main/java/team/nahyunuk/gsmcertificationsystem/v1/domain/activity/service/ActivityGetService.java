@@ -4,5 +4,5 @@ import team.nahyunuk.gsmcertificationsystem.v1.domain.activity.dto.response.Acti
 import team.nahyunuk.gsmcertificationsystem.v1.global.response.CommonApiResponse;
 
 public interface ActivityGetService {
-    CommonApiResponse<ActivityGetResponse> execute(ActivityGetRequest request);
+    CommonApiResponse<ActivityGetResponse> execute(String token);
 }

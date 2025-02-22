@@ -58,20 +58,11 @@ public class SignUpServiceImpl implements SignUpService {
     private User createUser(SignUpRequest request) {
         String encodedPassword = passwordEncoder.encode(request.password());
 
-        Long userId = extractUserIdFromEmail(request.email());
-
         return User.builder()
-                .userId(userId)
                 .authority(Authority.STUDENT)
                 .email(request.email())
                 .password(encodedPassword)
                 .build();
-    }
-
-    private Long extractUserIdFromEmail(String email) {
-        Pattern pattern = Pattern.compile("\\d+");
-        Matcher matcher = pattern.matcher(email);
-        return matcher.find() ? Long.parseLong(matcher.group()) : System.currentTimeMillis();
     }
 
 }
