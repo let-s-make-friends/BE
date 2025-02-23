@@ -34,5 +34,7 @@ public class Student {
     @Column(name = "student_number", nullable = false)
     private int studentNumber;
 
+    @Column(name = "totalScore")
+    private int totalScore;
 
 }
