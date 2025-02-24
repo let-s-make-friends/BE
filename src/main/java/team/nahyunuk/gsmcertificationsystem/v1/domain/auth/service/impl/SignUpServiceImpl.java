@@ -58,11 +58,21 @@ public class SignUpServiceImpl implements SignUpService {
     private User createUser(SignUpRequest request) {
         String encodedPassword = passwordEncoder.encode(request.password());
 
+        Authority authority = getUserType(request.email());
+
         return User.builder()
-                .authority(Authority.STUDENT)
+                .authority(authority)
                 .email(request.email())
                 .password(encodedPassword)
                 .build();
+    }
+
+    private Authority getUserType(String email) {
+        if (!studentRepository.existsByEmail(email)) {
+            return Authority.TEACHER;
+        } else {
+            return Authority.STUDENT;
+        }
     }
 
 }
