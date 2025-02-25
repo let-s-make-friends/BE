@@ -35,6 +35,6 @@ public class Student {
     private int studentNumber;
 
     @Column(name = "totalScore")
-    private int totalScore;
+    private int totalScore = 0;
 
 }

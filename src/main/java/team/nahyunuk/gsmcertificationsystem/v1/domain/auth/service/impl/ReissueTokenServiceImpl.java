@@ -35,7 +35,7 @@ public class ReissueTokenServiceImpl implements ReissueTokenService {
 
         TokenDto tokenDto = tokenProvider.generateToken(Long.valueOf(userId));
         saveRefreshToken(tokenDto.getRefreshToken(), refreshToken.getUserId(), refreshToken.getExpTime());
-        return CommonApiResponse.successWithData("리프레시 토큰이 재발급되었습니다.", tokenDto);
+        return CommonApiResponse.successWithData("토큰이 재발급되었습니다.", tokenDto);
     }
 
     private void isNotNullRefreshToken(String token) {

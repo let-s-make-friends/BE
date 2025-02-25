@@ -14,7 +14,6 @@ public record ActivityPostRequest(
         String subject,
         String body,
         LocalDate activityDate,
-        int textLength,
         String imageUrl,
         @NotNull PostStatus postStatus
         ) {

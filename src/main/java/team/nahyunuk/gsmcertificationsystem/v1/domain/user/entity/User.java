@@ -11,7 +11,7 @@ import team.nahyunuk.gsmcertificationsystem.v1.domain.user.type.Authority;
 @Entity
 @Getter
 @Builder
-@Table(name = "user")
+@Table(name = "users")
 @AllArgsConstructor
 @NoArgsConstructor
 public class User {

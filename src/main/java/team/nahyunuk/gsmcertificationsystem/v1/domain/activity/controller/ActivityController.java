@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.activity.dto.request.ActivityPostRequest;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.activity.entity.Activity;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.activity.repository.ActivityRepository;
+import team.nahyunuk.gsmcertificationsystem.v1.domain.activity.service.impl.ActivityGetServiceImpl;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.activity.service.impl.ActivityPostServiceImpl;
 import team.nahyunuk.gsmcertificationsystem.v1.global.response.CommonApiResponse;
 
@@ -15,9 +16,15 @@ import team.nahyunuk.gsmcertificationsystem.v1.global.response.CommonApiResponse
 public class ActivityController {
 
     private final ActivityPostServiceImpl activityPostService;
+    private final ActivityGetServiceImpl activityGetService;
 
     @PostMapping("/post")
     public CommonApiResponse post(@Valid @RequestBody ActivityPostRequest request, @RequestHeader("Authorization") String token) {
         return activityPostService.execute(request, token);
+    }
+
+    @GetMapping
+    public CommonApiResponse get(@RequestHeader("Authorization") String token) {
+        return activityGetService.execute(token);
     }
 }

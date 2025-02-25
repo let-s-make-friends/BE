@@ -26,13 +26,13 @@ public class ActivityPostServiceImpl implements ActivityPostService {
     @Override
     @Transactional
     public CommonApiResponse execute(ActivityPostRequest request, String token) {
-        User user = findUserById(token);
+        User user = findUserByToken(token);
         Activity activity = createActivity(request, user);
         activityRepository.save(activity);
         return CommonApiResponse.success("활동 영역이 저장되었습니다.");
     }
 
-    private User findUserById(String token) {
+    private User findUserByToken(String token) {
         String removeToken = tokenProvider.removePrefix(token);
         String userId = tokenProvider.getUserIdFromAccessToken(removeToken);
         return userRepository.findByUserId(Long.valueOf(userId));
@@ -45,8 +45,8 @@ public class ActivityPostServiceImpl implements ActivityPostService {
                 .subject(request.subject())
                 .body(request.body())
                 .postStatus(request.postStatus())
-                .activityData(request.activityDate())
-                .textLength(request.textLength())
+                .activityDate(request.activityDate())
+                .textLength(request.body().length())
                 .studyCategory(request.studyCategory())
                 .imageUrl(request.imageUrl())
                 .student(student)

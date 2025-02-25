@@ -41,8 +41,8 @@ public class Activity {
     @Column(name = "body")
     private String body;
 
-    @Column(name = "activity_data")
-    private LocalDate activityData;
+    @Column(name = "activity_date")
+    private LocalDate activityDate;
 
     @Column(name = "text_length")
     private int textLength;
