@@ -3,6 +3,7 @@ package team.nahyunuk.gsmcertificationsystem.v1.domain.activity.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import team.nahyunuk.gsmcertificationsystem.v1.domain.activity.convert.ActivityConvert;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.activity.dto.response.BodyGetResponse;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.activity.entity.Activity;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.activity.repository.ActivityRepository;
@@ -21,10 +22,8 @@ import team.nahyunuk.gsmcertificationsystem.v1.global.security.jwt.TokenProvider
 public class BodyGetServiceImpl implements BodyGetService {
 
     private final ActivityRepository activityRepository;
-    private final StudentRepository studentRepository;
-    private final TokenProvider tokenProvider;
-    private final UserRepository userRepository;
     private final RedisUtil redisUtil;
+    private final ActivityConvert activityConvert;
 
     @Override
     @Transactional(readOnly = true)
@@ -33,7 +32,7 @@ public class BodyGetServiceImpl implements BodyGetService {
         String cachedBody = redisUtil.get(redisKey);
 
         if (cachedBody != null) {
-            return CommonApiResponse.successWithData("", BodyGetResponse(cachedBody));
+            return CommonApiResponse.successWithData(null, activityConvert.getBody(cachedBody));
         }
 
         Activity activity = activityRepository.findById(activityId)
@@ -41,7 +40,7 @@ public class BodyGetServiceImpl implements BodyGetService {
 
         cachedBody = activity.getBody();
         redisUtil.set(redisKey, cachedBody, 60 * 60);
-        return CommonApiResponse.successWithData("re", cachedBody);
+        return CommonApiResponse.successWithData(null, activityConvert.getBody(cachedBody));
     }
 
 

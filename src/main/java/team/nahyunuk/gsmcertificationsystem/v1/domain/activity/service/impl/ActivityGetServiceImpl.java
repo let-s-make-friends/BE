@@ -43,7 +43,7 @@ public class ActivityGetServiceImpl implements ActivityGetService {
                     return activityConvert.getActivity(activity);
                 })
                 .toList();
-        return CommonApiResponse.successWithData(student.getStudentName(), activities);
+        return CommonApiResponse.successWithData(null, activities);
     }
 
     private User findUserByToken(String token) {

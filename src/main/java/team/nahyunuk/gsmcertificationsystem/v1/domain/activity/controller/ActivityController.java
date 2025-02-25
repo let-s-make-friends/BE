@@ -30,7 +30,7 @@ public class ActivityController {
         return activityGetService.execute(token);
     }
 
-    @GetMapping("/body/{activityId}")
+    @GetMapping("/{activityId}")
     public CommonApiResponse getBody(@PathVariable long activityId) {
         return bodyGetService.execute(activityId);
     }
