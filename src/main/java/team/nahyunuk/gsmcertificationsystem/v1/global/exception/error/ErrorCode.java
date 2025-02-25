@@ -16,7 +16,7 @@ public enum ErrorCode {
     TOKEN_MALFORMED(400, "형식이 잘못된 토큰입니다."),
     MISSING_TOKEN(400, "토큰이 누락되었습니다."),
     FAILED_JWT_AUTH(401, "jwt 인증에 실패했습니다."),
-    MISSING_REFRESH_TOKEN(400, "헤더에 리프레시 토큰을 추가해주세요."),
+    REFRESH_TOKEN_MISSING(400, "헤더에 리프레시 토큰을 추가해주세요."),
 
     // user
     USER_NOT_FOUND(404, "등록된 회원을 찾을 수 없습니다."),
@@ -30,6 +30,9 @@ public enum ErrorCode {
 
     // image
     FILE_EXTENSION_INVALID(400, "파일 확장자가 유효하지 않습니다."),
+
+    // activity
+    ACTIVITY_NOT_FOUND(404, "활동 영역을 찾을 수 없습니다."),
 
     // server
     EMAIL_SEND_FAILID(500, "이메일 발송에 실패했습니다."),
