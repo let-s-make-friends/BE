@@ -40,7 +40,7 @@ public class ActivityGetServiceImpl implements ActivityGetService {
                     String redisKey = "activity:" + activity.getId();
                     redisUtil.set(redisKey, activity.getBody(), 60 * 60);
 
-                    return activityConvert.toReponse(activity);
+                    return activityConvert.getActivity(activity);
                 })
                 .toList();
         return CommonApiResponse.successWithData(student.getStudentName(), activities);

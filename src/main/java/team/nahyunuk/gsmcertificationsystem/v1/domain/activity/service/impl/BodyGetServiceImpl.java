@@ -3,6 +3,7 @@ package team.nahyunuk.gsmcertificationsystem.v1.domain.activity.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import team.nahyunuk.gsmcertificationsystem.v1.domain.activity.dto.response.BodyGetResponse;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.activity.entity.Activity;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.activity.repository.ActivityRepository;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.activity.service.BodyGetService;
@@ -32,7 +33,7 @@ public class BodyGetServiceImpl implements BodyGetService {
         String cachedBody = redisUtil.get(redisKey);
 
         if (cachedBody != null) {
-            return CommonApiResponse.successWithData("", cachedBody);
+            return CommonApiResponse.successWithData("", BodyGetResponse(cachedBody));
         }
 
         Activity activity = activityRepository.findById(activityId)
