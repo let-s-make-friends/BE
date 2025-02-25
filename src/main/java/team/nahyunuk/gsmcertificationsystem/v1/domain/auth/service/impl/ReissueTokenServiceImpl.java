@@ -40,7 +40,7 @@ public class ReissueTokenServiceImpl implements ReissueTokenService {
 
     private void isNotNullRefreshToken(String token) {
         if (token == null) {
-            throw new CustomException(ErrorCode.MISSING_REFRESH_TOKEN);
+            throw new CustomException(ErrorCode.REFRESH_TOKEN_MISSING);
         }
     }
 
