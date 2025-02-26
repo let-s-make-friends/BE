@@ -5,12 +5,13 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import team.nahyunuk.gsmcertificationsystem.v1.domain.student.entity.Student;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.user.type.Authority;
 
 @Entity
 @Getter
 @Builder
-@Table(name = "user")
+@Table(name = "users")
 @AllArgsConstructor
 @NoArgsConstructor
 public class User {
@@ -30,4 +31,5 @@ public class User {
     @Enumerated(EnumType.STRING)
     @Column(name = "authority", nullable = false)
     private Authority authority;
+
 }

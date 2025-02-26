@@ -6,7 +6,7 @@ import team.nahyunuk.gsmcertificationsystem.v1.domain.auth.entity.RefreshToken;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.auth.repository.RefreshTokenRepository;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.auth.service.ReissueTokenService;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.user.repository.UserRepository;
-import team.nahyunuk.gsmcertificationsystem.v1.global.common.response.CommonApiResponse;
+import team.nahyunuk.gsmcertificationsystem.v1.global.response.CommonApiResponse;
 import team.nahyunuk.gsmcertificationsystem.v1.global.exception.CustomException;
 import team.nahyunuk.gsmcertificationsystem.v1.global.exception.error.ErrorCode;
 import team.nahyunuk.gsmcertificationsystem.v1.global.security.jwt.TokenProvider;
@@ -35,12 +35,12 @@ public class ReissueTokenServiceImpl implements ReissueTokenService {
 
         TokenDto tokenDto = tokenProvider.generateToken(Long.valueOf(userId));
         saveRefreshToken(tokenDto.getRefreshToken(), refreshToken.getUserId(), refreshToken.getExpTime());
-        return CommonApiResponse.successWithData("리프레시 토큰이 재발급되었습니다.", tokenDto);
+        return CommonApiResponse.successWithData("토큰이 재발급되었습니다.", tokenDto);
     }
 
     private void isNotNullRefreshToken(String token) {
         if (token == null) {
-            throw new CustomException(ErrorCode.MISSING_REFRESH_TOKEN);
+            throw new CustomException(ErrorCode.REFRESH_TOKEN_MISSING);
         }
     }
 

@@ -7,7 +7,7 @@ import team.nahyunuk.gsmcertificationsystem.v1.domain.auth.entity.RefreshToken;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.auth.repository.RefreshTokenRepository;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.auth.service.LogOutService;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.user.repository.UserRepository;
-import team.nahyunuk.gsmcertificationsystem.v1.global.common.response.CommonApiResponse;
+import team.nahyunuk.gsmcertificationsystem.v1.global.response.CommonApiResponse;
 import team.nahyunuk.gsmcertificationsystem.v1.global.exception.CustomException;
 import team.nahyunuk.gsmcertificationsystem.v1.global.exception.error.ErrorCode;
 import team.nahyunuk.gsmcertificationsystem.v1.global.redis.util.RedisUtil;
@@ -34,7 +34,7 @@ public class LogOutServiceImpl implements LogOutService {
         refreshTokenRepository.delete(refreshToken);
         redisUtil.setBlackList(token, "access_token", tokenProvider.getExpiration(removeToken));
 
-        return CommonApiResponse.success("로그아웃 되었습니다");
+        return CommonApiResponse.success("로그아웃 되었습니다.");
     }
 
 }
