@@ -4,6 +4,7 @@ import jakarta.validation.constraints.NotNull;
 
 public record SignUpRequest (
     @NotNull String email,
-    @NotNull String password
+    @NotNull String password,
+    @NotNull String code
 ){
 }

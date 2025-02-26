@@ -2,7 +2,6 @@ package team.nahyunuk.gsmcertificationsystem.v1.domain.auth.service.impl;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import lombok.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -20,7 +19,7 @@ import team.nahyunuk.gsmcertificationsystem.v1.global.response.CommonApiResponse
 
 @Service
 @RequiredArgsConstructor
-public class SignUpServiceImplV2 implements SignUpService {
+public class SignUpServiceImpl implements SignUpService {
 
     private final RedisUtil redisUtil;
     private final UserRepository userRepository;

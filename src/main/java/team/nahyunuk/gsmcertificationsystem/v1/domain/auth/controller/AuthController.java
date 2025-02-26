@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.*;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.auth.dto.request.SendMailRequest;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.auth.dto.request.SignInRequest;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.auth.dto.request.SignUpRequest;
-import team.nahyunuk.gsmcertificationsystem.v1.domain.auth.dto.request.VerifyCodeRequest;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.auth.dto.response.SignInResponse;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.auth.service.impl.*;
 import team.nahyunuk.gsmcertificationsystem.v1.global.response.CommonApiResponse;
@@ -19,10 +18,9 @@ public class AuthController {
 
     private final ReissueTokenServiceImpl reissueTokenService;
     private final SendMailServiceImpl sendMailService;
-    private final SignUpServiceImpl signUpService;
-    private final VerifyCodeServiceImpl verifyCodeService;
     private final SignInServiceImpl signInService;
     private final LogOutServiceImpl logOutService;
+    private final SignUpServiceImpl signUpServiceV2;
 
     @PatchMapping("/reissue-token")
     public CommonApiResponse<TokenDto> reissueToken(@RequestHeader("Authorization") String token) {
@@ -34,14 +32,9 @@ public class AuthController {
         return sendMailService.execute(request);
     }
 
-    @PostMapping("/verify-code")
-    public CommonApiResponse verifyCode(@Valid @RequestBody VerifyCodeRequest request) {
-        return verifyCodeService.execute(request);
-    }
-
     @PostMapping("/sign-up")
     public CommonApiResponse signUp(@Valid @RequestBody SignUpRequest request) {
-        return signUpService.execute(request);
+        return signUpServiceV2.execute(request);
     }
 
     @PostMapping("/sign-in")
