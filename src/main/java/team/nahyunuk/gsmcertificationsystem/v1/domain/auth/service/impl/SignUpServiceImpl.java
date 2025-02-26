@@ -33,6 +33,7 @@ public class SignUpServiceImpl implements SignUpService {
         String storedCode = redisUtil.get(request.email());
         checkVerifyCode(storedCode, request.code());
         existsByEmail(request.email());
+        validatePassword(request.password());
         User user = createUser(request);
         userRepository.save(user);
         return CommonApiResponse.success("회원가입이 완료되었습니다.");
@@ -53,6 +54,13 @@ public class SignUpServiceImpl implements SignUpService {
     private void existsByEmail(String email) {
         if (userRepository.existsByEmail(email)) {
             throw new CustomException(ErrorCode.USER_ALREADY_EXISTS);
+        }
+    }
+
+    private void validatePassword(String password) {
+        String passwordPattern = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$";
+        if (!password.matches(passwordPattern)) {
+            throw new CustomException(ErrorCode.INVALID_PASSWORD_FORMAT);
         }
     }
 

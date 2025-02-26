@@ -27,6 +27,7 @@ public enum ErrorCode {
     INVALID_PASSWORD(401, "비밀번호가 일치하지 않습니다."),
     EMAIL_NOT_PENDING(400, "이메일 인증 대기 상태가 아닙니다."),
     INVALID_EMAIL_FORMAT(400, "잘못된 이메일 형식입니다."),
+    INVALID_PASSWORD_FORMAT(400, "비밀번호는 영문과 숫자를 포함하여 8자 이상이어야 합니다."),
 
     // image
     FILE_EXTENSION_INVALID(400, "파일 확장자가 유효하지 않습니다."),
