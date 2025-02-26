@@ -12,6 +12,7 @@ import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.stereotype.Component;
 import team.nahyunuk.gsmcertificationsystem.v1.global.exception.CustomException;
 import team.nahyunuk.gsmcertificationsystem.v1.global.exception.error.ErrorCode;
+import team.nahyunuk.gsmcertificationsystem.v1.global.response.CommonApiResponse;
 
 import java.io.IOException;
 
@@ -29,7 +30,7 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
         response.setStatus(HttpStatus.FORBIDDEN.value());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.getWriter().write(objectMapper.writeValueAsString(
-                new CustomException(ErrorCode.FAILED_JWT_AUTH)
+                CommonApiResponse.error("접근이 거부되었습니다.", HttpStatus.UNAUTHORIZED)
         ));
 
     }

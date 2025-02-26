@@ -17,6 +17,8 @@ public enum ErrorCode {
     MISSING_TOKEN(400, "토큰이 누락되었습니다."),
     FAILED_JWT_AUTH(401, "jwt 인증에 실패했습니다."),
     REFRESH_TOKEN_MISSING(400, "헤더에 리프레시 토큰을 추가해주세요."),
+    FORBIDDEN_ACCESS(403, "접근이 거부되었습니다."),
+
 
     // user
     USER_NOT_FOUND(404, "등록된 회원을 찾을 수 없습니다."),
@@ -37,6 +39,7 @@ public enum ErrorCode {
     // server
     EMAIL_SEND_FAILID(500, "이메일 발송에 실패했습니다."),
     INTERNAL_SERVER_ERROR(500, "서버 오류");
+
 
 
     private final int status;
