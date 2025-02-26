@@ -28,12 +28,21 @@ public class SendMailServiceImpl implements SendMailService {
 
     @Override
     public CommonApiResponse execute(SendMailRequest request) {
+        validateEmailFormat(request.email());
         int verificationCode = getVerificationCode();
         checkSignUpEmail(request.email());
         redisUtil.set(request.email(), String.valueOf(verificationCode), 3);
         sendVerificationEmail(request.email(), verificationCode);
         return CommonApiResponse.success("인증 번호가 발송되었습니다.");
     }
+
+    private void validateEmailFormat(String email) {
+        String emailPattern = "^[A-Za-z0-9._%+-]+@gsm\\.hs\\.kr$";
+        if (!email.matches(emailPattern)) {
+            throw new CustomException(ErrorCode.INVALID_EMAIL_FORMAT);
+        }
+    }
+
 
     private int getVerificationCode() {
         return ThreadLocalRandom.current().nextInt(100000, 1000000);

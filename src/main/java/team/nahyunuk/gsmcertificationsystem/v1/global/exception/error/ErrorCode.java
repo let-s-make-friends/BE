@@ -23,7 +23,6 @@ public enum ErrorCode {
     USER_ALREADY_EXISTS(409, "이미 가입된 회원입니다."),
     EXPIRED_OR_INVALID_CODE(400, "만료되었거나 유효하지 않은 인증 코드입니다."),
     INVALID_CODE(400, "잘못된 인증 코드입니다."),
-    EMAIL_NOT_VERIFIED(401, "이메일 인증이 완료되지 않았습니다."),
     INVALID_PASSWORD(401, "비밀번호가 일치하지 않습니다."),
     EMAIL_NOT_PENDING(400, "이메일 인증 대기 상태가 아닙니다."),
     INVALID_EMAIL_FORMAT(400, "잘못된 이메일 형식입니다."),
