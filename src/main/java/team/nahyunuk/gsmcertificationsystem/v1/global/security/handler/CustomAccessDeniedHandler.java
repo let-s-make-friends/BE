@@ -30,7 +30,7 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
         response.setStatus(HttpStatus.FORBIDDEN.value());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.getWriter().write(objectMapper.writeValueAsString(
-                CommonApiResponse.error("접근이 거부되었습니다.", HttpStatus.UNAUTHORIZED)
+                CommonApiResponse.error("접근이 거부되었습니다.", HttpStatus.FORBIDDEN)
         ));
 
     }
