@@ -5,6 +5,9 @@ spring:
     password: ${DB_PASSWORD}
     driver-class-name: ${DB_DRIVER}
 
+  main:
+    allow-bean-definition-overriding: true
+
   jpa:
     hibernate:
       ddl-auto: update
@@ -50,4 +53,6 @@ cloud:
 cors:
   allowedOrigin: ${CORS_ALLOWED_ORIGIN}
   allowedOriginAdmin: ${CORS_ALLOWED_ORIGIN_ADMIN}
+
+
 
