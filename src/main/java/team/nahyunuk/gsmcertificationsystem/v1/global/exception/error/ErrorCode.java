@@ -38,9 +38,10 @@ public enum ErrorCode {
 
     // server
     EMAIL_SEND_FAILID(500, "이메일 발송에 실패했습니다."),
-    INTERNAL_SERVER_ERROR(500, "서버 오류");
+    INTERNAL_SERVER_ERROR(500, "서버 오류"),
 
-
+    // client
+    INVALID_INPUT(400,"잘못된 요청 형식입니다");
 
     private final int status;
     private final String message;
