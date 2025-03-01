@@ -1,4 +1,4 @@
-package team.nahyunuk.gsmcertificationsystem.v1.domain.book.dto;
+package team.nahyunuk.gsmcertificationsystem.v1.domain.book.dto.request;
 
 import jakarta.validation.constraints.NotNull;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.activity.type.PostStatus;

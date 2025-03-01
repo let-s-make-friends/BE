@@ -34,7 +34,18 @@ public class ActivityGetServiceImpl implements ActivityGetService {
     public CommonApiResponse<List<ActivityGetResponse>> execute(String token) {
         User user = findUserByToken(token);
         Student student = studentRepository.findByEmail(user.getEmail());
-        List<ActivityGetResponse> activities = activityRepository.findAllByStudent(student)
+        List<ActivityGetResponse> activities = findAllByStudent(student);
+        return CommonApiResponse.successWithData(null, activities);
+    }
+
+    private User findUserByToken(String token) {
+        String removeToken = tokenProvider.removePrefix(token);
+        String userId = tokenProvider.getUserIdFromAccessToken(removeToken);
+        return userRepository.findByUserId(Long.valueOf(userId));
+    }
+
+    private List<ActivityGetResponse> findAllByStudent(Student student) {
+        return activityRepository.findAllByStudent(student)
                 .stream()
                 .map(activity -> {
                     String redisKey = "activity:" + activity.getId();
@@ -43,12 +54,5 @@ public class ActivityGetServiceImpl implements ActivityGetService {
                     return activityConvert.getActivity(activity);
                 })
                 .toList();
-        return CommonApiResponse.successWithData(null, activities);
-    }
-
-    private User findUserByToken(String token) {
-        String removeToken = tokenProvider.removePrefix(token);
-        String userId = tokenProvider.getUserIdFromAccessToken(removeToken);
-        return userRepository.findByUserId(Long.valueOf(userId));
     }
 }
