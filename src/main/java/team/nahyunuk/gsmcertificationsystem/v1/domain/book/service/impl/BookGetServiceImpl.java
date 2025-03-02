@@ -1,13 +1,12 @@
-package team.nahyunuk.gsmcertificationsystem.v1.domain.activity.service.impl;
+package team.nahyunuk.gsmcertificationsystem.v1.domain.book.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import team.nahyunuk.gsmcertificationsystem.v1.domain.activity.convert.ActivityConvert;
-import team.nahyunuk.gsmcertificationsystem.v1.domain.activity.dto.response.ActivityGetResponse;
-import team.nahyunuk.gsmcertificationsystem.v1.domain.activity.entity.Activity;
-import team.nahyunuk.gsmcertificationsystem.v1.domain.activity.repository.ActivityRepository;
-import team.nahyunuk.gsmcertificationsystem.v1.domain.activity.service.ActivityGetService;
+import team.nahyunuk.gsmcertificationsystem.v1.domain.book.convert.BookConvert;
+import team.nahyunuk.gsmcertificationsystem.v1.domain.book.dto.response.BookGetResponse;
+import team.nahyunuk.gsmcertificationsystem.v1.domain.book.repository.BookRepository;
+import team.nahyunuk.gsmcertificationsystem.v1.domain.book.service.BookGetService;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.student.entity.Student;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.student.repository.StudentRepository;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.user.entity.User;
@@ -17,25 +16,26 @@ import team.nahyunuk.gsmcertificationsystem.v1.global.response.CommonApiResponse
 import team.nahyunuk.gsmcertificationsystem.v1.global.security.jwt.TokenProvider;
 
 import java.util.List;
+import java.util.StringTokenizer;
 
 @Service
 @RequiredArgsConstructor
-public class ActivityGetServiceImpl implements ActivityGetService {
+public class BookGetServiceImpl implements BookGetService {
 
-    private final ActivityRepository activityRepository;
+    private final BookRepository bookRepository;
     private final UserRepository userRepository;
     private final TokenProvider tokenProvider;
     private final StudentRepository studentRepository;
-    private final ActivityConvert activityConvert;
     private final RedisUtil redisUtil;
+    private final BookConvert bookConvert;
 
     @Override
     @Transactional(readOnly = true)
-    public CommonApiResponse<List<ActivityGetResponse>> execute(String token) {
-        User user = findUserByToken(token);
+    public CommonApiResponse<List<BookGetResponse>> execute(String token, Long bookId) {
+        User user= findUserByToken(token);
         Student student = studentRepository.findByEmail(user.getEmail());
-        List<ActivityGetResponse> activities = findAllByStudent(student);
-        return CommonApiResponse.successWithData(null, activities);
+        List<BookGetResponse> books = findAllByStudent(student);
+        return CommonApiResponse.successWithData(null, books);
     }
 
     private User findUserByToken(String token) {
@@ -44,14 +44,14 @@ public class ActivityGetServiceImpl implements ActivityGetService {
         return userRepository.findByUserId(Long.valueOf(userId));
     }
 
-    private List<ActivityGetResponse> findAllByStudent(Student student) {
-        return activityRepository.findAllByStudent(student)
+    private List<BookGetResponse> findAllByStudent(Student student) {
+        return bookRepository.findAllByStudent(student)
                 .stream()
-                .map(activity -> {
-                    String redisKey = "activity:" + activity.getId();
-                    redisUtil.set(redisKey, activity.getBody(), 60 * 60);
+                .map(book -> {
+                    String redisKey = "book:" + book.getId();
+                    redisUtil.set(redisKey, book.getBody(), 60 * 60);
 
-                    return activityConvert.getActivity(activity);
+                    return bookConvert.getBook(book);
                 })
                 .toList();
     }

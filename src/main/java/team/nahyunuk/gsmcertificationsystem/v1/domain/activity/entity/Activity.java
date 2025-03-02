@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.stereotype.Component;
+import team.nahyunuk.gsmcertificationsystem.v1.domain.activity.dto.request.ActivityUpdateRequest;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.activity.type.ActivityCategory;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.activity.type.PostStatus;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.activity.type.StudyCategory;
@@ -60,4 +60,15 @@ public class Activity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "student_id", referencedColumnName = "id")
     private Student student;
+
+    public void update(ActivityUpdateRequest request) {
+        this.id = request.id();
+        this.studyCategory = request.studyCategory();
+        this.activityCategory = request.activityCategory();
+        this.subject = request.subject();
+        this.body = request.body();
+        this.activityDate = request.activityDate();
+        this.imageUrl = request.imageUrl();
+        this.postStatus = request.postStatus();
+    }
 }
