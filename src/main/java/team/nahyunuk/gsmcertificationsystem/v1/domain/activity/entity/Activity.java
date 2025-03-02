@@ -62,6 +62,7 @@ public class Activity {
     private Student student;
 
     public void update(ActivityUpdateRequest request) {
+        this.id = request.id();
         this.studyCategory = request.studyCategory();
         this.activityCategory = request.activityCategory();
         this.subject = request.subject();

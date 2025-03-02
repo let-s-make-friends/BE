@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import org.apache.logging.log4j.util.Lazy;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.activity.type.PostStatus;
+import team.nahyunuk.gsmcertificationsystem.v1.domain.book.dto.request.BookUpdateRequest;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.student.entity.Student;
 
 import java.time.LocalDate;
@@ -54,4 +55,14 @@ public class Book {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "student_id", referencedColumnName = "id")
     private Student student;
+
+    public void update(BookUpdateRequest request) {
+        this.id = request.id();
+        this.title = request.title();
+        this.author = request.author();
+        this.page = request.page();
+        this.body = request.body();
+        this.bookDate = request.bookDate();
+        this.postStatus = request.postStatus();
+    }
 }
