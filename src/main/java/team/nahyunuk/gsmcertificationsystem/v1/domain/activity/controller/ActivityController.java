@@ -4,10 +4,12 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.activity.dto.request.ActivityPostRequest;
+import team.nahyunuk.gsmcertificationsystem.v1.domain.activity.dto.request.ActivityUpdateRequest;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.activity.entity.Activity;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.activity.repository.ActivityRepository;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.activity.service.impl.ActivityGetServiceImpl;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.activity.service.impl.ActivityPostServiceImpl;
+import team.nahyunuk.gsmcertificationsystem.v1.domain.activity.service.impl.AcvitityUpdateServiceImpl;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.activity.service.impl.BodyGetServiceImpl;
 import team.nahyunuk.gsmcertificationsystem.v1.global.response.CommonApiResponse;
 
@@ -19,6 +21,7 @@ public class ActivityController {
     private final ActivityPostServiceImpl activityPostService;
     private final ActivityGetServiceImpl activityGetService;
     private final BodyGetServiceImpl bodyGetService;
+    private final AcvitityUpdateServiceImpl activityUpdateService;
 
     @PostMapping("/post")
     public CommonApiResponse post(@Valid @RequestBody ActivityPostRequest request, @RequestHeader("Authorization") String token) {
@@ -33,5 +36,10 @@ public class ActivityController {
     @GetMapping("/{activityId}")
     public CommonApiResponse getBody(@PathVariable long activityId) {
         return bodyGetService.execute(activityId);
+    }
+
+    @PatchMapping
+    public CommonApiResponse update(@Valid @RequestBody ActivityUpdateRequest request) {
+        return activityUpdateService.execute(request);
     }
 }
