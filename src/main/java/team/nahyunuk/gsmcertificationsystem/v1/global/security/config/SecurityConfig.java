@@ -34,21 +34,19 @@ public class SecurityConfig {
     @Value("${cors.allowedOrigin}")
     private List<String> allowedOrigin;
 
-
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http/*, CorsConfig corsConfig*/) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http, CorsConfig corsConfig) throws Exception {
         http
                 .formLogin(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
 
                 .csrf(AbstractHttpConfigurer::disable)
-                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-                //.cors(cors -> cors.configurationSource(corsConfig.corsConfigurationSource()))
+                .cors(cors -> cors.configurationSource(corsConfig.corsConfigurationSource()))
 
                 .exceptionHandling(handling -> handling
                         .authenticationEntryPoint(authenticationEntryPoint)
@@ -66,23 +64,4 @@ public class SecurityConfig {
 
     }
 
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-
-        configuration.setAllowedOrigins(List.of("*"));
-        configuration.setAllowedMethods(Arrays.asList(
-                HttpMethod.GET.name(),
-                HttpMethod.POST.name(),
-                HttpMethod.PUT.name(),
-                HttpMethod.PATCH.name(),
-                HttpMethod.DELETE.name(),
-                HttpMethod.OPTIONS.name()
-        ));
-        configuration.setAllowCredentials(true);
-
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
-    }
 }
