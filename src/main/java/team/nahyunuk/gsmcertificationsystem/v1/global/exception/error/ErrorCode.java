@@ -36,6 +36,9 @@ public enum ErrorCode {
     // activity
     ACTIVITY_NOT_FOUND(404, "활동 영역을 찾을 수 없습니다."),
 
+    // book
+    BOOK_NOT_FOUND(404, "독서 영역을 찾을 수 없습니다."),
+
     // server
     EMAIL_SEND_FAILID(500, "이메일 발송에 실패했습니다."),
     INTERNAL_SERVER_ERROR(500, "서버 오류"),

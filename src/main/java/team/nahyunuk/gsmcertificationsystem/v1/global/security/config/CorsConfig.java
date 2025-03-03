@@ -32,7 +32,7 @@ public class CorsConfig {
 
         // Admin
         CorsConfiguration adminConfig = new CorsConfiguration();
-        adminConfig.setAllowedOrigins(List.of(allowedOriginsAdmin));
+        adminConfig.setAllowedOrigins(List.of(allowedOriginsAdmin, "http://localhost:5173"));
         adminConfig.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         adminConfig.setAllowedHeaders(List.of("*"));
         adminConfig.setAllowCredentials(true);
