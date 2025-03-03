@@ -31,7 +31,7 @@ public class BookGetServiceImpl implements BookGetService {
 
     @Override
     @Transactional(readOnly = true)
-    public CommonApiResponse<List<BookGetResponse>> execute(String token, Long bookId) {
+    public CommonApiResponse<List<BookGetResponse>> execute(String token) {
         User user= findUserByToken(token);
         Student student = studentRepository.findByEmail(user.getEmail());
         List<BookGetResponse> books = findAllByStudent(student);

@@ -6,5 +6,5 @@ import team.nahyunuk.gsmcertificationsystem.v1.global.response.CommonApiResponse
 import java.util.List;
 
 public interface BookGetService {
-    CommonApiResponse<List<BookGetResponse>> execute(String token, Long bookId);
+    CommonApiResponse<List<BookGetResponse>> execute(String token);
 }
