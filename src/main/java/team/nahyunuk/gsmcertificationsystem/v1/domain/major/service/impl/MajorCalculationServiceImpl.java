@@ -51,6 +51,7 @@ public class MajorCalculationServiceImpl implements MajorCalculationService {
                 .competitionCount(request.competitionCount())
                 .specialLectureCount(request.specialLectureCount())
                 .afterSchoolCount(request.afterSchoolCount())
+                .schoolCompetitionCount(request.schoolCompetitionCount())
                 .majorTotal(totalScore)
                 .student(student)
                 .build();
