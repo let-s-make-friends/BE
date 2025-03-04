@@ -31,7 +31,7 @@ public class SendMailServiceImpl implements SendMailService {
         validateEmailFormat(request.email());
         int verificationCode = getVerificationCode();
         checkSignUpEmail(request.email());
-        redisUtil.set(request.email(), String.valueOf(verificationCode), 3);
+        redisUtil.set(request.email(), String.valueOf(verificationCode), 60);
         sendVerificationEmail(request.email(), verificationCode);
         return CommonApiResponse.success("인증 번호가 발송되었습니다.");
     }

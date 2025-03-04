@@ -58,7 +58,7 @@ public class SignUpServiceImpl implements SignUpService {
     }
 
     private void validatePassword(String password) {
-        String passwordPattern = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$";
+        String passwordPattern = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d@$!%*?&]{8,}$";
         if (!password.matches(passwordPattern)) {
             throw new CustomException(ErrorCode.INVALID_PASSWORD_FORMAT);
         }

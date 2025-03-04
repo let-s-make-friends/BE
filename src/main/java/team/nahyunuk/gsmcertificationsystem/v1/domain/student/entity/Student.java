@@ -37,4 +37,8 @@ public class Student {
     @Column(name = "total_score")
     private int totalScore;
 
+    public void updateTotalScore(int additionalScore) {
+        this.totalScore += additionalScore;
+    }
+
 }

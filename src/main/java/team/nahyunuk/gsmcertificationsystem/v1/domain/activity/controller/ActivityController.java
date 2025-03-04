@@ -5,12 +5,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.activity.dto.request.ActivityPostRequest;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.activity.dto.request.ActivityUpdateRequest;
-import team.nahyunuk.gsmcertificationsystem.v1.domain.activity.entity.Activity;
-import team.nahyunuk.gsmcertificationsystem.v1.domain.activity.repository.ActivityRepository;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.activity.service.impl.ActivityGetServiceImpl;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.activity.service.impl.ActivityPostServiceImpl;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.activity.service.impl.AcvitityUpdateServiceImpl;
-import team.nahyunuk.gsmcertificationsystem.v1.domain.activity.service.impl.BodyGetServiceImpl;
+import team.nahyunuk.gsmcertificationsystem.v1.domain.activity.service.impl.ActivityBodyGetServiceImpl;
 import team.nahyunuk.gsmcertificationsystem.v1.global.response.CommonApiResponse;
 
 @RestController
@@ -20,7 +18,7 @@ public class ActivityController {
 
     private final ActivityPostServiceImpl activityPostService;
     private final ActivityGetServiceImpl activityGetService;
-    private final BodyGetServiceImpl bodyGetService;
+    private final ActivityBodyGetServiceImpl bodyGetService;
     private final AcvitityUpdateServiceImpl activityUpdateService;
 
     @PostMapping

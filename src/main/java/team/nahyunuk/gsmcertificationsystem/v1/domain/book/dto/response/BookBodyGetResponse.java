@@ -1,6 +1,6 @@
 package team.nahyunuk.gsmcertificationsystem.v1.domain.book.dto.response;
 
-public record BodyGetResponse(
+public record BookBodyGetResponse(
         String body
 ) {
 }

@@ -1,4 +1,7 @@
 package team.nahyunuk.gsmcertificationsystem.v1.domain.major.service;
 
-public class MajorGetService {
+import team.nahyunuk.gsmcertificationsystem.v1.global.response.CommonApiResponse;
+
+public interface MajorGetService {
+    CommonApiResponse execute(String token);
 }

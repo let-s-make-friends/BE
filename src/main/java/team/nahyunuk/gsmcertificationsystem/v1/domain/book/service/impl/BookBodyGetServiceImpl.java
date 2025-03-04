@@ -3,10 +3,10 @@ package team.nahyunuk.gsmcertificationsystem.v1.domain.book.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import team.nahyunuk.gsmcertificationsystem.v1.domain.book.dto.response.BodyGetResponse;
+import team.nahyunuk.gsmcertificationsystem.v1.domain.book.dto.response.BookBodyGetResponse;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.book.entity.Book;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.book.repository.BookRepository;
-import team.nahyunuk.gsmcertificationsystem.v1.domain.book.service.BodyGetService;
+import team.nahyunuk.gsmcertificationsystem.v1.domain.book.service.BookBodyGetService;
 import team.nahyunuk.gsmcertificationsystem.v1.global.exception.CustomException;
 import team.nahyunuk.gsmcertificationsystem.v1.global.exception.error.ErrorCode;
 import team.nahyunuk.gsmcertificationsystem.v1.global.redis.util.RedisUtil;
@@ -14,7 +14,7 @@ import team.nahyunuk.gsmcertificationsystem.v1.global.response.CommonApiResponse
 
 @Service
 @RequiredArgsConstructor
-public class BodyGetServiceImpl implements BodyGetService {
+public class BookBodyGetServiceImpl implements BookBodyGetService {
 
     private final BookRepository bookRepository;
     private final RedisUtil redisUtil;
@@ -26,7 +26,7 @@ public class BodyGetServiceImpl implements BodyGetService {
         String value = redisUtil.get(redisKey);
 
         if (value != null) {
-            return CommonApiResponse.successWithData(null, new BodyGetResponse(value));
+            return CommonApiResponse.successWithData(null, new BookBodyGetResponse(value));
         }
 
         Book book = bookRepository.findById(bookId)
@@ -34,6 +34,6 @@ public class BodyGetServiceImpl implements BodyGetService {
 
         value = book.getBody();
         redisUtil.set(redisKey, value, 60 * 60);
-        return CommonApiResponse.successWithData(null, new BodyGetResponse(value));
+        return CommonApiResponse.successWithData(null, new BookBodyGetResponse(value));
     }
 }

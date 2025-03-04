@@ -1,13 +1,10 @@
 package team.nahyunuk.gsmcertificationsystem.v1.domain.book.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.apache.logging.log4j.util.Lazy;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.activity.type.PostStatus;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.book.dto.request.BookUpdateRequest;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.student.entity.Student;

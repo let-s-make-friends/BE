@@ -1,48 +1,74 @@
-package team.nahyunuk.gsmcertificationsystem.v1.domain.major.service;
+package team.nahyunuk.gsmcertificationsystem.v1.domain.major.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.major.dto.request.MajorCalculationRequest;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.major.entity.Major;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.major.repository.MajorRepository;
+import team.nahyunuk.gsmcertificationsystem.v1.domain.major.service.MajorCalculationService;
+import team.nahyunuk.gsmcertificationsystem.v1.domain.student.entity.Student;
+import team.nahyunuk.gsmcertificationsystem.v1.domain.student.repository.StudentRepository;
+import team.nahyunuk.gsmcertificationsystem.v1.domain.user.entity.User;
+import team.nahyunuk.gsmcertificationsystem.v1.domain.user.repository.UserRepository;
+import team.nahyunuk.gsmcertificationsystem.v1.global.response.CommonApiResponse;
+import team.nahyunuk.gsmcertificationsystem.v1.global.security.jwt.TokenProvider;
 
 @Service
 @RequiredArgsConstructor
-public class MajorCalculationService {
+public class MajorCalculationServiceImpl implements MajorCalculationService {
 
     private final MajorRepository majorRepository;
+    private final UserRepository userRepository;
+    private final TokenProvider tokenProvider;
+    private final StudentRepository studentRepository;
 
-    public void execute(MajorCalculationRequest request) {
-        Major major = createMajor(request);
+    @Override
+    @Transactional
+    public CommonApiResponse execute(String token, MajorCalculationRequest request) {
+        User user = findUserByToken(token);
+        Student student = studentRepository.findByEmail(user.getEmail());
+        Major major = createMajor(request, student);
+        majorRepository.save(major);
+        return CommonApiResponse.success("전공 영역이 저장되었습니다");
     }
 
-    private Major createMajor(MajorCalculationRequest request) {
-        int topcit = request.topcitScore();
-        topcit *= 3.3;
+    private User findUserByToken(String token) {
+        String removeToken = tokenProvider.removePrefix(token);
+        String userId = tokenProvider.getUserIdFromAccessToken(removeToken);
+        return userRepository.findByUserId(Long.valueOf(userId));
+    }
 
-        if (topcit > 1000) {
-            topcit = 1000;
-        }
-
-        int total = request.awardCount() * 50
-                + request.licenseCount() * 50
-                + topcit
-                + request.clubCount() * 50
-                + request.competitionCount() * 25
-                + request.schoolCompetitionCount() * 50
-                + request.specialLectureCount() * 5
-                + request.afterSchoolCount() * 15;
+    private Major createMajor(MajorCalculationRequest request, Student student) {
+        int topcitScore = calculateTopcitScore(request.topcitScore());
+        int totalScore = calculateTotalScore(request, topcitScore);
 
         return Major.builder()
                 .awardCount(request.awardCount())
                 .licenseCount(request.licenseCount())
-                .topcitScore(topcit)
+                .topcitScore(topcitScore)
                 .clubCount(request.clubCount())
                 .competitionCount(request.competitionCount())
                 .specialLectureCount(request.specialLectureCount())
                 .afterSchoolCount(request.afterSchoolCount())
-                .majorTotal(total)
+                .majorTotal(totalScore)
+                .student(student)
                 .build();
+    }
 
+    private int calculateTopcitScore(int rawScore) {
+        int calculatedScore = (int) (rawScore * 3.3);
+        return Math.min(calculatedScore, 1000);
+    }
+
+    private int calculateTotalScore(MajorCalculationRequest request, int topcitScore) {
+        return (request.awardCount() * 50)
+                + (request.licenseCount() * 50)
+                + topcitScore
+                + (request.clubCount() * 50)
+                + (request.competitionCount() * 25)
+                + (request.schoolCompetitionCount() * 50)
+                + (request.specialLectureCount() * 5)
+                + (request.afterSchoolCount() * 15);
     }
 }
