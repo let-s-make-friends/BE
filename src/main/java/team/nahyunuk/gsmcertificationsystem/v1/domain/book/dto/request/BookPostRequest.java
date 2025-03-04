@@ -11,7 +11,6 @@ public record BookPostRequest(
         int page,
         String body,
         LocalDate bookDate,
-        int textLength,
         @NotNull PostStatus postStatus
 ) {
 }
