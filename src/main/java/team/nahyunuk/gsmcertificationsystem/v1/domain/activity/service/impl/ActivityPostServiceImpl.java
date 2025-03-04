@@ -46,7 +46,7 @@ public class ActivityPostServiceImpl implements ActivityPostService {
                 .subject(request.subject())
                 .body(request.body())
                 .postStatus(request.postStatus())
-                .activityDate(request.activityDate())
+                .semester(request.semester())
                 .textLength(request.body().length())
                 .studyCategory(request.studyCategory())
                 .imageUrl(request.imageUrl())

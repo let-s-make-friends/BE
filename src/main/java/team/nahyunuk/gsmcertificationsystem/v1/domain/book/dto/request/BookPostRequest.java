@@ -10,7 +10,7 @@ public record BookPostRequest(
         String author,
         int page,
         String body,
-        LocalDate bookDate,
+        int semester,
         @NotNull PostStatus postStatus
 ) {
 }

@@ -1,6 +1,8 @@
 package team.nahyunuk.gsmcertificationsystem.v1.domain.activity.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -41,8 +43,10 @@ public class Activity {
     @Column(name = "body")
     private String body;
 
-    @Column(name = "activity_date")
-    private LocalDate activityDate;
+    @Column(name = "semester")
+    @Min(1)
+    @Max(2)
+    private int semester;
 
     @Column(name = "text_length")
     private int textLength;
@@ -67,7 +71,7 @@ public class Activity {
         this.activityCategory = request.activityCategory();
         this.subject = request.subject();
         this.body = request.body();
-        this.activityDate = request.activityDate();
+        this.semester = request.semester();
         this.imageUrl = request.imageUrl();
         this.postStatus = request.postStatus();
     }

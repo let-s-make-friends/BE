@@ -13,7 +13,7 @@ public class BookConvert {
                 book.getTitle(),
                 book.getAuthor(),
                 book.getPage(),
-                book.getBookDate(),
+                book.getSemester(),
                 book.getPostStatus(),
                 book.getBody().length()
         );

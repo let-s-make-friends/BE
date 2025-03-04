@@ -14,7 +14,7 @@ public class ActivityConvert {
                 activity.getStudyCategory(),
                 activity.getActivityCategory(),
                 activity.getSubject(),
-                activity.getActivityDate(),
+                activity.getSemester(),
                 activity.getPostStatus(),
                 activity.getBody().length(),
                 activity.getImageUrl()

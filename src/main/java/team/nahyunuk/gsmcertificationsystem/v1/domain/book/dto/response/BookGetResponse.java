@@ -9,7 +9,7 @@ public record BookGetResponse(
         String title,
         String author,
         int page,
-        LocalDate bookDate,
+        int semester,
         PostStatus postStatus,
         int textLength
 ) {

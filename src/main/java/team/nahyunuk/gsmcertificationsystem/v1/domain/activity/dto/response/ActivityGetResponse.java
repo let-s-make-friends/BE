@@ -12,7 +12,7 @@ public record ActivityGetResponse(
         StudyCategory studyCategory,
         ActivityCategory activityCategory,
         String subject,
-        LocalDate activityDate,
+        int semester,
         PostStatus postStatus,
         int textLength,
         String imageUrl

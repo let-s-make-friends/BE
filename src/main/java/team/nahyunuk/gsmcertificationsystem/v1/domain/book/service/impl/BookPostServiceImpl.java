@@ -46,7 +46,7 @@ public class BookPostServiceImpl implements BookPostService {
                 .author(request.author())
                 .page(request.page())
                 .body(request.body())
-                .bookDate(request.bookDate())
+                .semester(request.semester())
                 .agreement(false)
                 .textLength(request.body().length())
                 .postStatus(request.postStatus())

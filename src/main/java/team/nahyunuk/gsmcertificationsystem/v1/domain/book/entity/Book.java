@@ -1,6 +1,8 @@
 package team.nahyunuk.gsmcertificationsystem.v1.domain.book.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -8,8 +10,6 @@ import lombok.NoArgsConstructor;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.activity.type.PostStatus;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.book.dto.request.BookUpdateRequest;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.student.entity.Student;
-
-import java.time.LocalDate;
 
 @Entity
 @Getter
@@ -36,8 +36,10 @@ public class Book {
     @Column(name = "body")
     private String body;
 
-    @Column(name = "book_date")
-    private LocalDate bookDate;
+    @Column(name = "semester")
+    @Min(1)
+    @Max(2)
+    private int semester;
 
     @Column(name = "text_length")
     private int textLength;
@@ -59,7 +61,7 @@ public class Book {
         this.author = request.author();
         this.page = request.page();
         this.body = request.body();
-        this.bookDate = request.bookDate();
+        this.semester = request.semester();
         this.postStatus = request.postStatus();
     }
 }
