@@ -29,13 +29,12 @@ import java.util.List;
 public class StudentUploadServiceImpl implements StudentUploadService {
 
     private final StudentRepository studentRepository;
-    private final UserRepository userRepository;
     private final TokenProvider tokenProvider;
 
     @Override
     @Transactional
     public CommonApiResponse execute(MultipartFile file, String token) {
-        User user = findUserByToken(token);
+        User user = tokenProvider.findUserByToken(token);
         validateUserPermission(user);
         validateFile(file);
 
@@ -48,12 +47,6 @@ public class StudentUploadServiceImpl implements StudentUploadService {
         }
 
         return CommonApiResponse.success("학생 데이터가 저장되었습니다.");
-    }
-
-    private User findUserByToken(String token) {
-        String removeToken = tokenProvider.removePrefix(token);
-        String userId = tokenProvider.getUserIdFromAccessToken(removeToken);
-        return userRepository.findByUserId(Long.parseLong(userId));
     }
 
     private void validateUserPermission(User user) {

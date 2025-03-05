@@ -21,7 +21,6 @@ import team.nahyunuk.gsmcertificationsystem.v1.global.security.jwt.TokenProvider
 @RequiredArgsConstructor
 public class MajorGetServiceImpl implements MajorGetService {
 
-    private final UserRepository userRepository;
     private final MajorRepository majorRepository;
     private final StudentRepository studentRepository;
     private final TokenProvider tokenProvider;
@@ -30,16 +29,10 @@ public class MajorGetServiceImpl implements MajorGetService {
     @Override
     @Transactional(readOnly = true)
     public CommonApiResponse execute(String token) {
-        User user = findUserByToken(token);
+        User user = tokenProvider.findUserByToken(token);
         Student student = studentRepository.findByEmail(user.getEmail())
                 .orElseThrow(() -> new CustomException(ErrorCode.STUDENT_NOT_FOUND));
         Major major = majorRepository.findByStudent(student);
         return CommonApiResponse.successWithData(null, majorConvert.getMajor(major));
-    }
-
-    private User findUserByToken(String token) {
-        String removeToken = tokenProvider.removePrefix(token);
-        String userId = tokenProvider.getUserIdFromAccessToken(removeToken);
-        return userRepository.findByUserId(Long.valueOf(userId));
     }
 }

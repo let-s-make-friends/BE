@@ -21,25 +21,18 @@ import team.nahyunuk.gsmcertificationsystem.v1.global.security.jwt.TokenProvider
 public class MajorCalculationServiceImpl implements MajorCalculationService {
 
     private final MajorRepository majorRepository;
-    private final UserRepository userRepository;
     private final TokenProvider tokenProvider;
     private final StudentRepository studentRepository;
 
     @Override
     @Transactional
     public CommonApiResponse execute(String token, MajorCalculationRequest request) {
-        User user = findUserByToken(token);
+        User user = tokenProvider.findUserByToken(token);
         Student student = studentRepository.findByEmail(user.getEmail())
                 .orElseThrow(() -> new CustomException(ErrorCode.STUDENT_NOT_FOUND));
         Major major = createMajor(request, student);
         majorRepository.save(major);
         return CommonApiResponse.success("전공 영역이 저장되었습니다");
-    }
-
-    private User findUserByToken(String token) {
-        String removeToken = tokenProvider.removePrefix(token);
-        String userId = tokenProvider.getUserIdFromAccessToken(removeToken);
-        return userRepository.findByUserId(Long.valueOf(userId));
     }
 
     private Major createMajor(MajorCalculationRequest request, Student student) {

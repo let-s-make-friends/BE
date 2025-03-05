@@ -25,7 +25,6 @@ import java.util.StringTokenizer;
 public class BookGetServiceImpl implements BookGetService {
 
     private final BookRepository bookRepository;
-    private final UserRepository userRepository;
     private final TokenProvider tokenProvider;
     private final StudentRepository studentRepository;
     private final RedisUtil redisUtil;
@@ -34,17 +33,11 @@ public class BookGetServiceImpl implements BookGetService {
     @Override
     @Transactional(readOnly = true)
     public CommonApiResponse<List<BookGetResponse>> execute(String token) {
-        User user= findUserByToken(token);
+        User user= tokenProvider.findUserByToken(token);
         Student student = studentRepository.findByEmail(user.getEmail())
                 .orElseThrow(() -> new CustomException(ErrorCode.STUDENT_NOT_FOUND));
         List<BookGetResponse> books = findAllByStudent(student);
         return CommonApiResponse.successWithData(null, books);
-    }
-
-    private User findUserByToken(String token) {
-        String removeToken = tokenProvider.removePrefix(token);
-        String userId = tokenProvider.getUserIdFromAccessToken(removeToken);
-        return userRepository.findByUserId(Long.valueOf(userId));
     }
 
     private List<BookGetResponse> findAllByStudent(Student student) {

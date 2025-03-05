@@ -25,7 +25,6 @@ import java.util.List;
 public class ActivityGetServiceImpl implements ActivityGetService {
 
     private final ActivityRepository activityRepository;
-    private final UserRepository userRepository;
     private final TokenProvider tokenProvider;
     private final StudentRepository studentRepository;
     private final ActivityConvert activityConvert;
@@ -34,17 +33,11 @@ public class ActivityGetServiceImpl implements ActivityGetService {
     @Override
     @Transactional(readOnly = true)
     public CommonApiResponse<List<ActivityGetResponse>> execute(String token) {
-        User user = findUserByToken(token);
+        User user = tokenProvider.findUserByToken(token);
         Student student = studentRepository.findByEmail(user.getEmail())
                 .orElseThrow(() -> new CustomException(ErrorCode.STUDENT_NOT_FOUND));
         List<ActivityGetResponse> activities = findAllByStudent(student);
         return CommonApiResponse.successWithData(null, activities);
-    }
-
-    private User findUserByToken(String token) {
-        String removeToken = tokenProvider.removePrefix(token);
-        String userId = tokenProvider.getUserIdFromAccessToken(removeToken);
-        return userRepository.findByUserId(Long.valueOf(userId));
     }
 
     private List<ActivityGetResponse> findAllByStudent(Student student) {

@@ -22,22 +22,15 @@ public class BookPostServiceImpl implements BookPostService {
 
     private final BookRepository bookRepository;
     private final TokenProvider tokenProvider;
-    private final UserRepository userRepository;
     private final StudentRepository studentRepository;
 
     @Override
     @Transactional
     public CommonApiResponse execute(String token, BookPostRequest request) {
-        User user = findUserByToken(token);
+        User user = tokenProvider.findUserByToken(token);
         Book book = createBook(request, user);
         bookRepository.save(book);
         return CommonApiResponse.success("독서 영역이 저장되었습니다.");
-    }
-
-    private User findUserByToken(String token) {
-        String removeToken = tokenProvider.removePrefix(token);
-        String userId = tokenProvider.getUserIdFromAccessToken(removeToken);
-        return userRepository.findByUserId(Long.valueOf(userId));
     }
 
     private Book createBook(BookPostRequest request, User user) {

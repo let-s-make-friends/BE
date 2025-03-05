@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import team.nahyunuk.gsmcertificationsystem.v1.domain.major.dto.request.MajorUpdateRequest;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.student.entity.Student;
 
 @Entity
@@ -59,4 +60,15 @@ public class Major {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "student_id", referencedColumnName = "id")
     private Student student;
+
+    public void update(MajorUpdateRequest request) {
+        this.awardCount = request.awardCount();
+        this.licenseCount = request.licenseCount();
+        this.topcitScore = request.topcitScore();
+        this.clubCount = request.clubCount();
+        this.competitionCount = request.competitionCount();
+        this.schoolCompetitionCount = request.schoolCompetitionCount();
+        this.specialLectureCount = request.specialLectureCount();
+        this.afterSchoolCount = request.afterSchoolCount();
+    }
 }

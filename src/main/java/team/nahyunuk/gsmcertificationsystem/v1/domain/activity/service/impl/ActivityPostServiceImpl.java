@@ -21,23 +21,16 @@ import team.nahyunuk.gsmcertificationsystem.v1.global.security.jwt.TokenProvider
 public class ActivityPostServiceImpl implements ActivityPostService {
 
     private final TokenProvider tokenProvider;
-    private final UserRepository userRepository;
     private final ActivityRepository activityRepository;
     private final StudentRepository studentRepository;
 
     @Override
     @Transactional
     public CommonApiResponse execute(ActivityPostRequest request, String token) {
-        User user = findUserByToken(token);
+        User user = tokenProvider.findUserByToken(token);
         Activity activity = createActivity(request, user);
         activityRepository.save(activity);
         return CommonApiResponse.success("활동 영역이 저장되었습니다.");
-    }
-
-    private User findUserByToken(String token) {
-        String removeToken = tokenProvider.removePrefix(token);
-        String userId = tokenProvider.getUserIdFromAccessToken(removeToken);
-        return userRepository.findByUserId(Long.valueOf(userId));
     }
 
     private Activity createActivity(ActivityPostRequest request, User user) {

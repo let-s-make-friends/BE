@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+import team.nahyunuk.gsmcertificationsystem.v1.domain.user.entity.User;
+import team.nahyunuk.gsmcertificationsystem.v1.domain.user.repository.UserRepository;
 import team.nahyunuk.gsmcertificationsystem.v1.global.security.auth.CustomUserDetailsService;
 import team.nahyunuk.gsmcertificationsystem.v1.global.security.jwt.dto.TokenDto;
 
@@ -29,6 +31,7 @@ public class TokenProvider {
     private static final String BEARER_PREFIX = "Bearer ";
     private static final Long ACCESS_TOKEN_TIME = 60L * 30 * 4;
     private static final Long REFRESH_TOKEN_TIME = 60L * 60 * 24 * 7;
+    private final UserRepository userRepository;
 
     @Value("${jwt.secret}")
     private String secretKey;
@@ -110,4 +113,9 @@ public class TokenProvider {
         return token.replace(BEARER_PREFIX, "");
     }
 
+    public User findUserByToken(String token) {
+        String removePrefix = removePrefix(token);
+        String userId = getUserIdFromAccessToken(removePrefix);
+        return userRepository.findByUserId(Long.valueOf(userId));
+    }
 }

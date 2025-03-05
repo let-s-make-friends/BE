@@ -44,6 +44,9 @@ public enum ErrorCode {
     // book
     BOOK_NOT_FOUND(404, "독서 영역을 찾을 수 없습니다."),
 
+    // major
+    MAJOR_NOT_FOUND(404, "전공 영역을 찾을 수 없습니다."),
+
     // server
     EMAIL_SEND_FAILID(500, "이메일 발송에 실패했습니다."),
     INTERNAL_SERVER_ERROR(500, "서버 오류"),
