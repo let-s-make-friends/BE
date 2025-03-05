@@ -22,7 +22,8 @@ public class ActivityController {
     private final AcvitityUpdateServiceImpl activityUpdateService;
 
     @PostMapping
-    public CommonApiResponse post(@Valid @RequestBody ActivityPostRequest request, @RequestHeader("Authorization") String token) {
+    public CommonApiResponse post(@Valid @RequestBody ActivityPostRequest request,
+                                  @RequestHeader("Authorization") String token) {
         return activityPostService.execute(request, token);
     }
 

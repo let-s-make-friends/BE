@@ -24,7 +24,6 @@ public class AcvitityUpdateServiceImpl implements ActivityUpdateService {
                 .orElseThrow(() -> new CustomException(ErrorCode.ACTIVITY_NOT_FOUND));
 
         activity.update(request);
-        activityRepository.save(activity);
         return CommonApiResponse.success("활동 영역이 저장되었습니다");
     }
 }

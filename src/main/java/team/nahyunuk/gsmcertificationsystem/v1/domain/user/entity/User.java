@@ -32,4 +32,8 @@ public class User {
     @Column(name = "authority", nullable = false)
     private Authority authority;
 
+    public void changeAuthority(Authority authority) {
+        this.authority = authority;
+    }
+
 }

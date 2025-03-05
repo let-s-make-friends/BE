@@ -17,7 +17,8 @@ public class MajorController {
     private final MajorCalculationServiceImpl majorCalculationService;
 
     @PostMapping
-    public CommonApiResponse post(@Valid @RequestBody MajorCalculationRequest request, @RequestHeader("Authorization") String token) {
+    public CommonApiResponse post(@Valid @RequestBody MajorCalculationRequest request,
+                                  @RequestHeader("Authorization") String token) {
         return majorCalculationService.execute(token, request);
     }
 

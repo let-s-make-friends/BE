@@ -24,7 +24,6 @@ public class BookUpdateServiceImpl implements BookUpdateService {
                 .orElseThrow(() -> new CustomException(ErrorCode.BOOK_NOT_FOUND));
 
         book.update(request);
-        bookRepository.save(book);
         return CommonApiResponse.success("독서 영역이 저장되었습니다.");
     }
 }

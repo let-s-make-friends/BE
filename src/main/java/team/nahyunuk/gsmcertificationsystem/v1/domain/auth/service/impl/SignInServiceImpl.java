@@ -36,7 +36,8 @@ public class SignInServiceImpl implements SignInService {
         checkPassword(request.password(), user);
         TokenDto tokenDto = tokenProvider.generateToken(user.getUserId());
         saveRefreshToken(user.getUserId(), tokenDto);
-        Student student = studentRepository.findByEmail(request.email());
+        Student student = studentRepository.findByEmail(request.email())
+                .orElseThrow(() -> new CustomException(ErrorCode.STUDENT_NOT_FOUND));
         return CommonApiResponse.successWithData("로그인 성공", new SignInResponse(student.getStudentName(), tokenDto));
     }
 

@@ -22,7 +22,8 @@ public class BookController {
     private final BookBodyGetServiceImpl bodyGetService;
 
     @PostMapping
-    public CommonApiResponse post(@Valid @RequestBody BookPostRequest request, @RequestHeader("Authorization") String token) {
+    public CommonApiResponse post(@Valid @RequestBody BookPostRequest request,
+                                  @RequestHeader("Authorization") String token) {
         return bookPostService.execute(token, request);
     }
 

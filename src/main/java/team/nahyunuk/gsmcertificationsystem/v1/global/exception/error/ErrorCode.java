@@ -33,6 +33,7 @@ public enum ErrorCode {
     STUDENT_FILE_EMPTY(400, "업로드한 파일이 비어 있습니다."),
     STUDENT_FILE_PARSE_ERROR(400, "엑셀 파일을 파싱하는 중 오류가 발생했습니다."),
     STUDENT_DATA_SAVE_ERROR(500, "학생 데이터를 저장하는 중 오류가 발생했습니다."),
+    STUDENT_NOT_FOUND(404, "존재하지 않는 학생입니다."),
 
     // image
     FILE_EXTENSION_INVALID(400, "파일 확장자가 유효하지 않습니다."),

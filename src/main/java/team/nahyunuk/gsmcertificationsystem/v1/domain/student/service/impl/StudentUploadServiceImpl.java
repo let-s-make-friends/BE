@@ -12,6 +12,7 @@ import team.nahyunuk.gsmcertificationsystem.v1.domain.student.repository.Student
 import team.nahyunuk.gsmcertificationsystem.v1.domain.student.service.StudentUploadService;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.user.entity.User;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.user.repository.UserRepository;
+import team.nahyunuk.gsmcertificationsystem.v1.domain.user.type.Authority;
 import team.nahyunuk.gsmcertificationsystem.v1.global.exception.CustomException;
 import team.nahyunuk.gsmcertificationsystem.v1.global.exception.error.ErrorCode;
 import team.nahyunuk.gsmcertificationsystem.v1.global.response.CommonApiResponse;
@@ -29,24 +30,18 @@ public class StudentUploadServiceImpl implements StudentUploadService {
 
     private final StudentRepository studentRepository;
     private final UserRepository userRepository;
-    private final StudentRepository StudentRepository;
     private final TokenProvider tokenProvider;
 
     @Override
     @Transactional
     public CommonApiResponse execute(MultipartFile file, String token) {
         User user = findUserByToken(token);
-        if (user.getAuthority().equals("ADMIN")) {
-            throw new CustomException(ErrorCode.FORBIDDEN_ACCESS);
-        }
-
-        if (file.isEmpty()) {
-            throw new CustomException(ErrorCode.STUDENT_FILE_EMPTY);
-        }
+        validateUserPermission(user);
+        validateFile(file);
 
         try (InputStream inputStream = file.getInputStream()) {
-            List<StudentDto> studentDTOList = parseExcel(inputStream);
-            saveStudents(studentDTOList);
+            List<StudentDto> studentDtoList = parseExcel(inputStream);
+            saveStudents(studentDtoList);
         } catch (IOException e) {
             log.error("엑셀 파일을 읽는 중 오류 발생", e);
             throw new CustomException(ErrorCode.STUDENT_FILE_PARSE_ERROR);
@@ -58,26 +53,38 @@ public class StudentUploadServiceImpl implements StudentUploadService {
     private User findUserByToken(String token) {
         String removeToken = tokenProvider.removePrefix(token);
         String userId = tokenProvider.getUserIdFromAccessToken(removeToken);
-        return userRepository.findByUserId(Long.valueOf(userId));
+        return userRepository.findByUserId(Long.parseLong(userId));
+    }
+
+    private void validateUserPermission(User user) {
+        if (user.getAuthority() == Authority.ADMIN || user.getAuthority() == Authority.TEACHER) {
+            throw new CustomException(ErrorCode.FORBIDDEN_ACCESS);
+        }
+    }
+
+    private void validateFile(MultipartFile file) {
+        if (file.isEmpty()) {
+            throw new CustomException(ErrorCode.STUDENT_FILE_EMPTY);
+        }
     }
 
     private List<StudentDto> parseExcel(InputStream inputStream) {
         try (Workbook workbook = WorkbookFactory.create(inputStream)) {
-            Sheet sheet = workbook.getSheetAt(0); // 첫 번째 시트 가져오기
+            Sheet sheet = workbook.getSheetAt(0);
             List<StudentDto> studentList = new ArrayList<>();
 
             for (Row row : sheet) {
-                if (row.getRowNum() == 0) continue; // 첫 번째 행(헤더) 건너뛰기
+                if (row.getRowNum() == 0) continue;
 
-                StudentDto studentDTO = new StudentDto(
-                        row.getCell(1, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK).getStringCellValue(), // email
-                        row.getCell(0, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK).getStringCellValue(), // studentName
-                        (int) row.getCell(2, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK).getNumericCellValue(), // grade
-                        (int) row.getCell(3, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK).getNumericCellValue(), // classNumber
-                        (int) row.getCell(4, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK).getNumericCellValue() // studentNumber
+                StudentDto studentDto = new StudentDto(
+                        row.getCell(1, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK).getStringCellValue(),
+                        row.getCell(0, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK).getStringCellValue(),
+                        (int) row.getCell(2, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK).getNumericCellValue(),
+                        (int) row.getCell(3, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK).getNumericCellValue(),
+                        (int) row.getCell(4, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK).getNumericCellValue()
                 );
 
-                studentList.add(studentDTO);
+                studentList.add(studentDto);
             }
 
             return studentList;
@@ -87,17 +94,16 @@ public class StudentUploadServiceImpl implements StudentUploadService {
         }
     }
 
-
-    private void saveStudents(List<StudentDto> studentDTOList) {
+    private void saveStudents(List<StudentDto> studentDtoList) {
         try {
-            List<Student> students = studentDTOList.stream()
+            List<Student> students = studentDtoList.stream()
                     .map(dto -> Student.builder()
                             .email(dto.email())
                             .studentName(dto.studentName())
                             .grade(dto.grade())
                             .classNumber(dto.classNumber())
                             .studentNumber(dto.studentNumber())
-                            .totalScore(0) // 기본값 0 설정
+                            .totalScore(0)
                             .build())
                     .toList();
 

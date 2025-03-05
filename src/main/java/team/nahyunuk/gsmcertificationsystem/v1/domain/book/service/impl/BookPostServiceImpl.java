@@ -11,6 +11,8 @@ import team.nahyunuk.gsmcertificationsystem.v1.domain.student.entity.Student;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.student.repository.StudentRepository;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.user.entity.User;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.user.repository.UserRepository;
+import team.nahyunuk.gsmcertificationsystem.v1.global.exception.CustomException;
+import team.nahyunuk.gsmcertificationsystem.v1.global.exception.error.ErrorCode;
 import team.nahyunuk.gsmcertificationsystem.v1.global.response.CommonApiResponse;
 import team.nahyunuk.gsmcertificationsystem.v1.global.security.jwt.TokenProvider;
 
@@ -39,7 +41,8 @@ public class BookPostServiceImpl implements BookPostService {
     }
 
     private Book createBook(BookPostRequest request, User user) {
-        Student student = studentRepository.findByEmail(user.getEmail());
+        Student student = studentRepository.findByEmail(user.getEmail())
+                .orElseThrow(() -> new CustomException(ErrorCode.STUDENT_NOT_FOUND));
 
         return Book.builder()
                 .title(request.title())
