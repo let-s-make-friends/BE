@@ -54,6 +54,10 @@ cors:
   allowedOrigin: ${CORS_ALLOWED_ORIGIN}
   allowedOriginAdmin: ${CORS_ALLOWED_ORIGIN_ADMIN}
 
+discord:
+  webhook:
+    url: ${DISCORD}
+
 
 
 

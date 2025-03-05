@@ -19,7 +19,6 @@ public enum ErrorCode {
     REFRESH_TOKEN_MISSING(400, "헤더에 리프레시 토큰을 추가해주세요."),
     FORBIDDEN_ACCESS(403, "접근이 거부되었습니다."),
 
-
     // user
     USER_NOT_FOUND(404, "등록된 회원을 찾을 수 없습니다."),
     USER_ALREADY_EXISTS(409, "이미 가입된 회원입니다."),
@@ -29,6 +28,11 @@ public enum ErrorCode {
     EMAIL_NOT_PENDING(400, "이메일 인증 대기 상태가 아닙니다."),
     INVALID_EMAIL_FORMAT(400, "잘못된 이메일 형식입니다."),
     INVALID_PASSWORD_FORMAT(400, "비밀번호는 영문과 숫자를 포함하여 8자 이상이어야 합니다."),
+
+    // student
+    STUDENT_FILE_EMPTY(400, "업로드한 파일이 비어 있습니다."),
+    STUDENT_FILE_PARSE_ERROR(400, "엑셀 파일을 파싱하는 중 오류가 발생했습니다."),
+    STUDENT_DATA_SAVE_ERROR(500, "학생 데이터를 저장하는 중 오류가 발생했습니다."),
 
     // image
     FILE_EXTENSION_INVALID(400, "파일 확장자가 유효하지 않습니다."),
