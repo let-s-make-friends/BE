@@ -22,7 +22,7 @@ public class AuthController {
     private final LogOutServiceImpl logOutService;
     private final SignUpServiceImpl signUpServiceV2;
 
-    @PatchMapping("/reissue-token")
+    @PostMapping("/reissue-token")
     public CommonApiResponse<TokenDto> reissueToken(@RequestHeader("Authorization") String token) {
         return reissueTokenService.execute(token);
     }
