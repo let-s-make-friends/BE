@@ -13,11 +13,9 @@ import team.nahyunuk.gsmcertificationsystem.v1.global.exception.error.ErrorCode;
 import team.nahyunuk.gsmcertificationsystem.v1.global.response.CommonApiResponse;
 import team.nahyunuk.gsmcertificationsystem.v1.global.security.jwt.TokenProvider;
 
-import java.util.StringTokenizer;
-
 @Service
 @RequiredArgsConstructor
-public class GetTotalServiceImpl implements GetTotalScoreService {
+public class GetTotalScoreServiceImpl implements GetTotalScoreService {
 
     private final StudentRepository studentRepository;
     private final TokenProvider tokenProvider;
