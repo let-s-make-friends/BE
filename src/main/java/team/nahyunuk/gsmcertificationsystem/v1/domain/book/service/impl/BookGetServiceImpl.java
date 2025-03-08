@@ -33,9 +33,7 @@ public class BookGetServiceImpl implements BookGetService {
     @Override
     @Transactional(readOnly = true)
     public CommonApiResponse<List<BookGetResponse>> execute(String token) {
-        User user= tokenProvider.findUserByToken(token);
-        Student student = studentRepository.findByEmail(user.getEmail())
-                .orElseThrow(() -> new CustomException(ErrorCode.STUDENT_NOT_FOUND));
+        Student student = getStudentByToken(token);
         List<BookGetResponse> books = findAllByStudent(student);
         return CommonApiResponse.successWithData(null, books);
     }
@@ -50,5 +48,11 @@ public class BookGetServiceImpl implements BookGetService {
                     return bookConvert.getBook(book);
                 })
                 .toList();
+    }
+
+    private Student getStudentByToken(String token) {
+        User user = tokenProvider.findUserByToken(token);
+        return studentRepository.findByEmail(user.getEmail())
+                .orElseThrow(() -> new CustomException(ErrorCode.STUDENT_NOT_FOUND));
     }
 }

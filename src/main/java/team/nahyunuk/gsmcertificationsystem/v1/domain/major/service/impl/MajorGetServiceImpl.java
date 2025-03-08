@@ -29,10 +29,14 @@ public class MajorGetServiceImpl implements MajorGetService {
     @Override
     @Transactional(readOnly = true)
     public CommonApiResponse execute(String token) {
-        User user = tokenProvider.findUserByToken(token);
-        Student student = studentRepository.findByEmail(user.getEmail())
-                .orElseThrow(() -> new CustomException(ErrorCode.STUDENT_NOT_FOUND));
+        Student student = getStudentByToken(token);
         Major major = majorRepository.findByStudent(student);
         return CommonApiResponse.successWithData(null, majorConvert.getMajor(major));
+    }
+
+    private Student getStudentByToken(String token) {
+        User user = tokenProvider.findUserByToken(token);
+        return studentRepository.findByEmail(user.getEmail())
+                .orElseThrow(() -> new CustomException(ErrorCode.STUDENT_NOT_FOUND));
     }
 }

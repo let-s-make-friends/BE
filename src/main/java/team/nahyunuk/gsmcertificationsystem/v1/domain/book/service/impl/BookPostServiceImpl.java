@@ -27,16 +27,19 @@ public class BookPostServiceImpl implements BookPostService {
     @Override
     @Transactional
     public CommonApiResponse execute(String token, BookPostRequest request) {
-        User user = tokenProvider.findUserByToken(token);
-        Book book = createBook(request, user);
+        Student student = getStudentByToken(token);
+        Book book = createBook(request, student);
         bookRepository.save(book);
         return CommonApiResponse.success("독서 영역이 저장되었습니다.");
     }
 
-    private Book createBook(BookPostRequest request, User user) {
-        Student student = studentRepository.findByEmail(user.getEmail())
+    private Student getStudentByToken(String token) {
+        User user = tokenProvider.findUserByToken(token);
+        return studentRepository.findByEmail(user.getEmail())
                 .orElseThrow(() -> new CustomException(ErrorCode.STUDENT_NOT_FOUND));
+    }
 
+    private Book createBook(BookPostRequest request, Student student) {
         return Book.builder()
                 .title(request.title())
                 .author(request.author())

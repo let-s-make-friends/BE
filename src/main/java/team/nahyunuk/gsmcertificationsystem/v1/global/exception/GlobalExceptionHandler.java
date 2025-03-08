@@ -15,8 +15,8 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(CustomException.class)
     public ResponseEntity<ErrorResponse> handleCustomException(CustomException e) {
-        log.warn("ExpectedException : {} ", e.getMessage());
-        log.trace("ExpectedException Details : ", e);
+        log.warn("CustomException : {} ", e.getMessage());
+        log.trace("CustomException Details : ", e);
         return ErrorResponse.toResponseEntity(e.getErrorCode());
     }
 

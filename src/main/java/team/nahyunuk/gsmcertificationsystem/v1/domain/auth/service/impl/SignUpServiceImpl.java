@@ -8,6 +8,9 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.auth.dto.request.SignUpRequest;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.auth.service.SignUpService;
+import team.nahyunuk.gsmcertificationsystem.v1.domain.profile.entity.Profile;
+import team.nahyunuk.gsmcertificationsystem.v1.domain.profile.repository.ProfileRepository;
+import team.nahyunuk.gsmcertificationsystem.v1.domain.student.entity.Student;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.student.repository.StudentRepository;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.user.entity.User;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.user.repository.UserRepository;
@@ -17,6 +20,8 @@ import team.nahyunuk.gsmcertificationsystem.v1.global.exception.error.ErrorCode;
 import team.nahyunuk.gsmcertificationsystem.v1.global.redis.util.RedisUtil;
 import team.nahyunuk.gsmcertificationsystem.v1.global.response.CommonApiResponse;
 
+import java.util.ArrayList;
+
 @Service
 @RequiredArgsConstructor
 public class SignUpServiceImpl implements SignUpService {
@@ -25,18 +30,26 @@ public class SignUpServiceImpl implements SignUpService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final StudentRepository studentRepository;
+    private final ProfileRepository profileRepository;
 
     @Override
     @Transactional(isolation = Isolation.READ_COMMITTED)
     public CommonApiResponse execute(@Valid SignUpRequest request) {
-        checkEmailSendCode(request.email());
-        String storedCode = redisUtil.get(request.email());
-        checkVerifyCode(storedCode, request.code());
-        existsByEmail(request.email());
-        validatePassword(request.password());
+        validateSignUpRequest(request);
+
         User user = createUser(request);
         userRepository.save(user);
+
+        saveProfileIfStudent(user);
+
         return CommonApiResponse.success("회원가입이 완료되었습니다.");
+    }
+
+    private void validateSignUpRequest(SignUpRequest request) {
+        checkEmailSendCode(request.email());
+        checkVerifyCode(redisUtil.get(request.email()), request.code());
+        existsByEmail(request.email());
+        validatePassword(request.password());
     }
 
     private void checkEmailSendCode(String email) {
@@ -65,23 +78,35 @@ public class SignUpServiceImpl implements SignUpService {
     }
 
     private User createUser(SignUpRequest request) {
-        String encodedPassword = passwordEncoder.encode(request.password());
-
-        Authority authority = getUserType(request.email());
-
         return User.builder()
-                .authority(authority)
+                .authority(getUserType(request.email()))
                 .email(request.email())
-                .password(encodedPassword)
+                .password(passwordEncoder.encode(request.password()))
                 .build();
     }
 
     private Authority getUserType(String email) {
-        if (!studentRepository.existsByEmail(email)) {
-            return Authority.TEACHER;
-        } else {
+        if (studentRepository.existsByEmail(email)) {
             return Authority.STUDENT;
+        } else {
+            return Authority.TEACHER;
         }
     }
 
+    private void saveProfileIfStudent(User user) {
+        if (user.getAuthority() == Authority.STUDENT) {
+            Student student = studentRepository.findByEmail(user.getEmail())
+                    .orElseThrow(() -> new CustomException(ErrorCode.STUDENT_NOT_FOUND));
+
+            Profile profile = Profile.builder()
+                    .toeicScore(0)
+                    .topcitScore(0)
+                    .readingMarathon(null)
+                    .pdfUrl(new ArrayList<>())
+                    .student(student)
+                    .build();
+
+            profileRepository.save(profile);
+        }
+    }
 }

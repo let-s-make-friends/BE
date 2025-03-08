@@ -10,7 +10,6 @@ import team.nahyunuk.gsmcertificationsystem.v1.domain.major.service.MajorCalcula
 import team.nahyunuk.gsmcertificationsystem.v1.domain.student.entity.Student;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.student.repository.StudentRepository;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.user.entity.User;
-import team.nahyunuk.gsmcertificationsystem.v1.domain.user.repository.UserRepository;
 import team.nahyunuk.gsmcertificationsystem.v1.global.exception.CustomException;
 import team.nahyunuk.gsmcertificationsystem.v1.global.exception.error.ErrorCode;
 import team.nahyunuk.gsmcertificationsystem.v1.global.response.CommonApiResponse;
@@ -27,12 +26,16 @@ public class MajorCalculationServiceImpl implements MajorCalculationService {
     @Override
     @Transactional
     public CommonApiResponse execute(String token, MajorCalculationRequest request) {
-        User user = tokenProvider.findUserByToken(token);
-        Student student = studentRepository.findByEmail(user.getEmail())
-                .orElseThrow(() -> new CustomException(ErrorCode.STUDENT_NOT_FOUND));
+        Student student = getStudentByToken(token);
         Major major = createMajor(request, student);
         majorRepository.save(major);
         return CommonApiResponse.success("전공 영역이 저장되었습니다");
+    }
+
+    private Student getStudentByToken(String token) {
+        User user = tokenProvider.findUserByToken(token);
+        return studentRepository.findByEmail(user.getEmail())
+                .orElseThrow(() -> new CustomException(ErrorCode.STUDENT_NOT_FOUND));
     }
 
     private Major createMajor(MajorCalculationRequest request, Student student) {
@@ -54,8 +57,7 @@ public class MajorCalculationServiceImpl implements MajorCalculationService {
     }
 
     private int calculateTopcitScore(int rawScore) {
-        int calculatedScore = (int) (rawScore * 3.3);
-        return Math.min(calculatedScore, 1000);
+        return Math.min((int) (rawScore * 3.3), 1000);
     }
 
     private int calculateTotalScore(MajorCalculationRequest request, int topcitScore) {

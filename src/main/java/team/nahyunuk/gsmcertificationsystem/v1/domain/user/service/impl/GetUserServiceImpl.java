@@ -25,11 +25,13 @@ public class GetUserServiceImpl implements GetUserService {
     @Override
     @Transactional(readOnly = true)
     public CommonApiResponse execute(String token) {
-        User user = tokenProvider.findUserByToken(token);
-        Student student = studentRepository.findByEmail(user.getEmail())
-                .orElseThrow(() -> new CustomException(ErrorCode.STUDENT_NOT_FOUND));
+        Student student = getStudentByToken(token);
         return CommonApiResponse.successWithData(null, new GetUserResponse(student.getStudentName()));
     }
 
-
+    private Student getStudentByToken(String token) {
+        User user = tokenProvider.findUserByToken(token);
+        return studentRepository.findByEmail(user.getEmail())
+                .orElseThrow(() -> new CustomException(ErrorCode.STUDENT_NOT_FOUND));
+    }
 }

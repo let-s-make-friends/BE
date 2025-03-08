@@ -33,9 +33,7 @@ public class ActivityGetServiceImpl implements ActivityGetService {
     @Override
     @Transactional(readOnly = true)
     public CommonApiResponse<List<ActivityGetResponse>> execute(String token) {
-        User user = tokenProvider.findUserByToken(token);
-        Student student = studentRepository.findByEmail(user.getEmail())
-                .orElseThrow(() -> new CustomException(ErrorCode.STUDENT_NOT_FOUND));
+        Student student = getStudentByToken(token);
         List<ActivityGetResponse> activities = findAllByStudent(student);
         return CommonApiResponse.successWithData(null, activities);
     }
@@ -50,5 +48,11 @@ public class ActivityGetServiceImpl implements ActivityGetService {
                     return activityConvert.getActivity(activity);
                 })
                 .toList();
+    }
+
+    private Student getStudentByToken(String token) {
+        User user = tokenProvider.findUserByToken(token);
+        return studentRepository.findByEmail(user.getEmail())
+                .orElseThrow(() -> new CustomException(ErrorCode.STUDENT_NOT_FOUND));
     }
 }

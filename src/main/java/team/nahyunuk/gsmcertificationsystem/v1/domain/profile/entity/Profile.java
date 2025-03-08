@@ -2,6 +2,7 @@ package team.nahyunuk.gsmcertificationsystem.v1.domain.profile.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
+import lombok.Builder;
 import lombok.Getter;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.profile.type.ReadingMarathon;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.student.entity.Student;
@@ -13,18 +14,13 @@ import java.util.List;
 @Entity
 @Getter
 @Table(name = "profile")
+@Builder
 public class Profile {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
-
-    @Column(name = "total_score")
-    private int totalScore;
-
-    @Column(name = "username", nullable = false)
-    private String username;
 
     @Column(name = "toeic_score")
     private int toeicScore;
@@ -42,9 +38,5 @@ public class Profile {
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "student", referencedColumnName = "id")
     private Student student;
-
-
-
-
 
 }

@@ -25,19 +25,13 @@ public class ChangeUserRoleServiceImpl implements ChangeUserRoleService {
     @Override
     @Transactional
     public CommonApiResponse execute(ChangeUserRoleRequest request, String token) {
-        User adminUser = findUserByToken(token);
+        User adminUser = tokenProvider.findUserByToken(token);
         validateUserPermission(adminUser);
 
         User user = userRepository.findById(request.userId())
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
         user.changeAuthority(request.authority());
         return CommonApiResponse.success("권한이 변경되었습니다.");
-    }
-
-    private User findUserByToken(String token) {
-        String removeToken = tokenProvider.removePrefix(token);
-        String userId = tokenProvider.getUserIdFromAccessToken(removeToken);
-        return userRepository.findByUserId(Long.valueOf(userId));
     }
 
     private void validateUserPermission(User user) {

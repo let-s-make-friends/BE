@@ -27,16 +27,13 @@ public class ActivityPostServiceImpl implements ActivityPostService {
     @Override
     @Transactional
     public CommonApiResponse execute(ActivityPostRequest request, String token) {
-        User user = tokenProvider.findUserByToken(token);
-        Activity activity = createActivity(request, user);
+        Student student = getStudentByToken(token);
+        Activity activity = createActivity(request, student);
         activityRepository.save(activity);
         return CommonApiResponse.success("활동 영역이 저장되었습니다.");
     }
 
-    private Activity createActivity(ActivityPostRequest request, User user) {
-        Student student = studentRepository.findByEmail(user.getEmail())
-                .orElseThrow(() -> new CustomException(ErrorCode.STUDENT_NOT_FOUND));
-
+    private Activity createActivity(ActivityPostRequest request, Student student) {
         return Activity.builder()
                 .activityCategory(request.activityCategory())
                 .subject(request.subject())
@@ -49,5 +46,11 @@ public class ActivityPostServiceImpl implements ActivityPostService {
                 .student(student)
                 .agreement(false)
                 .build();
+    }
+
+    private Student getStudentByToken(String token) {
+        User user = tokenProvider.findUserByToken(token);
+        return studentRepository.findByEmail(user.getEmail())
+                .orElseThrow(() -> new CustomException(ErrorCode.STUDENT_NOT_FOUND));
     }
 }
