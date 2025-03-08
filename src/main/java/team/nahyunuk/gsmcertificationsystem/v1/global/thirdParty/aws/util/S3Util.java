@@ -57,4 +57,16 @@ public class S3Util {
         s3.deleteObject(bucket, key);
     }
 
+    public String pdfUpload(MultipartFile pdf) {
+        try {
+            if (!pdf.getOriginalFilename().endsWith(".pdf")) {
+                throw new CustomException(ErrorCode.FILE_EXTENSION_INVALID);
+            }
+
+            return upload(pdf);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }

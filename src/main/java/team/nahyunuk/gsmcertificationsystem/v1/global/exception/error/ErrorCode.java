@@ -51,6 +51,9 @@ public enum ErrorCode {
     EMAIL_SEND_FAILID(500, "이메일 발송에 실패했습니다."),
     INTERNAL_SERVER_ERROR(500, "서버 오류"),
 
+    // readingMarathon
+    COURSE_NOT_FOUND(404, "해당 독서마라톤 코스를 찾을 수 없습니다."),
+
     // client
     INVALID_INPUT(400,"잘못된 요청 형식입니다");
 
