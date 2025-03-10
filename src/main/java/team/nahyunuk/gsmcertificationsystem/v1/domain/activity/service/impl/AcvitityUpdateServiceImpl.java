@@ -25,14 +25,22 @@ public class AcvitityUpdateServiceImpl implements ActivityUpdateService {
     @Transactional
     public CommonApiResponse execute(ActivityUpdateRequest request, String token) {
         User user = tokenProvider.findUserByToken(token);
-        Activity activity = activityRepository.findById(request.id())
-                .orElseThrow(() -> new CustomException(ErrorCode.ACTIVITY_NOT_FOUND));
+        Activity activity = findActivityById(request.id());
 
-        if (!activity.getStudent().getEmail().equals(user.getEmail())) {
-            throw new CustomException(ErrorCode.FORBIDDEN_ACCESS);
-        }
+        validateUserAccess(activity, user);
 
         activity.update(request);
         return CommonApiResponse.success("활동 영역이 저장되었습니다");
+    }
+
+    private Activity findActivityById(Long id) {
+        return activityRepository.findById(id)
+                .orElseThrow(() -> new CustomException(ErrorCode.ACTIVITY_NOT_FOUND));
+    }
+
+    private void validateUserAccess(Activity activity, User user) {
+        if (!activity.getStudent().getEmail().equals(user.getEmail())) {
+            throw new CustomException(ErrorCode.FORBIDDEN_ACCESS);
+        }
     }
 }
