@@ -7,21 +7,30 @@ import team.nahyunuk.gsmcertificationsystem.v1.domain.activity.dto.request.Activ
 import team.nahyunuk.gsmcertificationsystem.v1.domain.activity.entity.Activity;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.activity.repository.ActivityRepository;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.activity.service.ActivityUpdateService;
+import team.nahyunuk.gsmcertificationsystem.v1.domain.user.entity.User;
+import team.nahyunuk.gsmcertificationsystem.v1.domain.user.repository.UserRepository;
 import team.nahyunuk.gsmcertificationsystem.v1.global.exception.CustomException;
 import team.nahyunuk.gsmcertificationsystem.v1.global.exception.error.ErrorCode;
 import team.nahyunuk.gsmcertificationsystem.v1.global.response.CommonApiResponse;
+import team.nahyunuk.gsmcertificationsystem.v1.global.security.jwt.TokenProvider;
 
 @Service
 @RequiredArgsConstructor
 public class AcvitityUpdateServiceImpl implements ActivityUpdateService {
 
     private final ActivityRepository activityRepository;
+    private final TokenProvider tokenProvider;
 
     @Override
     @Transactional
-    public CommonApiResponse execute(ActivityUpdateRequest request) {
+    public CommonApiResponse execute(ActivityUpdateRequest request, String token) {
+        User user = tokenProvider.findUserByToken(token);
         Activity activity = activityRepository.findById(request.id())
                 .orElseThrow(() -> new CustomException(ErrorCode.ACTIVITY_NOT_FOUND));
+
+        if (!activity.getStudent().getEmail().equals(user.getEmail())) {
+            throw new CustomException(ErrorCode.FORBIDDEN_ACCESS);
+        }
 
         activity.update(request);
         return CommonApiResponse.success("활동 영역이 저장되었습니다");

@@ -1,12 +1,11 @@
 package team.nahyunuk.gsmcertificationsystem.v1.domain.activity.dto.response;
 
-import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.activity.type.ActivityCategory;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.activity.type.PostStatus;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.activity.type.StudyCategory;
 
-import java.time.LocalDate;
-
+@Builder
 public record ActivityGetResponse(
         Long id,
         StudyCategory studyCategory,

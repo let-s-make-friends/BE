@@ -102,7 +102,7 @@ public class SignUpServiceImpl implements SignUpService {
                     .toeicScore(0)
                     .topcitScore(0)
                     .readingMarathon(null)
-                    .pdfUrl(new ArrayList<>())
+                    .pdfUrls(new ArrayList<>())
                     .student(student)
                     .build();
 

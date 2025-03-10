@@ -8,14 +8,14 @@ import team.nahyunuk.gsmcertificationsystem.v1.domain.book.entity.Book;
 public class BookConvert {
 
     public BookGetResponse getBook(Book book) {
-        return new BookGetResponse(
-                book.getId(),
-                book.getTitle(),
-                book.getAuthor(),
-                book.getPage(),
-                book.getSemester(),
-                book.getPostStatus(),
-                book.getBody().length()
-        );
+        return BookGetResponse.builder()
+                .id(book.getId())
+                .title(book.getTitle())
+                .author(book.getAuthor())
+                .page(book.getPage())
+                .semester(book.getSemester())
+                .postStatus(book.getPostStatus())
+                .textLength(book.getBody().length())
+                .build();
     }
 }

@@ -9,16 +9,16 @@ import team.nahyunuk.gsmcertificationsystem.v1.domain.activity.entity.Activity;
 public class ActivityConvert {
 
     public ActivityGetResponse getActivity(Activity activity) {
-        return new ActivityGetResponse(
-                activity.getId(),
-                activity.getStudyCategory(),
-                activity.getActivityCategory(),
-                activity.getSubject(),
-                activity.getSemester(),
-                activity.getPostStatus(),
-                activity.getBody().length(),
-                activity.getImageUrl()
-        );
+        return ActivityGetResponse.builder()
+                .id(activity.getId())
+                .studyCategory(activity.getStudyCategory())
+                .activityCategory(activity.getActivityCategory())
+                .subject(activity.getSubject())
+                .semester(activity.getSemester())
+                .postStatus(activity.getPostStatus())
+                .textLength(activity.getBody().length())
+                .imageUrl(activity.getImageUrl())
+                .build();
     }
 
     public BodyGetResponse getBody(String body) {

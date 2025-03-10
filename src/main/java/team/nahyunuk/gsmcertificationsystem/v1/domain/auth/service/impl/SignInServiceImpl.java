@@ -13,6 +13,7 @@ import team.nahyunuk.gsmcertificationsystem.v1.domain.student.entity.Student;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.student.repository.StudentRepository;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.user.entity.User;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.user.repository.UserRepository;
+import team.nahyunuk.gsmcertificationsystem.v1.domain.user.type.Authority;
 import team.nahyunuk.gsmcertificationsystem.v1.global.response.CommonApiResponse;
 import team.nahyunuk.gsmcertificationsystem.v1.global.exception.CustomException;
 import team.nahyunuk.gsmcertificationsystem.v1.global.exception.error.ErrorCode;
@@ -33,12 +34,12 @@ public class SignInServiceImpl implements SignInService {
     @Override
     public CommonApiResponse<SignInResponse> execute(SignInRequest request) {
         User user = getUserByEmail(request.email());
-        checkPassword(request.password(), user);
+        validatePassword(request.password(), user);
         TokenDto tokenDto = tokenProvider.generateToken(user.getUserId());
         saveRefreshToken(user.getUserId(), tokenDto);
-        Student student = studentRepository.findByEmail(request.email())
-                .orElseThrow(() -> new CustomException(ErrorCode.STUDENT_NOT_FOUND));
-        return CommonApiResponse.successWithData("로그인 성공", new SignInResponse(student.getStudentName(), tokenDto));
+
+        String username = getUsername(user);
+        return CommonApiResponse.successWithData("로그인 성공", new SignInResponse(username, tokenDto));
     }
 
     private User getUserByEmail(String email) {
@@ -46,7 +47,7 @@ public class SignInServiceImpl implements SignInService {
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
     }
 
-    private void checkPassword(String password, User user) {
+    private void validatePassword(String password, User user) {
         if (!passwordEncoder.matches(password, user.getPassword())) {
             throw new  CustomException(ErrorCode.INVALID_PASSWORD);
         }
@@ -67,5 +68,14 @@ public class SignInServiceImpl implements SignInService {
                 .token(token.getRefreshToken())
                 .expTime(token.getRefreshTokenExp())
                 .build();
+    }
+
+    private String getUsername(User user) {
+        if (user.getAuthority() == Authority.STUDENT) {
+            return studentRepository.findById(user.getUserId())
+                    .map(Student::getStudentName)
+                    .orElseThrow(() -> new CustomException(ErrorCode.STUDENT_NOT_FOUND));
+        }
+        return "선생";
     }
 }

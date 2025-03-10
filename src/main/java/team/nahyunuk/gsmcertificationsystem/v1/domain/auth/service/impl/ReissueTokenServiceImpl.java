@@ -6,9 +6,9 @@ import team.nahyunuk.gsmcertificationsystem.v1.domain.auth.entity.RefreshToken;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.auth.repository.RefreshTokenRepository;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.auth.service.ReissueTokenService;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.user.repository.UserRepository;
-import team.nahyunuk.gsmcertificationsystem.v1.global.response.CommonApiResponse;
 import team.nahyunuk.gsmcertificationsystem.v1.global.exception.CustomException;
 import team.nahyunuk.gsmcertificationsystem.v1.global.exception.error.ErrorCode;
+import team.nahyunuk.gsmcertificationsystem.v1.global.response.CommonApiResponse;
 import team.nahyunuk.gsmcertificationsystem.v1.global.security.jwt.TokenProvider;
 import team.nahyunuk.gsmcertificationsystem.v1.global.security.jwt.dto.TokenDto;
 
@@ -27,15 +27,19 @@ public class ReissueTokenServiceImpl implements ReissueTokenService {
         isNotNullRefreshToken(token);
 
         String removePrefixToken = tokenProvider.removePrefix(token);
-        RefreshToken refreshToken = refreshTokenRepository.findByToken(removePrefixToken)
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_REFRESH_TOKEN));
+        RefreshToken refreshToken = findRefreshToken(removePrefixToken);
 
-        String userId = tokenProvider.getUserIdFromRefreshToken(refreshToken.getToken());
-        isExistsUser(userId);
+        Long userId = extractUserId(refreshToken);
+        validateUserExists(userId);
 
-        TokenDto tokenDto = tokenProvider.generateToken(Long.valueOf(userId));
+        TokenDto tokenDto = tokenProvider.generateToken(userId);
         saveRefreshToken(tokenDto.getRefreshToken(), refreshToken.getUserId(), refreshToken.getExpTime());
         return CommonApiResponse.successWithData("토큰이 재발급되었습니다.", tokenDto);
+    }
+
+    private Long extractUserId(RefreshToken refreshToken) {
+        String userId = tokenProvider.getUserIdFromRefreshToken(refreshToken.getToken());
+        return Long.valueOf(userId);
     }
 
     private void isNotNullRefreshToken(String token) {
@@ -44,8 +48,13 @@ public class ReissueTokenServiceImpl implements ReissueTokenService {
         }
     }
 
-    private void isExistsUser(String userId) {
-        if (!userRepository.existsByUserId(Long.valueOf(userId))) {
+    private RefreshToken findRefreshToken(String token) {
+        return refreshTokenRepository.findByToken(token)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_REFRESH_TOKEN));
+    }
+
+    private void validateUserExists(Long userId) {
+        if (!userRepository.existsByUserId(userId)) {
             throw new CustomException(ErrorCode.USER_NOT_FOUND);
         }
     }
@@ -56,6 +65,8 @@ public class ReissueTokenServiceImpl implements ReissueTokenService {
                 .token(token)
                 .expTime(expiresAt)
                 .build();
+
+        refreshTokenRepository.save(refreshToken);
     }
 
 }

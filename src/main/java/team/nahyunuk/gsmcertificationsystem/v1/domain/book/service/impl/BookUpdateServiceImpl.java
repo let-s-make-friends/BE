@@ -7,21 +7,30 @@ import team.nahyunuk.gsmcertificationsystem.v1.domain.book.dto.request.BookUpdat
 import team.nahyunuk.gsmcertificationsystem.v1.domain.book.entity.Book;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.book.repository.BookRepository;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.book.service.BookUpdateService;
+import team.nahyunuk.gsmcertificationsystem.v1.domain.user.entity.User;
+import team.nahyunuk.gsmcertificationsystem.v1.domain.user.repository.UserRepository;
 import team.nahyunuk.gsmcertificationsystem.v1.global.exception.CustomException;
 import team.nahyunuk.gsmcertificationsystem.v1.global.exception.error.ErrorCode;
 import team.nahyunuk.gsmcertificationsystem.v1.global.response.CommonApiResponse;
+import team.nahyunuk.gsmcertificationsystem.v1.global.security.jwt.TokenProvider;
 
 @Service
 @RequiredArgsConstructor
 public class BookUpdateServiceImpl implements BookUpdateService {
 
     private final BookRepository bookRepository;
+    private final TokenProvider tokenProvider;
 
     @Override
     @Transactional
-    public CommonApiResponse execute(BookUpdateRequest request) {
+    public CommonApiResponse execute(BookUpdateRequest request, String token) {
+        User user = tokenProvider.findUserByToken(token);
         Book book = bookRepository.findById(request.id())
                 .orElseThrow(() -> new CustomException(ErrorCode.BOOK_NOT_FOUND));
+
+        if (!book.getStudent().getEmail().equals(user.getEmail())) {
+            throw new CustomException(ErrorCode.FORBIDDEN_ACCESS);
+        }
 
         book.update(request);
         return CommonApiResponse.success("독서 영역이 저장되었습니다.");

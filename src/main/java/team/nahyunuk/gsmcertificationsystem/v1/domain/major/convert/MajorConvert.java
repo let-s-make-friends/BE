@@ -8,15 +8,15 @@ import team.nahyunuk.gsmcertificationsystem.v1.domain.major.entity.Major;
 public class MajorConvert {
 
     public MajorGetResponse getMajor(Major major) {
-        return new MajorGetResponse(
-                major.getAwardCount(),
-                major.getLicenseCount(),
-                major.getTopcitScore(),
-                major.getClubCount(),
-                major.getCompetitionCount(),
-                major.getSchoolCompetitionCount(),
-                major.getSpecialLectureCount(),
-                major.getSchoolCompetitionCount()
-                );
+        return MajorGetResponse.builder()
+                .awardCount(major.getAwardCount())
+                .licenseCount(major.getLicenseCount())
+                .topcitScore(major.getTopcitScore())
+                .clubCount(major.getClubCount())
+                .competitionCount(major.getCompetitionCount())
+                .schoolCompetitionCount(major.getSchoolCompetitionCount())
+                .specialLectureCount(major.getSpecialLectureCount())
+                .afterSchoolCount(major.getAfterSchoolCount())
+                .build();
     }
 }

@@ -26,15 +26,48 @@ public class LogOutServiceImpl implements LogOutService {
     @Override
     public CommonApiResponse execute(String token) {
         log.info("Received JWT Token: '{}'", token);
-        String removeToken = tokenProvider.removePrefix(token);
-        String userId = tokenProvider.getUserIdFromAccessToken(removeToken);
-        RefreshToken refreshToken = refreshTokenRepository.findById(Long.valueOf(userId))
-                .orElseThrow(() -> new CustomException(ErrorCode.EXPIRED_TOKEN));
+        validateToken(token);
 
-        refreshTokenRepository.delete(refreshToken);
-        redisUtil.setBlackList(token, "access_token", tokenProvider.getExpiration(removeToken));
+        String accessToken = tokenProvider.removePrefix(token);
+        Long userId = extractUserId(accessToken);
+        validateUserExists(userId);
 
+        RefreshToken refreshToken = findRefreshTokenByUserId(userId);
+        deleteRefreshToken(refreshToken);
+        addTokenToBlackList(accessToken);
         return CommonApiResponse.success("로그아웃 되었습니다.");
+    }
+
+    private void validateToken(String token) {
+        if (token == null || token.isEmpty()) {
+            throw new CustomException(ErrorCode.INVALID_TOKEN);
+        }
+    }
+
+    private Long extractUserId(String accessToken) {
+        String userId = tokenProvider.getUserIdFromAccessToken(accessToken);
+        return Long.valueOf(userId);
+    }
+
+    private void validateUserExists(Long userId) {
+        if (!userRepository.existsByUserId(userId)) {
+            throw new CustomException(ErrorCode.USER_NOT_FOUND);
+        }
+    }
+
+    private RefreshToken findRefreshTokenByUserId(Long userId) {
+        return refreshTokenRepository.findById(userId)
+                .orElseThrow(() -> new CustomException(ErrorCode.EXPIRED_TOKEN));
+    }
+
+    private void deleteRefreshToken(RefreshToken refreshToken) {
+        refreshTokenRepository.delete(refreshToken);
+    }
+
+    private void addTokenToBlackList(String token) {
+        long exp = tokenProvider.getExpiration(token);
+        redisUtil.setBlackList(token, "access_token", exp);
+        log.info("Add token to black list: '{}'", token);
     }
 
 }
