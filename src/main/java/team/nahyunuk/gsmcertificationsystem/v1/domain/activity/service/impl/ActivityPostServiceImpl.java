@@ -28,9 +28,12 @@ public class ActivityPostServiceImpl implements ActivityPostService {
     @Transactional
     public CommonApiResponse execute(ActivityPostRequest request, String token) {
         Student student = getStudentByToken(token);
-        Activity activity = createActivity(request, student);
-        activityRepository.save(activity);
+        saveActivity(request, student);
         return CommonApiResponse.success("활동 영역이 저장되었습니다.");
+    }
+
+    private void saveActivity(ActivityPostRequest request, Student student) {
+        activityRepository.save(createActivity(request, student));
     }
 
     private Activity createActivity(ActivityPostRequest request, Student student) {
