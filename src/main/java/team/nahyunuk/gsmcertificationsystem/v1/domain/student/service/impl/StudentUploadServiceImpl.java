@@ -37,13 +37,7 @@ public class StudentUploadServiceImpl implements StudentUploadService {
         validateUserPermission(user);
         validateFile(file);
 
-        try (InputStream inputStream = file.getInputStream()) {
-            List<StudentDto> studentDtoList = parseExcel(inputStream);
-            saveStudents(studentDtoList);
-        } catch (IOException e) {
-            log.error("엑셀 파일을 읽는 중 오류 발생", e);
-            throw new CustomException(ErrorCode.STUDENT_FILE_PARSE_ERROR);
-        }
+        processExcelFile(file);
 
         return CommonApiResponse.success("학생 데이터가 저장되었습니다.");
     }
@@ -59,6 +53,17 @@ public class StudentUploadServiceImpl implements StudentUploadService {
             throw new CustomException(ErrorCode.STUDENT_FILE_EMPTY);
         }
     }
+
+    private void processExcelFile(MultipartFile file) {
+        try (InputStream inputStream = file.getInputStream()) {
+            List<StudentDto> studentDtoList = parseExcel(inputStream);
+            saveStudents(studentDtoList);
+        } catch (IOException e) {
+            log.error("엑셀 파일을 읽는 중 오류 발생", e);
+            throw new CustomException(ErrorCode.STUDENT_FILE_PARSE_ERROR);
+        }
+    }
+
 
     private List<StudentDto> parseExcel(InputStream inputStream) {
         try (Workbook workbook = WorkbookFactory.create(inputStream)) {

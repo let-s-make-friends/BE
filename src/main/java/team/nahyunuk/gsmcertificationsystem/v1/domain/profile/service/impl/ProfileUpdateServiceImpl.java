@@ -29,9 +29,7 @@ public class ProfileUpdateServiceImpl implements ProfileUpdateService {
         Student student = getStudentByToken(token);
         Profile profile = profileRepository.findByStudent(student);
 
-        if (!profile.getStudent().equals(student)) {
-            throw new CustomException(ErrorCode.FORBIDDEN_ACCESS);
-        }
+        validateStudentAccess(profile, student);
 
         profile.update(request);
         return CommonApiResponse.success("프로필이 저장되었습니다.");
@@ -42,4 +40,11 @@ public class ProfileUpdateServiceImpl implements ProfileUpdateService {
         return studentRepository.findByEmail(user.getEmail())
                 .orElseThrow(() -> new CustomException(ErrorCode.STUDENT_NOT_FOUND));
     }
+
+    private void validateStudentAccess(Profile profile, Student student) {
+        if (!profile.getStudent().equals(student)) {
+            throw new CustomException(ErrorCode.FORBIDDEN_ACCESS);
+        }
+    }
+
 }
