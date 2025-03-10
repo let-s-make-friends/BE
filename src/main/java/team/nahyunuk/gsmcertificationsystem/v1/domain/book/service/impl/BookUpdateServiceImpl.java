@@ -7,6 +7,7 @@ import team.nahyunuk.gsmcertificationsystem.v1.domain.book.dto.request.BookUpdat
 import team.nahyunuk.gsmcertificationsystem.v1.domain.book.entity.Book;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.book.repository.BookRepository;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.book.service.BookUpdateService;
+import team.nahyunuk.gsmcertificationsystem.v1.domain.student.entity.Student;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.user.entity.User;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.user.repository.UserRepository;
 import team.nahyunuk.gsmcertificationsystem.v1.global.exception.CustomException;
@@ -25,14 +26,22 @@ public class BookUpdateServiceImpl implements BookUpdateService {
     @Transactional
     public CommonApiResponse execute(BookUpdateRequest request, String token) {
         User user = tokenProvider.findUserByToken(token);
-        Book book = bookRepository.findById(request.id())
-                .orElseThrow(() -> new CustomException(ErrorCode.BOOK_NOT_FOUND));
+        Book book = findBookById(request.id());
 
-        if (!book.getStudent().getEmail().equals(user.getEmail())) {
-            throw new CustomException(ErrorCode.FORBIDDEN_ACCESS);
-        }
+        validateUserAccess(book, user);
 
         book.update(request);
         return CommonApiResponse.success("독서 영역이 저장되었습니다.");
+    }
+
+    private Book findBookById(Long id) {
+        return bookRepository.findById(id)
+                .orElseThrow(() -> new CustomException(ErrorCode.BOOK_NOT_FOUND));
+    }
+
+    private void validateUserAccess(Book book, User user) {
+        if (!book.getStudent().getEmail().equals(user.getEmail())) {
+            throw new CustomException(ErrorCode.FORBIDDEN_ACCESS);
+        }
     }
 }
