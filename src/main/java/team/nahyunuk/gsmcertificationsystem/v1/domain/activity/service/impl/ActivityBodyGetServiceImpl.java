@@ -39,11 +39,9 @@ public class ActivityBodyGetServiceImpl implements ActivityBodyGetService {
             return CommonApiResponse.successWithData(null, activityConvert.getBody(cachedBody));
         }
 
-        Activity activity = activityRepository.findById(activityId)
-                .orElseThrow(() -> new CustomException(ErrorCode.ACTIVITY_NOT_FOUND));
+        Activity activity = findActivityById(activityId);
 
         validateActivityAccess(activity, student);
-
 
         redisUtil.set(redisKey, activity.getBody(), 60 * 60);
         return CommonApiResponse.successWithData(null, activityConvert.getBody(cachedBody));
@@ -59,5 +57,10 @@ public class ActivityBodyGetServiceImpl implements ActivityBodyGetService {
         if (!activity.getStudent().equals(student)) {
             throw new CustomException(ErrorCode.FORBIDDEN_ACCESS);
         }
+    }
+
+    private Activity findActivityById(Long activityId) {
+        return activityRepository.findById(activityId)
+                .orElseThrow(() -> new CustomException(ErrorCode.ACTIVITY_NOT_FOUND));
     }
 }
