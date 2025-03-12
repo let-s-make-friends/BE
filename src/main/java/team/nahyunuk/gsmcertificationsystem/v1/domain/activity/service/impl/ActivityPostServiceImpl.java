@@ -15,19 +15,20 @@ import team.nahyunuk.gsmcertificationsystem.v1.global.exception.CustomException;
 import team.nahyunuk.gsmcertificationsystem.v1.global.exception.error.ErrorCode;
 import team.nahyunuk.gsmcertificationsystem.v1.global.response.CommonApiResponse;
 import team.nahyunuk.gsmcertificationsystem.v1.global.security.jwt.TokenProvider;
+import team.nahyunuk.gsmcertificationsystem.v1.global.util.UserUtil;
 
 @Service
 @RequiredArgsConstructor
 public class ActivityPostServiceImpl implements ActivityPostService {
 
-    private final TokenProvider tokenProvider;
     private final ActivityRepository activityRepository;
     private final StudentRepository studentRepository;
+    private final UserUtil userUtil;
 
     @Override
     @Transactional
-    public CommonApiResponse execute(ActivityPostRequest request, String token) {
-        Student student = getStudentByToken(token);
+    public CommonApiResponse execute(ActivityPostRequest request) {
+        Student student = getStudentByToken();
         saveActivity(request, student);
         return CommonApiResponse.success("활동 영역이 저장되었습니다.");
     }
@@ -51,8 +52,8 @@ public class ActivityPostServiceImpl implements ActivityPostService {
                 .build();
     }
 
-    private Student getStudentByToken(String token) {
-        User user = tokenProvider.findUserByToken(token);
+    private Student getStudentByToken() {
+        User user = userUtil.getCurrentUser();
         return studentRepository.findByEmail(user.getEmail())
                 .orElseThrow(() -> new CustomException(ErrorCode.STUDENT_NOT_FOUND));
     }
