@@ -17,6 +17,7 @@ import team.nahyunuk.gsmcertificationsystem.v1.global.exception.error.ErrorCode;
 import team.nahyunuk.gsmcertificationsystem.v1.global.redis.util.RedisUtil;
 import team.nahyunuk.gsmcertificationsystem.v1.global.response.CommonApiResponse;
 import team.nahyunuk.gsmcertificationsystem.v1.global.security.jwt.TokenProvider;
+import team.nahyunuk.gsmcertificationsystem.v1.global.util.UserUtil;
 
 @Service
 @RequiredArgsConstructor
@@ -27,11 +28,12 @@ public class ActivityBodyGetServiceImpl implements ActivityBodyGetService {
     private final ActivityConvert activityConvert;
     private final TokenProvider tokenProvider;
     private final StudentRepository studentRepository;
+    private final UserUtil userUtil;
 
     @Override
     @Transactional(readOnly = true)
-    public CommonApiResponse execute(Long activityId, String token) {
-        Student student = getStudentByToken(token);
+    public CommonApiResponse execute(Long activityId) {
+        Student student = getStudentByToken();
         String redisKey = "activity:" + activityId;
 
         String cachedBody = redisUtil.get(redisKey);
@@ -47,8 +49,8 @@ public class ActivityBodyGetServiceImpl implements ActivityBodyGetService {
         return CommonApiResponse.successWithData(null, activityConvert.getBody(cachedBody));
     }
 
-    private Student getStudentByToken(String token) {
-        User user = tokenProvider.findUserByToken(token);
+    private Student getStudentByToken() {
+        User user = userUtil.getCurrentUser();
         return studentRepository.findByEmail(user.getEmail())
                 .orElseThrow(() -> new CustomException(ErrorCode.STUDENT_NOT_FOUND));
     }
