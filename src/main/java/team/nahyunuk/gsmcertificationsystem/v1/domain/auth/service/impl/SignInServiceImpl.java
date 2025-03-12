@@ -71,8 +71,8 @@ public class SignInServiceImpl implements SignInService {
     }
 
     private String getUsername(User user) {
-        if (user.getAuthority() == Authority.STUDENT) {
-            return studentRepository.findById(user.getUserId())
+        if (user.getAuthority() == Authority.STUDENT || user.getAuthority() == Authority.ADMIN) {
+            return studentRepository.findByEmail(user.getEmail())
                     .map(Student::getStudentName)
                     .orElseThrow(() -> new CustomException(ErrorCode.STUDENT_NOT_FOUND));
         }

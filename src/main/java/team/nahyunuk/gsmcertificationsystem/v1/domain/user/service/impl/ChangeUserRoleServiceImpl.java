@@ -29,8 +29,7 @@ public class ChangeUserRoleServiceImpl implements ChangeUserRoleService {
         User adminUser = userUtil.getCurrentUser();
         validateUserPermission(adminUser);
 
-        User user = userRepository.findById(request.userId())
-                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+        User user = findUserById(request.userId());
         user.changeAuthority(request.authority());
         return CommonApiResponse.success("권한이 변경되었습니다.");
     }
@@ -39,6 +38,11 @@ public class ChangeUserRoleServiceImpl implements ChangeUserRoleService {
         if (user.getAuthority() == Authority.ADMIN || user.getAuthority() == Authority.TEACHER) {
             throw new CustomException(ErrorCode.FORBIDDEN_ACCESS);
         }
+    }
+
+    private User findUserById(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
     }
 
 }
