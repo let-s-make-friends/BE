@@ -44,9 +44,9 @@ public class Profile {
     @JoinColumn(name = "student", referencedColumnName = "id")
     private Student student;
 
-    public void update(ProfileUpdateRequest request) {
-        this.toeicScore = request.toeicScore();
-        this.topcitScore = request.topcitScore();
+    public void update(ProfileUpdateRequest request, int toeicScore, int topcitScore) {
+        this.toeicScore = toeicScore;
+        this.topcitScore = topcitScore;
         this.readingMarathon = request.readingMarathon();
         this.pdfUrls = request.pdfUrl();
     }

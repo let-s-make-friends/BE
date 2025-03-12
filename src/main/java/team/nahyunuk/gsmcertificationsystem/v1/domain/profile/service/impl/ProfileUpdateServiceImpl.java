@@ -3,6 +3,10 @@ package team.nahyunuk.gsmcertificationsystem.v1.domain.profile.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import team.nahyunuk.gsmcertificationsystem.v1.domain.foreign.entity.Foreign;
+import team.nahyunuk.gsmcertificationsystem.v1.domain.foreign.repository.ForeignRepository;
+import team.nahyunuk.gsmcertificationsystem.v1.domain.major.entity.Major;
+import team.nahyunuk.gsmcertificationsystem.v1.domain.major.repository.MajorRepository;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.profile.dto.request.ProfileUpdateRequest;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.profile.entity.Profile;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.profile.repository.ProfileRepository;
@@ -22,16 +26,20 @@ public class ProfileUpdateServiceImpl implements ProfileUpdateService {
     private final ProfileRepository profileRepository;
     private final StudentRepository studentRepository;
     private final UserUtil userUtil;
+    private final MajorRepository majorRepository;
+    private final ForeignRepository foreignRepository;
 
     @Override
     @Transactional
     public CommonApiResponse execute(ProfileUpdateRequest request) {
         Student student = getStudentByToken();
         Profile profile = profileRepository.findByStudent(student);
+        int topcit = findTopcitByMajor(student);
+        int toeic = findToeicByForeign(student);
 
         validateStudentAccess(profile, student);
 
-        profile.update(request);
+        profile.update(request, toeic, topcit);
         return CommonApiResponse.success("프로필이 저장되었습니다.");
     }
 
@@ -45,6 +53,16 @@ public class ProfileUpdateServiceImpl implements ProfileUpdateService {
         if (!profile.getStudent().equals(student)) {
             throw new CustomException(ErrorCode.FORBIDDEN_ACCESS);
         }
+    }
+
+    private int findTopcitByMajor(Student student) {
+        Major major = majorRepository.findByStudent(student);
+        return major.getTopcitScore();
+    }
+
+    private int findToeicByForeign(Student student) {
+        Foreign foreign = foreignRepository.findByStudent(student);
+        return foreign.getToeicScore();
     }
 
 }

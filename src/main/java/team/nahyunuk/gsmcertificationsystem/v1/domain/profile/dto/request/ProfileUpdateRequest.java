@@ -6,8 +6,6 @@ import team.nahyunuk.gsmcertificationsystem.v1.domain.profile.type.ReadingMarath
 import java.util.List;
 
 public record ProfileUpdateRequest(
-        int toeicScore,
-        int topcitScore,
         ReadingMarathon readingMarathon,
         @Size(max = 6) List<String> pdfUrl
         ) {
