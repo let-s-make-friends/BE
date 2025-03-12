@@ -16,6 +16,7 @@ import team.nahyunuk.gsmcertificationsystem.v1.global.exception.error.ErrorCode;
 import team.nahyunuk.gsmcertificationsystem.v1.global.redis.util.RedisUtil;
 import team.nahyunuk.gsmcertificationsystem.v1.global.response.CommonApiResponse;
 import team.nahyunuk.gsmcertificationsystem.v1.global.security.jwt.TokenProvider;
+import team.nahyunuk.gsmcertificationsystem.v1.global.util.UserUtil;
 
 import java.util.List;
 import java.util.StringTokenizer;
@@ -25,15 +26,15 @@ import java.util.StringTokenizer;
 public class BookGetServiceImpl implements BookGetService {
 
     private final BookRepository bookRepository;
-    private final TokenProvider tokenProvider;
+    private final UserUtil userUtil;
     private final StudentRepository studentRepository;
     private final RedisUtil redisUtil;
     private final BookConvert bookConvert;
 
     @Override
     @Transactional(readOnly = true)
-    public CommonApiResponse<List<BookGetResponse>> execute(String token) {
-        Student student = getStudentByToken(token);
+    public CommonApiResponse<List<BookGetResponse>> execute() {
+        Student student = getStudentByToken();
         List<BookGetResponse> books = findAllByStudent(student);
         return CommonApiResponse.successWithData(null, books);
     }
@@ -50,8 +51,8 @@ public class BookGetServiceImpl implements BookGetService {
                 .toList();
     }
 
-    private Student getStudentByToken(String token) {
-        User user = tokenProvider.findUserByToken(token);
+    private Student getStudentByToken() {
+        User user = userUtil.getCurrentUser();
         return studentRepository.findByEmail(user.getEmail())
                 .orElseThrow(() -> new CustomException(ErrorCode.STUDENT_NOT_FOUND));
     }
