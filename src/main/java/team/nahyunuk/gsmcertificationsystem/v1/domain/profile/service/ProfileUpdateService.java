@@ -4,5 +4,5 @@ import team.nahyunuk.gsmcertificationsystem.v1.domain.profile.dto.request.Profil
 import team.nahyunuk.gsmcertificationsystem.v1.global.response.CommonApiResponse;
 
 public interface ProfileUpdateService {
-    CommonApiResponse execute(ProfileUpdateRequest request, String token);
+    CommonApiResponse execute(ProfileUpdateRequest request);
 }
