@@ -41,10 +41,11 @@ public enum ErrorCode {
 
     // activity
     ACTIVITY_NOT_FOUND(404, "활동 영역을 찾을 수 없습니다."),
-    ACTIVITY_LIMIT_EXCEEDED(400, "최대 활동 개수를 초과했습니다."),
+    ACTIVITY_LIMIT_EXCEEDED(400, "최대 활동 영역 개수를 초과했습니다."),
 
     // book
     BOOK_NOT_FOUND(404, "독서 영역을 찾을 수 없습니다."),
+    BOOK_LIMIT_EXCEEDED(400, "최대 독서 영역 개수를 초과했습니다"),
 
     // major
     MAJOR_NOT_FOUND(404, "전공 영역을 찾을 수 없습니다."),

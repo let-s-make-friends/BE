@@ -9,5 +9,5 @@ import java.util.List;
 
 public interface ActivityRepository extends CrudRepository<Activity, Long> {
     List<Activity> findAllByStudent(Student student);
-    int countByCategoryAndStudent(ActivityCategory category, Student student);
+    int countByActivityCategoryAndStudent(ActivityCategory category, Student student);
 }

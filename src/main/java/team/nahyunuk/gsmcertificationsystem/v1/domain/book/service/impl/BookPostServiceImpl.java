@@ -23,10 +23,14 @@ public class BookPostServiceImpl implements BookPostService {
     private final UserUtil userUtil;
     private final StudentRepository studentRepository;
 
+    private static final int MAX_BOOKS = 10;
+
     @Override
     @Transactional
     public CommonApiResponse execute(BookPostRequest request) {
         Student student = getStudentByToken();
+        int currentBookCount = getCurrentBookCount(student);
+        checkBookLimit(currentBookCount);
         saveBook(request, student);
         return CommonApiResponse.success("독서 영역이 저장되었습니다.");
     }
@@ -53,5 +57,15 @@ public class BookPostServiceImpl implements BookPostService {
                 .postStatus(request.postStatus())
                 .student(student)
                 .build();
+    }
+
+    private int getCurrentBookCount(Student student) {
+        return bookRepository.countBooksByStudent(student);
+    }
+
+    private void checkBookLimit(int currentBookCount) {
+        if (currentBookCount >= MAX_BOOKS) {
+            throw new CustomException(ErrorCode.BOOK_LIMIT_EXCEEDED);
+        }
     }
 }

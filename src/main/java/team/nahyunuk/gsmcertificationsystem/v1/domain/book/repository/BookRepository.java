@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface BookRepository extends CrudRepository<Book, Long> {
     List<Book> findAllByStudent(Student student);
+    int countBooksByStudent(Student student);
 }

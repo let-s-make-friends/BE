@@ -28,9 +28,9 @@ public class ActivityPostServiceImpl implements ActivityPostService {
     @Transactional
     public CommonApiResponse execute(ActivityPostRequest request) {
         Student student = getStudentByToken();
-        saveActivity(request, student);
-        int countActivity = activityRepository.countByCategoryAndStudent(request.activityCategory(), student);
+        int countActivity = activityRepository.countByActivityCategoryAndStudent(request.activityCategory(), student);
         checkActivityCategoryCount(request.activityCategory(), student, countActivity);
+        saveActivity(request, student);
         return CommonApiResponse.success("활동 영역이 저장되었습니다.");
     }
 
@@ -60,11 +60,11 @@ public class ActivityPostServiceImpl implements ActivityPostService {
     }
 
     private void checkActivityCategoryCount(ActivityCategory activityCategory, Student student, int countActivity) {
-        int totalAwards = activityRepository.countByCategoryAndStudent(ActivityCategory.SCHOOL_AWARD, student) +
-                activityRepository.countByCategoryAndStudent(ActivityCategory.OUTSIDE_AWARD, student);
+        int totalAwards = activityRepository.countByActivityCategoryAndStudent(ActivityCategory.SCHOOL_AWARD, student) +
+                activityRepository.countByActivityCategoryAndStudent(ActivityCategory.OUTSIDE_AWARD, student);
 
-        int totalCharacterAwards = activityRepository.countByCategoryAndStudent(ActivityCategory.CHARACTER_SCHOOL_AWARD, student) +
-                activityRepository.countByCategoryAndStudent(ActivityCategory.CHARACTER_OUTSIDE_AWARD, student);
+        int totalCharacterAwards = activityRepository.countByActivityCategoryAndStudent(ActivityCategory.CHARACTER_SCHOOL_AWARD, student) +
+                activityRepository.countByActivityCategoryAndStudent(ActivityCategory.CHARACTER_OUTSIDE_AWARD, student);
 
         if (totalAwards > 6 && (activityCategory == ActivityCategory.SCHOOL_AWARD || activityCategory == ActivityCategory.OUTSIDE_AWARD)) {
             throw new CustomException(ErrorCode.ACTIVITY_LIMIT_EXCEEDED);
