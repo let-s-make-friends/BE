@@ -1,3 +1,5 @@
+
+
 spring:
   datasource:
     url: ${DB_URL}
@@ -62,7 +64,8 @@ cors:
 discord:
   webhook:
     url: ${DISCORD}
-
+server:
+  port: 8081
 
 
 

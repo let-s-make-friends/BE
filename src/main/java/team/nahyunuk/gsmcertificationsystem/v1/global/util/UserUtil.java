@@ -18,7 +18,7 @@ public class UserUtil {
     public User getCurrentUser() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        if (principal instanceof User) {
+        if (principal instanceof CustomUserDetails) {
             String userId = ((CustomUserDetails) principal).getUsername();
             return userRepository.findById(Long.valueOf(userId))
                     .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));

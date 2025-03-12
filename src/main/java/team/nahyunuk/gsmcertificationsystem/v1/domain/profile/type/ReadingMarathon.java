@@ -8,6 +8,7 @@ import team.nahyunuk.gsmcertificationsystem.v1.global.exception.error.ErrorCode;
 
 @RequiredArgsConstructor
 public enum ReadingMarathon {
+    NONE("없음"),
     TURTLE("거북이 코스"),
     CROCODILE("악어 코스"),
     RABBIT("토끼 코스"),

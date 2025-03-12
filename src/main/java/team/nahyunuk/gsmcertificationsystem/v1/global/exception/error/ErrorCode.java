@@ -28,7 +28,7 @@ public enum ErrorCode {
     EMAIL_NOT_PENDING(400, "이메일 인증 대기 상태가 아닙니다."),
     INVALID_EMAIL_FORMAT(400, "잘못된 이메일 형식입니다."),
     INVALID_PASSWORD_FORMAT(400, "비밀번호는 영문과 숫자를 포함하여 8자 이상이어야 합니다."),
-    PRINCIPAL_INVALID(401, "현재 인증되어 있는 유저의 principal이 유효하지 않습니나."),
+    PRINCIPAL_INVALID(401, "현재 인증되어 있는 유저의 principal이 유효하지 않습니다."),
 
     // student
     STUDENT_FILE_EMPTY(400, "업로드한 파일이 비어 있습니다."),

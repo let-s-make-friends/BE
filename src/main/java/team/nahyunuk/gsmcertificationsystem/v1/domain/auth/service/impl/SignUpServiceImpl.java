@@ -10,6 +10,7 @@ import team.nahyunuk.gsmcertificationsystem.v1.domain.auth.dto.request.SignUpReq
 import team.nahyunuk.gsmcertificationsystem.v1.domain.auth.service.SignUpService;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.profile.entity.Profile;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.profile.repository.ProfileRepository;
+import team.nahyunuk.gsmcertificationsystem.v1.domain.profile.type.ReadingMarathon;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.student.entity.Student;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.student.repository.StudentRepository;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.user.entity.User;
@@ -101,7 +102,7 @@ public class SignUpServiceImpl implements SignUpService {
             Profile profile = Profile.builder()
                     .toeicScore(0)
                     .topcitScore(0)
-                    .readingMarathon(null)
+                    .readingMarathon(ReadingMarathon.NONE)
                     .pdfUrls(new ArrayList<>())
                     .student(student)
                     .build();
