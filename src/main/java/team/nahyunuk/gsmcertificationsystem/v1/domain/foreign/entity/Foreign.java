@@ -12,6 +12,7 @@ import team.nahyunuk.gsmcertificationsystem.v1.domain.student.entity.Student;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "foreign_language")
 public class Foreign {
 
     @Id

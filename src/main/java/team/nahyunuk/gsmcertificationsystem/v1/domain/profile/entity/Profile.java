@@ -40,7 +40,7 @@ public class Profile {
     @Size(max = 6)
     private List<String> pdfUrls;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "student", referencedColumnName = "id")
     private Student student;
 
