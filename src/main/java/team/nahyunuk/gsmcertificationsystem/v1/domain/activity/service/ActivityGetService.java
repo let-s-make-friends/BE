@@ -6,5 +6,5 @@ import team.nahyunuk.gsmcertificationsystem.v1.global.response.CommonApiResponse
 import java.util.List;
 
 public interface ActivityGetService {
-    CommonApiResponse<List<ActivityGetResponse>> execute(String token);
+    CommonApiResponse<List<ActivityGetResponse>> execute();
 }

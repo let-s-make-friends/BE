@@ -17,6 +17,7 @@ import team.nahyunuk.gsmcertificationsystem.v1.global.exception.error.ErrorCode;
 import team.nahyunuk.gsmcertificationsystem.v1.global.redis.util.RedisUtil;
 import team.nahyunuk.gsmcertificationsystem.v1.global.response.CommonApiResponse;
 import team.nahyunuk.gsmcertificationsystem.v1.global.security.jwt.TokenProvider;
+import team.nahyunuk.gsmcertificationsystem.v1.global.util.UserUtil;
 
 import java.util.List;
 
@@ -25,15 +26,15 @@ import java.util.List;
 public class ActivityGetServiceImpl implements ActivityGetService {
 
     private final ActivityRepository activityRepository;
-    private final TokenProvider tokenProvider;
     private final StudentRepository studentRepository;
     private final ActivityConvert activityConvert;
     private final RedisUtil redisUtil;
+    private final UserUtil userUtil;
 
     @Override
     @Transactional(readOnly = true)
-    public CommonApiResponse<List<ActivityGetResponse>> execute(String token) {
-        Student student = getStudentByToken(token);
+    public CommonApiResponse<List<ActivityGetResponse>> execute() {
+        Student student = getStudentByToken();
         List<ActivityGetResponse> activities = findAllByStudent(student);
         return CommonApiResponse.successWithData(null, activities);
     }
@@ -50,8 +51,8 @@ public class ActivityGetServiceImpl implements ActivityGetService {
                 .toList();
     }
 
-    private Student getStudentByToken(String token) {
-        User user = tokenProvider.findUserByToken(token);
+    private Student getStudentByToken() {
+        User user = userUtil.getCurrentUser();
         return studentRepository.findByEmail(user.getEmail())
                 .orElseThrow(() -> new CustomException(ErrorCode.STUDENT_NOT_FOUND));
     }

@@ -26,7 +26,6 @@ public class ActivityBodyGetServiceImpl implements ActivityBodyGetService {
     private final ActivityRepository activityRepository;
     private final RedisUtil redisUtil;
     private final ActivityConvert activityConvert;
-    private final TokenProvider tokenProvider;
     private final StudentRepository studentRepository;
     private final UserUtil userUtil;
 
