@@ -11,7 +11,7 @@ import team.nahyunuk.gsmcertificationsystem.v1.global.security.auth.CustomUserDe
 
 @Component
 @RequiredArgsConstructor
-public class UseUtil {
+public class UserUtil {
 
     private final UserRepository userRepository;
 
