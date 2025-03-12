@@ -6,5 +6,5 @@ import team.nahyunuk.gsmcertificationsystem.v1.global.response.CommonApiResponse
 import java.io.IOException;
 
 public interface StudentUploadService {
-    CommonApiResponse execute(MultipartFile file, String token) throws IOException;
+    CommonApiResponse execute(MultipartFile file) throws IOException;
 }

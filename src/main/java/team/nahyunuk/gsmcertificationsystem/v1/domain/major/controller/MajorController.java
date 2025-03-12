@@ -20,18 +20,17 @@ public class MajorController {
     private final MajorUpdateServiceImpl majorUpdateService;
 
     @PostMapping
-    public CommonApiResponse post(@Valid @RequestBody MajorCalculationRequest request,
-                                  @RequestHeader("Authorization") String token) {
-        return majorCalculationService.execute(token, request);
+    public CommonApiResponse post(@Valid @RequestBody MajorCalculationRequest request) {
+        return majorCalculationService.execute(request);
     }
 
     @GetMapping
-    public CommonApiResponse get(@RequestHeader("Authorization") String token) {
-        return majorGetService.execute(token);
+    public CommonApiResponse get() {
+        return majorGetService.execute();
     }
 
     @PostMapping("/update")
-    public CommonApiResponse update(@Valid @RequestBody MajorUpdateRequest request, @RequestHeader("Authorization") String token) {
-        return majorUpdateService.execute(request, token);
+    public CommonApiResponse update(@Valid @RequestBody MajorUpdateRequest request) {
+        return majorUpdateService.execute(request);
     }
 }

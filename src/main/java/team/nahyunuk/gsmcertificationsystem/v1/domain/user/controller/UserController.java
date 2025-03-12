@@ -16,13 +16,12 @@ public class UserController {
     private final GetUserServiceImpl getUserService;
 
     @PostMapping
-    public CommonApiResponse changeRole(@RequestBody ChangeUserRoleRequest request,
-                                        @RequestHeader("Authorization") String token) {
-        return changeUserRoleService.execute(request, token);
+    public CommonApiResponse changeRole(@RequestBody ChangeUserRoleRequest request) {
+        return changeUserRoleService.execute(request);
     }
 
     @GetMapping
-    public CommonApiResponse getUser(@RequestHeader("Authorization") String token) {
-        return getUserService.execute(token);
+    public CommonApiResponse getUser() {
+        return getUserService.execute();
     }
 }

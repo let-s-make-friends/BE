@@ -10,11 +10,9 @@ import team.nahyunuk.gsmcertificationsystem.v1.domain.book.service.BookPostServi
 import team.nahyunuk.gsmcertificationsystem.v1.domain.student.entity.Student;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.student.repository.StudentRepository;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.user.entity.User;
-import team.nahyunuk.gsmcertificationsystem.v1.domain.user.repository.UserRepository;
 import team.nahyunuk.gsmcertificationsystem.v1.global.exception.CustomException;
 import team.nahyunuk.gsmcertificationsystem.v1.global.exception.error.ErrorCode;
 import team.nahyunuk.gsmcertificationsystem.v1.global.response.CommonApiResponse;
-import team.nahyunuk.gsmcertificationsystem.v1.global.security.jwt.TokenProvider;
 import team.nahyunuk.gsmcertificationsystem.v1.global.util.UserUtil;
 
 @Service

@@ -13,26 +13,26 @@ import team.nahyunuk.gsmcertificationsystem.v1.domain.user.entity.User;
 import team.nahyunuk.gsmcertificationsystem.v1.global.exception.CustomException;
 import team.nahyunuk.gsmcertificationsystem.v1.global.exception.error.ErrorCode;
 import team.nahyunuk.gsmcertificationsystem.v1.global.response.CommonApiResponse;
-import team.nahyunuk.gsmcertificationsystem.v1.global.security.jwt.TokenProvider;
+import team.nahyunuk.gsmcertificationsystem.v1.global.util.UserUtil;
 
 @Service
 @RequiredArgsConstructor
 public class MajorCalculationServiceImpl implements MajorCalculationService {
 
     private final MajorRepository majorRepository;
-    private final TokenProvider tokenProvider;
+    private final UserUtil userUtil;
     private final StudentRepository studentRepository;
 
     @Override
     @Transactional
-    public CommonApiResponse execute(String token, MajorCalculationRequest request) {
-        Student student = getStudentByToken(token);
+    public CommonApiResponse execute(MajorCalculationRequest request) {
+        Student student = getStudentByToken();
         saveMajor(request, student);
         return CommonApiResponse.success("전공 영역이 저장되었습니다");
     }
 
-    private Student getStudentByToken(String token) {
-        User user = tokenProvider.findUserByToken(token);
+    private Student getStudentByToken() {
+        User user = userUtil.getCurrentUser();
         return studentRepository.findByEmail(user.getEmail())
                 .orElseThrow(() -> new CustomException(ErrorCode.STUDENT_NOT_FOUND));
     }

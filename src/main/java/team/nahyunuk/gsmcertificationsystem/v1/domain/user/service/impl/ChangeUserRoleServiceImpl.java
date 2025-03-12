@@ -14,18 +14,19 @@ import team.nahyunuk.gsmcertificationsystem.v1.global.exception.error.ErrorCode;
 import team.nahyunuk.gsmcertificationsystem.v1.global.response.CommonApiResponse;
 import team.nahyunuk.gsmcertificationsystem.v1.global.security.jwt.TokenProvider;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.user.type.Authority;
+import team.nahyunuk.gsmcertificationsystem.v1.global.util.UserUtil;
 
 @Service
 @RequiredArgsConstructor
 public class ChangeUserRoleServiceImpl implements ChangeUserRoleService {
 
     private final UserRepository userRepository;
-    private final TokenProvider tokenProvider;
+    private final UserUtil userUtil;
 
     @Override
     @Transactional
-    public CommonApiResponse execute(ChangeUserRoleRequest request, String token) {
-        User adminUser = tokenProvider.findUserByToken(token);
+    public CommonApiResponse execute(ChangeUserRoleRequest request) {
+        User adminUser = userUtil.getCurrentUser();
         validateUserPermission(adminUser);
 
         User user = userRepository.findById(request.userId())

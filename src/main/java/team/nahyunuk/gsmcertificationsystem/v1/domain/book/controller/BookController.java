@@ -22,14 +22,13 @@ public class BookController {
     private final BookBodyGetServiceImpl bodyGetService;
 
     @PostMapping
-    public CommonApiResponse post(@Valid @RequestBody BookPostRequest request,
-                                  @RequestHeader("Authorization") String token) {
-        return bookPostService.execute(token, request);
+    public CommonApiResponse post(@Valid @RequestBody BookPostRequest request) {
+        return bookPostService.execute(request);
     }
 
     @GetMapping
-    public CommonApiResponse get(@RequestHeader("Authorization") String token) {
-        return bookGetService.execute(token);
+    public CommonApiResponse get() {
+        return bookGetService.execute();
     }
 
     @GetMapping("/{bookId}")

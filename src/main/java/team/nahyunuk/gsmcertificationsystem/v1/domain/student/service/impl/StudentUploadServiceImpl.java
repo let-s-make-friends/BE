@@ -16,6 +16,7 @@ import team.nahyunuk.gsmcertificationsystem.v1.global.exception.CustomException;
 import team.nahyunuk.gsmcertificationsystem.v1.global.exception.error.ErrorCode;
 import team.nahyunuk.gsmcertificationsystem.v1.global.response.CommonApiResponse;
 import team.nahyunuk.gsmcertificationsystem.v1.global.security.jwt.TokenProvider;
+import team.nahyunuk.gsmcertificationsystem.v1.global.util.UserUtil;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,12 +29,12 @@ import java.util.List;
 public class StudentUploadServiceImpl implements StudentUploadService {
 
     private final StudentRepository studentRepository;
-    private final TokenProvider tokenProvider;
+    private final UserUtil userUtil;
 
     @Override
     @Transactional
-    public CommonApiResponse execute(MultipartFile file, String token) {
-        User user = tokenProvider.findUserByToken(token);
+    public CommonApiResponse execute(MultipartFile file) {
+        User user = userUtil.getCurrentUser();
         validateUserPermission(user);
         validateFile(file);
 

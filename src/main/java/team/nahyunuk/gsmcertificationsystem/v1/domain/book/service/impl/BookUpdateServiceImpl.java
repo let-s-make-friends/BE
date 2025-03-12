@@ -7,9 +7,7 @@ import team.nahyunuk.gsmcertificationsystem.v1.domain.book.dto.request.BookUpdat
 import team.nahyunuk.gsmcertificationsystem.v1.domain.book.entity.Book;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.book.repository.BookRepository;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.book.service.BookUpdateService;
-import team.nahyunuk.gsmcertificationsystem.v1.domain.student.entity.Student;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.user.entity.User;
-import team.nahyunuk.gsmcertificationsystem.v1.domain.user.repository.UserRepository;
 import team.nahyunuk.gsmcertificationsystem.v1.global.exception.CustomException;
 import team.nahyunuk.gsmcertificationsystem.v1.global.exception.error.ErrorCode;
 import team.nahyunuk.gsmcertificationsystem.v1.global.response.CommonApiResponse;

@@ -4,5 +4,5 @@ import team.nahyunuk.gsmcertificationsystem.v1.domain.major.dto.request.MajorUpd
 import team.nahyunuk.gsmcertificationsystem.v1.global.response.CommonApiResponse;
 
 public interface MajorUpdateService {
-    CommonApiResponse execute(MajorUpdateRequest request, String token);
+    CommonApiResponse execute(MajorUpdateRequest request);
 }

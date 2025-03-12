@@ -5,5 +5,5 @@ import team.nahyunuk.gsmcertificationsystem.v1.domain.user.type.Authority;
 import team.nahyunuk.gsmcertificationsystem.v1.global.response.CommonApiResponse;
 
 public interface ChangeUserRoleService {
-    CommonApiResponse execute(ChangeUserRoleRequest request, String token);
+    CommonApiResponse execute(ChangeUserRoleRequest request);
 }
