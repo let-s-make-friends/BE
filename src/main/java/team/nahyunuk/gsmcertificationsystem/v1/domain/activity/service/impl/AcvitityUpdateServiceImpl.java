@@ -8,23 +8,22 @@ import team.nahyunuk.gsmcertificationsystem.v1.domain.activity.entity.Activity;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.activity.repository.ActivityRepository;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.activity.service.ActivityUpdateService;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.user.entity.User;
-import team.nahyunuk.gsmcertificationsystem.v1.domain.user.repository.UserRepository;
 import team.nahyunuk.gsmcertificationsystem.v1.global.exception.CustomException;
 import team.nahyunuk.gsmcertificationsystem.v1.global.exception.error.ErrorCode;
 import team.nahyunuk.gsmcertificationsystem.v1.global.response.CommonApiResponse;
-import team.nahyunuk.gsmcertificationsystem.v1.global.security.jwt.TokenProvider;
+import team.nahyunuk.gsmcertificationsystem.v1.global.util.UserUtil;
 
 @Service
 @RequiredArgsConstructor
 public class AcvitityUpdateServiceImpl implements ActivityUpdateService {
 
     private final ActivityRepository activityRepository;
-    private final TokenProvider tokenProvider;
+    private final UserUtil userUtil;
 
     @Override
     @Transactional
-    public CommonApiResponse execute(ActivityUpdateRequest request, String token) {
-        User user = tokenProvider.findUserByToken(token);
+    public CommonApiResponse execute(ActivityUpdateRequest request) {
+        User user = userUtil.getCurrentUser();
         Activity activity = findActivityById(request.id());
 
         validateUserAccess(activity, user);
