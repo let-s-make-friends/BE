@@ -39,7 +39,7 @@ public class ProfileUpdateServiceImpl implements ProfileUpdateService {
 
         validateStudentAccess(profile, student);
 
-        profile.update(request, toeic, topcit);
+        profile.update(student.getTotalScore(), request, toeic, topcit);
         return CommonApiResponse.success("프로필이 저장되었습니다.");
     }
 

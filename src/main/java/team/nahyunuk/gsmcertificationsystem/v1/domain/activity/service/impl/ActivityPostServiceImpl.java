@@ -7,6 +7,7 @@ import team.nahyunuk.gsmcertificationsystem.v1.domain.activity.dto.request.Activ
 import team.nahyunuk.gsmcertificationsystem.v1.domain.activity.entity.Activity;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.activity.repository.ActivityRepository;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.activity.service.ActivityPostService;
+import team.nahyunuk.gsmcertificationsystem.v1.domain.activity.type.ActivityCategory;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.student.entity.Student;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.student.repository.StudentRepository;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.user.entity.User;
@@ -28,6 +29,8 @@ public class ActivityPostServiceImpl implements ActivityPostService {
     public CommonApiResponse execute(ActivityPostRequest request) {
         Student student = getStudentByToken();
         saveActivity(request, student);
+        int countActivity = activityRepository.countByCategoryAndStudent(request.activityCategory(), student);
+        checkActivityCategoryCount(request.activityCategory(), student, countActivity);
         return CommonApiResponse.success("활동 영역이 저장되었습니다.");
     }
 
@@ -55,4 +58,30 @@ public class ActivityPostServiceImpl implements ActivityPostService {
         return studentRepository.findByEmail(user.getEmail())
                 .orElseThrow(() -> new CustomException(ErrorCode.STUDENT_NOT_FOUND));
     }
+
+    private void checkActivityCategoryCount(ActivityCategory activityCategory, Student student, int countActivity) {
+        int totalAwards = activityRepository.countByCategoryAndStudent(ActivityCategory.SCHOOL_AWARD, student) +
+                activityRepository.countByCategoryAndStudent(ActivityCategory.OUTSIDE_AWARD, student);
+
+        int totalCharacterAwards = activityRepository.countByCategoryAndStudent(ActivityCategory.CHARACTER_SCHOOL_AWARD, student) +
+                activityRepository.countByCategoryAndStudent(ActivityCategory.CHARACTER_OUTSIDE_AWARD, student);
+
+        if (totalAwards > 6 && (activityCategory == ActivityCategory.SCHOOL_AWARD || activityCategory == ActivityCategory.OUTSIDE_AWARD)) {
+            throw new CustomException(ErrorCode.ACTIVITY_LIMIT_EXCEEDED);
+        }
+
+        if (totalCharacterAwards > 4 && (activityCategory == ActivityCategory.CHARACTER_SCHOOL_AWARD || activityCategory == ActivityCategory.CHARACTER_OUTSIDE_AWARD)) {
+            throw new CustomException(ErrorCode.ACTIVITY_LIMIT_EXCEEDED);
+        }
+
+        if (activityCategory == ActivityCategory.OUTSIDE_PARTICIPATION && countActivity > 8) {
+            throw new CustomException(ErrorCode.ACTIVITY_LIMIT_EXCEEDED);
+        }
+
+        if ((activityCategory == ActivityCategory.CLUB && countActivity > 2) ||
+                (activityCategory == ActivityCategory.HUMANITIES_ACTIVITY && countActivity > 8)) {
+            throw new CustomException(ErrorCode.ACTIVITY_LIMIT_EXCEEDED);
+        }
+    }
+
 }

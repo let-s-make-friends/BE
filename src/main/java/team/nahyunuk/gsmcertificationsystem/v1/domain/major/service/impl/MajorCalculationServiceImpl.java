@@ -27,7 +27,10 @@ public class MajorCalculationServiceImpl implements MajorCalculationService {
     @Transactional
     public CommonApiResponse execute(MajorCalculationRequest request) {
         Student student = getStudentByToken();
-        saveMajor(request, student);
+        Major major = createMajor(request, student);
+        saveMajor(major);
+        int topcitScore = calculateTopcitScore(major.getTopcitScore());
+        student.updateTotalScore(topcitScore);
         return CommonApiResponse.success("전공 영역이 저장되었습니다");
     }
 
@@ -37,8 +40,8 @@ public class MajorCalculationServiceImpl implements MajorCalculationService {
                 .orElseThrow(() -> new CustomException(ErrorCode.STUDENT_NOT_FOUND));
     }
 
-    private void saveMajor(MajorCalculationRequest request, Student student) {
-        majorRepository.save(createMajor(request, student));
+    private void saveMajor(Major major) {
+        majorRepository.save(major);
     }
 
     private Major createMajor(MajorCalculationRequest request, Student student) {
