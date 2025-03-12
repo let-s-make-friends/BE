@@ -4,5 +4,5 @@ import team.nahyunuk.gsmcertificationsystem.v1.domain.book.dto.request.BookUpdat
 import team.nahyunuk.gsmcertificationsystem.v1.global.response.CommonApiResponse;
 
 public interface BookUpdateService {
-    CommonApiResponse execute(BookUpdateRequest request,String token);
+    CommonApiResponse execute(BookUpdateRequest request);
 }

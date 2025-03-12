@@ -14,6 +14,7 @@ import team.nahyunuk.gsmcertificationsystem.v1.global.exception.CustomException;
 import team.nahyunuk.gsmcertificationsystem.v1.global.exception.error.ErrorCode;
 import team.nahyunuk.gsmcertificationsystem.v1.global.response.CommonApiResponse;
 import team.nahyunuk.gsmcertificationsystem.v1.global.security.jwt.TokenProvider;
+import team.nahyunuk.gsmcertificationsystem.v1.global.util.UserUtil;
 
 @Service
 @RequiredArgsConstructor
@@ -21,11 +22,12 @@ public class BookUpdateServiceImpl implements BookUpdateService {
 
     private final BookRepository bookRepository;
     private final TokenProvider tokenProvider;
+    private final UserUtil userUtil;
 
     @Override
     @Transactional
-    public CommonApiResponse execute(BookUpdateRequest request, String token) {
-        User user = tokenProvider.findUserByToken(token);
+    public CommonApiResponse execute(BookUpdateRequest request) {
+        User user = userUtil.getCurrentUser();
         Book book = findBookById(request.id());
 
         validateUserAccess(book, user);

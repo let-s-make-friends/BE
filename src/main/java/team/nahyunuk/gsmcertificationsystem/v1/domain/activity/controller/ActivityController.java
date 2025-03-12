@@ -22,14 +22,13 @@ public class ActivityController {
     private final AcvitityUpdateServiceImpl activityUpdateService;
 
     @PostMapping
-    public CommonApiResponse post(@Valid @RequestBody ActivityPostRequest request,
-                                  @RequestHeader("Authorization") String token) {
-        return activityPostService.execute(request, token);
+    public CommonApiResponse post(@Valid @RequestBody ActivityPostRequest request) {
+        return activityPostService.execute(request);
     }
 
     @GetMapping
-    public CommonApiResponse get(@RequestHeader("Authorization") String token) {
-        return activityGetService.execute(token);
+    public CommonApiResponse get() {
+        return activityGetService.execute();
     }
 
     @GetMapping("/{activityId}")
