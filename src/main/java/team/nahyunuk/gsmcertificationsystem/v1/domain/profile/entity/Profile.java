@@ -25,6 +25,9 @@ public class Profile {
     @Column(name = "id")
     private Long id;
 
+    @Column(name = "total_score")
+    private int totalScore;
+
     @Column(name = "toeic_score")
     private int toeicScore;
 
@@ -44,12 +47,19 @@ public class Profile {
     @JoinColumn(name = "student", referencedColumnName = "id")
     private Student student;
 
-    public void update(int totalScore, ProfileUpdateRequest request, int toeicScore, int topcitScore) {
-        this.toeicScore = totalScore;
+    public void update(ProfileUpdateRequest request, int toeicScore, int topcitScore) {
         this.toeicScore = toeicScore;
         this.topcitScore = topcitScore;
         this.readingMarathon = request.readingMarathon();
         this.pdfUrls = request.pdfUrl();
+    }
+
+    public void updateToeicScore(int toeicScore) {
+        this.toeicScore = toeicScore;
+    }
+
+    public void updateTopcitScore(int topcitScore) {
+        this.topcitScore = topcitScore;
     }
 
 }

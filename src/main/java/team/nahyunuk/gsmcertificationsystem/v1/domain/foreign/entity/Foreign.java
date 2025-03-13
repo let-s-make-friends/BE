@@ -25,8 +25,11 @@ public class Foreign {
     @Column(name = "toefl_score", nullable = false)
     private int toeflScore;
 
-    @Column(name = "toeic_speaking_score", nullable = false)
-    private int toeicSpeakingScore;
+    @Column(name = "teps_score", nullable = false)
+    private int tepsScore;
+
+    @Column(name = "toeic_speaking_level", nullable = false)
+    private int toeicSpeakingLevel;
 
     @Column(name = "opic_score", nullable = false)
     private int opicScore;
@@ -39,6 +42,9 @@ public class Foreign {
 
     @Column(name = "hsk_score", nullable = false)
     private int hskScore;
+
+    @Column(name = "total_score", nullable = false)
+    private int totalScore;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "student_id", referencedColumnName = "id")
