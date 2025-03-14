@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.foreign.convert.ForeignConvert;
-import team.nahyunuk.gsmcertificationsystem.v1.domain.foreign.dto.response.ForeignGetResponse;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.foreign.entity.Foreign;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.foreign.repository.ForeignRepository;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.foreign.service.ForeignGetService;
@@ -30,8 +29,7 @@ public class ForeignGetServiceImpl implements ForeignGetService {
     public CommonApiResponse execute() {
         Student student = getStudent();
         Foreign foreign = getForeignByStudent(student);
-        ForeignGetResponse foreignGetResponse = foreignConvert.getResponse(foreign);
-        return CommonApiResponse.successWithData(null, foreignGetResponse);
+        return CommonApiResponse.successWithData(null, foreignConvert.getResponse(foreign));
     }
 
     private Student getStudent() {
