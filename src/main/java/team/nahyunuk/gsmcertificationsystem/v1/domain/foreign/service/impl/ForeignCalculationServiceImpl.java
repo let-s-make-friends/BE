@@ -52,18 +52,19 @@ public class ForeignCalculationServiceImpl implements ForeignCalculationService 
         int totalScore = calculateTotalScore(request);
 
         return Foreign.builder()
-                .toeicScore(calculateToeicScore(request.toeicScore()))
-                .toeflScore(calculateToeflScore(request.toeflScore()))
-                .tepsScore(calculateTepsScore(request.tepsScore()))
-                .toeicSpeakingLevel(calculateToeicSpeakingScore(request.toeicSpeakinglevel()))
-                .opicScore(calculateOpicScore(request.opicScore()))
-                .jptScore(calculateJptScore(request.jptScore()))
-                .cptScore(calculateCptScore(request.cptScore()))
-                .hskScore(calculateHskScore(request.hskScore()))
+                .toeicScore(request.toeicScore())
+                .toeflScore(request.toeflScore())
+                .tepsScore(request.tepsScore())
+                .toeicSpeakingLevel(request.toeicSpeakinglevel())
+                .opicScore(request.opicScore())
+                .jptScore(request.jptScore())
+                .cptScore(request.cptScore())
+                .hskScore(request.hskScore())
                 .totalScore(totalScore)
                 .student(student)
                 .build();
     }
+
 
     private int calculateToeicScore(int toeicScore) {
         if (toeicScore >= 700) {

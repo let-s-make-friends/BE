@@ -8,7 +8,7 @@ public record ForeignGetResponse(
         int toeflScore,
         int tepsScore,
         int toeicSpeakingLevel,
-        int opicScore,
+        String opicScore,
         int jptScore,
         int cptScore,
         int hskScore,

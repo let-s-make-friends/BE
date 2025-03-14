@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import team.nahyunuk.gsmcertificationsystem.v1.domain.foreign.dto.request.ForeignCalculationRequest;
 import team.nahyunuk.gsmcertificationsystem.v1.domain.student.entity.Student;
 
 @Entity
@@ -32,7 +33,7 @@ public class Foreign {
     private int toeicSpeakingLevel;
 
     @Column(name = "opic_score", nullable = false)
-    private int opicScore;
+    private String opicScore;
 
     @Column(name = "jpt_score", nullable = false)
     private int jptScore;
@@ -49,4 +50,15 @@ public class Foreign {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "student_id", referencedColumnName = "id")
     private Student student;
+
+    public void update(ForeignCalculationRequest request) {
+        this.toeicScore = request.toeicScore();
+        this.toeflScore = request.toeflScore();
+        this.tepsScore = request.tepsScore();
+        this.toeicSpeakingLevel = request.toeicSpeakinglevel();
+        this.opicScore = request.opicScore();
+        this.jptScore = request.jptScore();
+        this.cptScore = request.cptScore();
+        this.hskScore = request.hskScore();
+    }
 }
