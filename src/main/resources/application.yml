@@ -64,9 +64,6 @@ cors:
 discord:
   webhook:
     url: ${DISCORD}
-server:
-  port: 8081
-
 
 
 
